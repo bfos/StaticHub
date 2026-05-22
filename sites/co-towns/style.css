@@ -70,6 +70,11 @@ nav a.home-link {
   color: #fff;
   letter-spacing: .03em;
 }
+nav a.map-link {
+  font-weight: 600;
+  color: #8ecfff;
+  border-right: 2px solid #2e4560;
+}
 
 /* ── HERO ── */
 .hero {

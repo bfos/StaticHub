@@ -2,6 +2,7 @@
 (function () {
   const towns = [
     { name: 'Overview',         href: 'index.html',           home: true },
+    { name: '🗺 Map',           href: 'map.html',             map: true },
     { name: 'Steamboat Spgs',   href: 'steamboat.html' },
     { name: 'Glenwood Spgs',    href: 'glenwood.html' },
     { name: 'Carbondale',       href: 'carbondale.html' },
@@ -37,6 +38,7 @@
     a.href = t.href;
     a.textContent = t.name;
     if (t.home) a.classList.add('home-link');
+    if (t.map)  a.classList.add('map-link');
     if (t.href === cur) a.classList.add('active');
     nav.appendChild(a);
   });

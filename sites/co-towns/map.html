@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Town Map — Colorado Mountain Towns</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+
+  <style>
+    /* ── Map page layout ── */
+    .map-page-header {
+      background: linear-gradient(135deg, #1c2e40 0%, #2b5f8e 100%);
+      color: #fff;
+      padding: 28px 40px 22px;
+    }
+    .map-page-header h1 {
+      font-size: 28px;
+      font-weight: normal;
+      margin-bottom: 6px;
+    }
+    .map-page-header p {
+      font-size: 15px;
+      opacity: .82;
+      max-width: 700px;
+    }
+
+    /* legend strip */
+    .map-legend-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 18px;
+      align-items: center;
+      background: #f0f4f8;
+      padding: 10px 40px;
+      border-bottom: 1px solid #ddd;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 12.5px;
+      color: #444;
+    }
+    .map-legend-strip strong {
+      color: #1c2e40;
+      margin-right: 4px;
+    }
+    .legend-dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin-right: 4px;
+      border: 1.5px solid rgba(0,0,0,.25);
+    }
+
+    /* The map itself */
+    #map {
+      width: 100%;
+      height: calc(100vh - 44px - 68px - 46px); /* nav + header + legend */
+      min-height: 460px;
+    }
+
+    /* Leaflet popup customization */
+    .lf-popup {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.45;
+      min-width: 200px;
+    }
+    .lf-popup-town {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1c2e40;
+      margin-bottom: 3px;
+    }
+    .lf-popup-region {
+      font-size: 11px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      margin-bottom: 8px;
+    }
+    .lf-popup-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px 10px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .lf-popup-stat-label { color: #888; font-size: 10.5px; }
+    .lf-popup-stat-value { color: #222; font-weight: 600; }
+    .lf-popup-link {
+      display: block;
+      text-align: center;
+      background: #2b5f8e;
+      color: #fff !important;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      margin-top: 4px;
+      transition: background .15s;
+    }
+    .lf-popup-link:hover { background: #1c4a70; text-decoration: none; }
+
+    .lf-popup-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    .lf-popup-tag {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 50px;
+      font-weight: 600;
+    }
+    .lf-popup-tag.ski    { background: #deeaf6; color: #1e3f5c; }
+    .lf-popup-tag.arts   { background: #eee6f8; color: #4a2080; }
+    .lf-popup-tag.outdoor{ background: #edf3e8; color: #2d5c1e; }
+    .lf-popup-tag.warn   { background: #fef3e2; color: #7a4a00; }
+
+    /* Override Leaflet popup padding */
+    .leaflet-popup-content { margin: 14px 16px; }
+    .leaflet-popup-content-wrapper { border-radius: 10px; box-shadow: 0 4px 20px rgba(0,0,0,.18); }
+
+    /* Sidebar panel (desktop) */
+    .map-layout {
+      display: flex;
+      height: calc(100vh - 44px - 68px - 46px);
+      min-height: 460px;
+    }
+    #map {
+      flex: 1;
+      height: 100%;
+    }
+    .map-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: #fff;
+      border-left: 1px solid #ddd;
+      overflow-y: auto;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 12.5px;
+    }
+    .sidebar-section {
+      border-bottom: 1px solid #eee;
+      padding: 10px 12px;
+    }
+    .sidebar-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 6px;
+    }
+    .sidebar-town {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 4px 0;
+      cursor: pointer;
+      border-radius: 4px;
+      color: #333;
+      text-decoration: none;
+    }
+    .sidebar-town:hover { color: #2b5f8e; text-decoration: none; }
+    .sidebar-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 1.5px solid rgba(0,0,0,.2);
+    }
+    .sidebar-town-name { font-size: 12.5px; }
+    .sidebar-town-elev { font-size: 10.5px; color: #aaa; margin-left: auto; }
+
+    @media (max-width: 700px) {
+      .map-sidebar { display: none; }
+      .map-layout  { height: calc(100vh - 44px - 100px - 46px); }
+    }
+  </style>
+</head>
+<body>
+<script src="nav.js"></script>
+
+<div class="map-page-header">
+  <h1>Colorado Mountain Towns — Interactive Map</h1>
+  <p>All 25 towns in this guide plotted on Colorado. Click any marker for key stats and a link to the full town page. Marker color indicates drive time from Denver.</p>
+</div>
+
+<div class="map-legend-strip">
+  <strong>Drive from DEN:</strong>
+  <span><span class="legend-dot" style="background:#2ecc71"></span>Under 2 hrs</span>
+  <span><span class="legend-dot" style="background:#f39c12"></span>2–3 hrs</span>
+  <span><span class="legend-dot" style="background:#e67e22"></span>3–4 hrs</span>
+  <span><span class="legend-dot" style="background:#e74c3c"></span>4+ hrs</span>
+  <span style="margin-left:12px; color:#999">Click a marker to open the town page</span>
+</div>
+
+<div class="map-layout">
+  <div id="map"></div>
+
+  <aside class="map-sidebar" id="sidebar">
+    <!-- populated by JS -->
+  </aside>
+</div>
+
+<footer style="text-align:center;padding:16px;font-family:'Helvetica Neue',Arial,sans-serif;font-size:12px;color:#999;border-top:1px solid #ddd;">
+  Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" style="color:#999">OpenStreetMap</a> contributors · Coordinates approximate ·
+  <a href="index.html" style="color:#2b5f8e">← Back to overview</a>
+</footer>
+
+<!-- Leaflet JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+<script>
+// ── Town data ──────────────────────────────────────────────────────────────
+const TOWNS = [
+  {
+    name: 'Steamboat Springs',
+    file: 'steamboat.html',
+    lat: 40.4850, lng: -106.8317,
+    region: 'Northwest Colorado',
+    elevation: '6,728 ft',
+    price: '$850K–$1.3M',
+    drive: '~3 hrs',
+    driveHrs: 3,
+    tags: ['ski', 'outdoor'],
+    tagLabels: ['Ski Resort', 'Ranch Town'],
+    note: '2,965 acres · Yampa Valley'
+  },
+  {
+    name: 'Glenwood Springs',
+    file: 'glenwood.html',
+    lat: 39.5505, lng: -107.3246,
+    region: 'Roaring Fork Valley',
+    elevation: '5,761 ft',
+    price: '$700K–$1.1M',
+    drive: '~2.5 hrs',
+    driveHrs: 2.5,
+    tags: ['outdoor', 'ski'],
+    tagLabels: ['Hot Springs', 'Aspen 45 min'],
+    note: 'World\'s largest hot springs pool'
+  },
+  {
+    name: 'Carbondale',
+    file: 'carbondale.html',
+    lat: 39.4026, lng: -107.2119,
+    region: 'Roaring Fork Valley',
+    elevation: '6,181 ft',
+    price: '$700K–$1.1M',
+    drive: '~3 hrs',
+    driveHrs: 3,
+    tags: ['arts', 'ski'],
+    tagLabels: ['Arts Town', 'Aspen 30 min'],
+    note: 'Best local culture in RFV'
+  },
+  {
+    name: 'Salida',
+    file: 'salida.html',
+    lat: 38.5347, lng: -105.9991,
+    region: 'Upper Arkansas Valley',
+    elevation: '7,036 ft',
+    price: '$550K–$850K',
+    drive: '~2.5 hrs',
+    driveHrs: 2.5,
+    tags: ['arts', 'outdoor'],
+    tagLabels: ['Arts Scene', 'Monarch 20 min'],
+    note: 'Best value genuine mountain town'
+  },
+  {
+    name: 'Buena Vista',
+    file: 'buena-vista.html',
+    lat: 38.8425, lng: -106.1313,
+    region: 'Upper Arkansas Valley',
+    elevation: '7,965 ft',
+    price: '$500K–$800K',
+    drive: '~2.5 hrs',
+    driveHrs: 2.5,
+    tags: ['outdoor'],
+    tagLabels: ['Class 5 Whitewater', 'Eddyline Brewery'],
+    note: 'Outdoor-obsessed; 25 min from Salida'
+  },
+  {
+    name: 'Frisco / Summit County',
+    file: 'frisco.html',
+    lat: 39.5742, lng: -106.0974,
+    region: 'Summit County',
+    elevation: '9,097 ft',
+    price: '$800K–$1.2M',
+    drive: '~1.5 hrs',
+    driveHrs: 1.5,
+    tags: ['ski'],
+    tagLabels: ['4 Resorts <20 min', 'Epic Pass'],
+    note: 'Best ski access in Colorado'
+  },
+  {
+    name: 'Edwards / Avon',
+    file: 'edwards.html',
+    lat: 39.6456, lng: -106.5919,
+    region: 'Vail Valley',
+    elevation: '7,240 ft',
+    price: '$750K–$1.2M',
+    drive: '~2 hrs',
+    driveHrs: 2,
+    tags: ['ski'],
+    tagLabels: ['Vail 15 min', 'Beaver Creek 10 min'],
+    note: 'Where Vail locals actually live'
+  },
+  {
+    name: 'Crested Butte',
+    file: 'crested-butte.html',
+    lat: 38.8697, lng: -106.9878,
+    region: 'Gunnison Valley',
+    elevation: '8,909 ft',
+    price: '$900K–$1.5M',
+    drive: '~4 hrs',
+    driveHrs: 4,
+    tags: ['ski', 'arts'],
+    tagLabels: ['2,775 acres', 'Anti-Resort'],
+    note: 'Last Great Ski Town'
+  },
+  {
+    name: 'Colorado Springs',
+    file: 'colorado-springs.html',
+    lat: 38.8339, lng: -104.8214,
+    region: 'Front Range South',
+    elevation: '6,035 ft',
+    price: '$450K–$750K',
+    drive: '~1 hr',
+    driveHrs: 1,
+    tags: ['outdoor'],
+    tagLabels: ['Garden of the Gods', 'Pikes Peak'],
+    note: 'Large city; conservative character'
+  },
+  {
+    name: 'Fort Collins',
+    file: 'fort-collins.html',
+    lat: 40.5853, lng: -105.0844,
+    region: 'Northern Front Range',
+    elevation: '5,003 ft',
+    price: '$550K–$850K',
+    drive: '~1 hr',
+    driveHrs: 1,
+    tags: ['arts', 'outdoor'],
+    tagLabels: ['Craft Beer Capital', 'RMNP 45 min'],
+    note: 'New Belgium · Odell · Old Town'
+  },
+  {
+    name: 'Manitou Springs',
+    file: 'manitou.html',
+    lat: 38.8575, lng: -104.9211,
+    region: 'Pikes Peak Region',
+    elevation: '6,412 ft',
+    price: '$500K–$750K',
+    drive: '~1 hr',
+    driveHrs: 1,
+    tags: ['arts', 'outdoor'],
+    tagLabels: ['Zero Chains', 'Mineral Springs'],
+    note: 'Fully independent commercial district'
+  },
+  {
+    name: 'Loveland',
+    file: 'loveland.html',
+    lat: 40.3977, lng: -105.0749,
+    region: 'Northern Front Range',
+    elevation: '4,982 ft',
+    price: '$500K–$750K',
+    drive: '~1 hr',
+    driveHrs: 1,
+    tags: ['arts', 'outdoor'],
+    tagLabels: ['Sculpture City', 'Big Thompson Canyon'],
+    note: '100+ outdoor bronzes in public'
+  },
+  {
+    name: 'Grand Junction',
+    file: 'grand-junction.html',
+    lat: 39.0639, lng: -108.5506,
+    region: 'Western Slope',
+    elevation: '4,597 ft',
+    price: '$350K–$600K',
+    drive: '~4 hrs',
+    driveHrs: 4,
+    tags: ['outdoor'],
+    tagLabels: ['High Desert', 'CO Natl Monument'],
+    note: 'Most affordable; furthest west'
+  },
+  {
+    name: 'Winter Park',
+    file: 'winter-park.html',
+    lat: 39.8868, lng: -105.7625,
+    region: 'Grand County',
+    elevation: '9,052 ft',
+    price: '$700K–$1.1M',
+    drive: '~1.5 hrs',
+    driveHrs: 1.5,
+    tags: ['ski'],
+    tagLabels: ['3,081 acres', 'Ski Train'],
+    note: 'Denver\'s original mountain escape'
+  },
+  {
+    name: 'Breckenridge',
+    file: 'breckenridge.html',
+    lat: 39.4817, lng: -106.0384,
+    region: 'Summit County',
+    elevation: '9,600 ft',
+    price: '$1.1M–$2M+',
+    drive: '~1.5 hrs',
+    driveHrs: 1.5,
+    tags: ['ski', 'warn'],
+    tagLabels: ['2,908 acres', 'Tourist-Heavy'],
+    note: 'World-class ski; high AirBnB density'
+  },
+  {
+    name: 'Telluride',
+    file: 'telluride.html',
+    lat: 37.9375, lng: -107.8123,
+    region: 'San Juan Mountains',
+    elevation: '8,750 ft',
+    price: '$2M–$4M+',
+    drive: '~6.5 hrs',
+    driveHrs: 6.5,
+    tags: ['ski', 'warn'],
+    tagLabels: ['World-class', 'Over budget'],
+    note: 'Reference/dream — over budget & distance'
+  },
+  {
+    name: 'Ouray',
+    file: 'ouray.html',
+    lat: 38.0228, lng: -107.6714,
+    region: 'San Juan Mountains',
+    elevation: '7,792 ft',
+    price: '$600K–$950K',
+    drive: '~6 hrs',
+    driveHrs: 6,
+    tags: ['outdoor', 'warn'],
+    tagLabels: ['Box Canyon', 'Ice Climbing'],
+    note: '"Switzerland of America"'
+  },
+  {
+    name: 'Ridgway',
+    file: 'ridgway.html',
+    lat: 38.1583, lng: -107.7594,
+    region: 'San Juan Mountains',
+    elevation: '6,985 ft',
+    price: '$500K–$850K',
+    drive: '~6 hrs',
+    driveHrs: 6,
+    tags: ['arts', 'outdoor'],
+    tagLabels: ['Artsy/Progressive', 'Telluride 30 min'],
+    note: 'True Grit country; best San Juan value'
+  },
+  {
+    name: 'Leadville',
+    file: 'leadville.html',
+    lat: 39.2481, lng: -106.2928,
+    region: 'Lake County',
+    elevation: '10,152 ft',
+    price: '$400K–$650K',
+    drive: '~2 hrs',
+    driveHrs: 2,
+    tags: ['ski', 'warn'],
+    tagLabels: ['Breck 45 min', '⚠ Altitude'],
+    note: 'Highest US city · Best ski value'
+  },
+  {
+    name: 'Durango',
+    file: 'durango.html',
+    lat: 37.2753, lng: -107.8801,
+    region: 'Southwest Colorado',
+    elevation: '6,512 ft',
+    price: '$600K–$950K',
+    drive: '6+ hrs',
+    driveHrs: 6.5,
+    tags: ['arts', 'ski', 'warn'],
+    tagLabels: ['College Town', '6+ hrs DEN'],
+    note: 'Best SW CO city — distance is the catch'
+  },
+  {
+    name: 'Nederland',
+    file: 'nederland.html',
+    lat: 39.9616, lng: -105.5107,
+    region: 'Boulder County',
+    elevation: '8,236 ft',
+    price: '$600K–$900K',
+    drive: '~1 hr',
+    driveHrs: 1,
+    tags: ['outdoor', 'ski'],
+    tagLabels: ['Eldora 10 min', 'Boulder 45 min'],
+    note: 'Hippie/countercultural · Boulder access'
+  },
+  {
+    name: 'Basalt',
+    file: 'basalt.html',
+    lat: 39.3692, lng: -107.0341,
+    region: 'Roaring Fork Valley',
+    elevation: '6,611 ft',
+    price: '$800K–$1.3M',
+    drive: '~3 hrs',
+    driveHrs: 3,
+    tags: ['ski', 'outdoor'],
+    tagLabels: ['Aspen 20 min', 'Fly Fishing'],
+    note: 'Mid-valley sweet spot'
+  },
+  {
+    name: 'Pagosa Springs',
+    file: 'pagosa.html',
+    lat: 37.2694, lng: -107.0097,
+    region: 'Southwest Colorado',
+    elevation: '7,126 ft',
+    price: '$450K–$750K',
+    drive: '~5.5 hrs',
+    driveHrs: 5.5,
+    tags: ['outdoor', 'ski', 'warn'],
+    tagLabels: ['Wolf Creek 25 min', '5.5 hrs DEN'],
+    note: '400+ in/yr snowfall · World\'s deepest springs'
+  },
+  {
+    name: 'Marble',
+    file: 'marble.html',
+    lat: 39.0731, lng: -107.1908,
+    region: 'Crystal River Valley',
+    elevation: '7,950 ft',
+    price: '$500K–$800K',
+    drive: '~3.5 hrs',
+    driveHrs: 3.5,
+    tags: ['outdoor', 'warn'],
+    tagLabels: ['Pop. 150', 'Total Solitude'],
+    note: 'Lincoln Memorial marble · Zero amenities'
+  },
+  {
+    name: 'Castle Rock',
+    file: 'castle-rock.html',
+    lat: 39.3722, lng: -104.8561,
+    region: 'Front Range South',
+    elevation: '6,224 ft',
+    price: '$600K–$950K',
+    drive: '~30 min',
+    driveHrs: 0.5,
+    tags: ['warn'],
+    tagLabels: ['Suburban Character', '30 min DEN'],
+    note: 'Mountain views; suburban city — not a mountain town'
+  }
+];
+
+// ── Color by drive time ────────────────────────────────────────────────────
+function driveColor(hrs) {
+  if (hrs <= 1.5) return '#27ae60';   // green
+  if (hrs <= 3)   return '#f39c12';   // orange-yellow
+  if (hrs <= 4)   return '#e67e22';   // orange
+  return '#e74c3c';                   // red
+}
+
+// ── Custom circular marker ─────────────────────────────────────────────────
+function makeIcon(town) {
+  const color = driveColor(town.driveHrs);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36">
+    <path d="M14 0C6.27 0 0 6.27 0 14c0 10.5 14 22 14 22S28 24.5 28 14C28 6.27 21.73 0 14 0z"
+          fill="${color}" stroke="rgba(0,0,0,0.3)" stroke-width="1.5"/>
+    <circle cx="14" cy="14" r="7" fill="white" opacity="0.92"/>
+  </svg>`;
+  return L.divIcon({
+    html: svg,
+    className: '',
+    iconSize: [28, 36],
+    iconAnchor: [14, 36],
+    popupAnchor: [0, -38]
+  });
+}
+
+// ── Build popup HTML ───────────────────────────────────────────────────────
+function buildPopup(t) {
+  const tagHtml = t.tagLabels.map((lbl, i) => {
+    const cls = t.tags[i] || 'outdoor';
+    return `<span class="lf-popup-tag ${cls}">${lbl}</span>`;
+  }).join('');
+
+  return `
+    <div class="lf-popup">
+      <div class="lf-popup-town">${t.name}</div>
+      <div class="lf-popup-region">${t.region}</div>
+      <div class="lf-popup-tags">${tagHtml}</div>
+      <div class="lf-popup-stats">
+        <div>
+          <div class="lf-popup-stat-label">Elevation</div>
+          <div class="lf-popup-stat-value">${t.elevation}</div>
+        </div>
+        <div>
+          <div class="lf-popup-stat-label">Median Price</div>
+          <div class="lf-popup-stat-value">${t.price}</div>
+        </div>
+        <div>
+          <div class="lf-popup-stat-label">Drive from DEN</div>
+          <div class="lf-popup-stat-value">${t.drive}</div>
+        </div>
+        <div>
+          <div class="lf-popup-stat-label">Note</div>
+          <div class="lf-popup-stat-value" style="font-size:10.5px;font-weight:400;color:#555">${t.note}</div>
+        </div>
+      </div>
+      <a class="lf-popup-link" href="${t.file}">Open full page →</a>
+    </div>`;
+}
+
+// ── Initialize map ─────────────────────────────────────────────────────────
+const map = L.map('map', {
+  center: [39.05, -105.78],
+  zoom: 7,
+  zoomControl: true
+});
+
+// OpenStreetMap tiles (standard layer)
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18,
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+// Optional: slightly muted Carto tiles for a cleaner look behind markers
+// Uncomment below & comment above to try the toned-down basemap
+/*
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  maxZoom: 19,
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors · © <a href="https://carto.com">CARTO</a>'
+}).addTo(map);
+*/
+
+// ── Place markers & build sidebar ─────────────────────────────────────────
+const markerMap = {};   // file → leaflet marker, for sidebar clicks
+
+// Group towns by rough region for sidebar
+const REGIONS = [
+  { label: 'Front Range / Close-In (<2 hrs)',  hrs: [0, 2] },
+  { label: 'Mountain Corridor (2–3 hrs)',       hrs: [2, 3.1] },
+  { label: 'Remote Mountain (3–4.5 hrs)',       hrs: [3.1, 4.5] },
+  { label: 'Far SW Colorado (4.5+ hrs)',        hrs: [4.5, 99] },
+];
+
+const sidebar = document.getElementById('sidebar');
+
+REGIONS.forEach(region => {
+  const towns = TOWNS.filter(t => t.driveHrs >= region.hrs[0] && t.driveHrs < region.hrs[1]);
+  if (!towns.length) return;
+
+  const sec = document.createElement('div');
+  sec.className = 'sidebar-section';
+
+  const title = document.createElement('div');
+  title.className = 'sidebar-section-title';
+  title.textContent = region.label;
+  sec.appendChild(title);
+
+  towns.forEach(t => {
+    const a = document.createElement('a');
+    a.className = 'sidebar-town';
+    a.href = t.file;
+    // Prevent default — fly to marker first
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      map.flyTo([t.lat, t.lng], 11, { duration: 0.8 });
+      setTimeout(() => {
+        if (markerMap[t.file]) markerMap[t.file].openPopup();
+      }, 850);
+    });
+
+    const dot = document.createElement('span');
+    dot.className = 'sidebar-dot';
+    dot.style.background = driveColor(t.driveHrs);
+
+    const name = document.createElement('span');
+    name.className = 'sidebar-town-name';
+    name.textContent = t.name;
+
+    const elev = document.createElement('span');
+    elev.className = 'sidebar-town-elev';
+    elev.textContent = t.elevation;
+
+    a.appendChild(dot);
+    a.appendChild(name);
+    a.appendChild(elev);
+    sec.appendChild(a);
+  });
+
+  sidebar.appendChild(sec);
+});
+
+// Add markers to map
+TOWNS.forEach(t => {
+  const marker = L.marker([t.lat, t.lng], { icon: makeIcon(t) })
+    .addTo(map)
+    .bindPopup(buildPopup(t), { maxWidth: 260 });
+
+  // Clicking the "Open full page →" button navigates; marker click just opens popup
+  markerMap[t.file] = marker;
+});
+
+// ── Denver reference marker (faint) ───────────────────────────────────────
+const denIcon = L.divIcon({
+  html: `<div style="
+    width:36px;height:36px;border-radius:50%;
+    background:rgba(255,255,255,0.85);
+    border:2px solid #666;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Helvetica Neue',Arial,sans-serif;
+    font-size:9px;font-weight:700;color:#444;
+    text-align:center;line-height:1.2;
+    box-shadow:0 1px 4px rgba(0,0,0,.2)">DEN<br>AIRPORT</div>`,
+  className: '',
+  iconSize: [36, 36],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -20]
+});
+
+L.marker([39.8561, -104.6737], { icon: denIcon, zIndexOffset: -100 })
+  .addTo(map)
+  .bindPopup('<b>Denver International Airport</b><br><span style="font-size:12px;color:#666">Reference point for drive times</span>');
+
+// ── Fit bounds to all towns on load ───────────────────────────────────────
+const bounds = L.latLngBounds(TOWNS.map(t => [t.lat, t.lng]));
+map.fitBounds(bounds, { padding: [30, 30] });
+
+</script>
+</body>
+</html>
