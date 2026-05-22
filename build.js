@@ -17,6 +17,12 @@ const ROOT = __dirname;
 const SITES_DIR = path.join(ROOT, 'sites');
 const OUTPUT_FILE = path.join(ROOT, 'index.html');
 
+// Shared "return to hub" overlay. Its code lives in one file at the repo root;
+// the build injects a one-line reference into every deployed site page.
+const OVERLAY_FILENAME = 'hub-overlay.js';
+const OVERLAY_START = '<!-- hub-overlay:start -->';
+const OVERLAY_END = '<!-- hub-overlay:end -->';
+
 /** Escape a string for safe interpolation into HTML text/attributes. */
 function escapeHtml(value) {
   return String(value)
@@ -251,6 +257,85 @@ ${renderBody(sites)}
 `;
 }
 
+/** Build the marked overlay snippet for a page at the given relative root. */
+function overlayBlock(hubRoot) {
+  return `${OVERLAY_START}
+<script src="${hubRoot}${OVERLAY_FILENAME}" data-hub-root="${hubRoot}" defer></script>
+${OVERLAY_END}`;
+}
+
+/**
+ * Ensure the hub-overlay reference is present in a page's HTML.
+ *
+ * If a previously injected block is found (matched by its markers) it is
+ * replaced — this keeps rebuilds idempotent and lets the snippet evolve (e.g.
+ * a corrected relative path) on the next build. Otherwise the block is inserted
+ * just before the final </body>, or appended when there is no body tag.
+ */
+function injectOverlay(html, hubRoot) {
+  const block = overlayBlock(hubRoot);
+
+  const startIdx = html.indexOf(OVERLAY_START);
+  if (startIdx !== -1) {
+    const endIdx = html.indexOf(OVERLAY_END, startIdx);
+    if (endIdx !== -1) {
+      return html.slice(0, startIdx) + block + html.slice(endIdx + OVERLAY_END.length);
+    }
+  }
+
+  const bodyIdx = html.toLowerCase().lastIndexOf('</body>');
+  if (bodyIdx !== -1) {
+    return html.slice(0, bodyIdx) + block + '\n' + html.slice(bodyIdx);
+  }
+
+  return html + (html.endsWith('\n') ? '' : '\n') + block + '\n';
+}
+
+/** The URL prefix (forward-slashed, trailing slash) from a page back to ROOT. */
+function relativeRootPath(filePath, rootDir) {
+  const rel = path.relative(path.dirname(filePath), rootDir);
+  if (rel === '') return './';
+  const url = rel.split(path.sep).join('/');
+  return url.endsWith('/') ? url : url + '/';
+}
+
+/** Recursively collect every .html / .htm file under a directory. */
+function collectHtmlFiles(dir) {
+  const found = [];
+  for (const dirent of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, dirent.name);
+    if (dirent.isDirectory()) {
+      found.push(...collectHtmlFiles(full));
+    } else if (dirent.isFile() && /\.html?$/i.test(dirent.name)) {
+      found.push(full);
+    }
+  }
+  return found;
+}
+
+/** Inject the overlay into every page of every deployed site. Returns count changed. */
+function injectOverlayIntoSites(sites) {
+  let changed = 0;
+  for (const site of sites) {
+    const folderPath = path.join(SITES_DIR, site.folder);
+    for (const file of collectHtmlFiles(folderPath)) {
+      let html;
+      try {
+        html = fs.readFileSync(file, 'utf8');
+      } catch (err) {
+        console.warn(`  ! Could not read ${path.relative(ROOT, file)} (${err.message}) — skipped.`);
+        continue;
+      }
+      const updated = injectOverlay(html, relativeRootPath(file, ROOT));
+      if (updated !== html) {
+        fs.writeFileSync(file, updated, 'utf8');
+        changed++;
+      }
+    }
+  }
+  return changed;
+}
+
 function main() {
   const sites = collectSites();
   fs.writeFileSync(OUTPUT_FILE, renderPage(sites), 'utf8');
@@ -258,6 +343,30 @@ function main() {
   for (const site of sites) {
     console.log(`  - ${site.folder} -> ${site.title}`);
   }
+
+  const changed = injectOverlayIntoSites(sites);
+  console.log(`Hub overlay: injected/updated ${changed} page(s).`);
+  if (!fs.existsSync(path.join(ROOT, OVERLAY_FILENAME))) {
+    console.warn(`  ! ${OVERLAY_FILENAME} not found at repo root — the injected overlay will 404.`);
+  }
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = {
+  escapeHtml,
+  isSiteFolder,
+  readMetadata,
+  collectSites,
+  renderCard,
+  renderBody,
+  renderPage,
+  overlayBlock,
+  injectOverlay,
+  relativeRootPath,
+  collectHtmlFiles,
+  injectOverlayIntoSites,
+  OVERLAY_FILENAME,
+};

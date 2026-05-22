@@ -9,6 +9,10 @@
     2. Edit site.json to set the title and description shown on the hub card.
     3. Replace this page with your own HTML/CSS/JS. Add as many files as you like.
     4. Commit and push to main — the hub rebuilds and deploys automatically.
+
+  No need to add a "back to hub" link: the build injects a small floating
+  "Hub" overlay into every deployed page automatically (see build.js +
+  hub-overlay.js at the repo root).
 -->
 <html lang="en">
 <head>
@@ -31,18 +35,10 @@
     }
     h1 { font-size: 2rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
     p { color: #64748b; max-width: 32rem; }
-    a.back {
-      margin-top: 1.5rem;
-      color: #0ea5e9;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    a.back:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <h1>My New Site</h1>
   <p>This is a starter page. Replace it with your own content — plain HTML, CSS, and JS.</p>
-  <a class="back" href="../../index.html">&larr; Back to StaticHub</a>
 </body>
 </html>
