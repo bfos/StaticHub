@@ -1,0 +1,1050 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Colorado 14er Guide — Summer 2026 (for a Kansan + a Parker, CO local)</title>
+<meta name="description" content="A thoroughly researched, plain-spoken guide for two first-time 14er hikers — one visiting from Kansas, one based in Parker, CO — for summer 2026. Peaks, gear, weather, lodging, timing, acclimatization, and a ready-to-run weekend itinerary.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a2530;
+    --ink-soft: #344655;
+    --muted: #6b7c8b;
+    --rule: #d9dfe3;
+    --paper: #f7f4ee;
+    --paper-2: #efeae0;
+    --card: #ffffff;
+    --sage: #6e8267;
+    --sage-deep: #4f6450;
+    --stone: #8a9097;
+    --slate: #354a5f;
+    --slate-deep: #1f2f3f;
+    --rust: #b85c38;
+    --gold: #c89b3c;
+    --snow: #e8eef2;
+    --warning: #b85c38;
+    --warning-bg: #fbe9df;
+    --good: #4f6450;
+    --good-bg: #e6ede1;
+    --info: #354a5f;
+    --info-bg: #e1e8ee;
+    --maxw: 1080px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Fraunces', Georgia, 'Times New Roman', serif;
+    color: var(--slate-deep);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    font-weight: 600;
+  }
+  h1 { font-size: clamp(2.2rem, 5.2vw, 3.8rem); font-weight: 700; }
+  h2 { font-size: clamp(1.7rem, 3.5vw, 2.4rem); margin-top: 0; }
+  h3 { font-size: 1.3rem; margin: 1.4em 0 0.4em; color: var(--sage-deep); }
+  h4 { font-size: 1.05rem; margin: 1.2em 0 0.3em; font-family: 'Inter', sans-serif; font-weight: 700; color: var(--ink); letter-spacing: 0.01em; text-transform: uppercase; font-size: 0.85rem; }
+  p { margin: 0.7em 0; color: var(--ink-soft); }
+  a { color: var(--slate); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+  a:hover { color: var(--rust); }
+  strong { color: var(--ink); }
+  em { font-style: italic; color: var(--ink-soft); }
+
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(247, 244, 238, 0.92);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-inner {
+    max-width: var(--maxw); margin: 0 auto; padding: 10px 20px;
+    display: flex; align-items: center; gap: 14px; overflow-x: auto;
+    -webkit-overflow-scrolling: touch; scrollbar-width: thin;
+  }
+  .nav-inner::-webkit-scrollbar { height: 6px; }
+  .nav-inner::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 4px; }
+  .nav-brand {
+    font-family: 'Fraunces', serif; font-weight: 700; color: var(--slate-deep);
+    font-size: 1rem; flex-shrink: 0; padding-right: 8px; border-right: 1px solid var(--rule);
+  }
+  .nav a {
+    color: var(--ink-soft); text-decoration: none; font-size: 0.86rem; font-weight: 500;
+    white-space: nowrap; padding: 6px 4px; border-bottom: 2px solid transparent;
+  }
+  .nav a:hover { color: var(--rust); border-bottom-color: var(--rust); }
+
+  .hero {
+    position: relative;
+    background:
+      radial-gradient(1200px 380px at 80% -50px, rgba(200,155,60,0.18), transparent 60%),
+      linear-gradient(180deg, #2a3b4d 0%, #354a5f 55%, #4f6450 100%);
+    color: #f3efe5; overflow: hidden;
+  }
+  .hero-art { position: absolute; inset: 0; pointer-events: none; opacity: 0.55; }
+  .hero-inner { position: relative; max-width: var(--maxw); margin: 0 auto; padding: 80px 24px 90px; z-index: 1; }
+  .hero .kicker {
+    display: inline-block; font-size: 0.78rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: #d9c896; margin-bottom: 18px;
+    border: 1px solid rgba(217,200,150,0.45); padding: 5px 11px; border-radius: 999px;
+  }
+  .hero h1 { color: #f7f1de; max-width: 22ch; }
+  .hero .sub { margin-top: 18px; max-width: 60ch; color: #e2dac6; font-size: 1.1rem; line-height: 1.6; }
+  .hero .meta { margin-top: 24px; display: flex; gap: 18px; flex-wrap: wrap; font-size: 0.88rem; color: #c9bfaa; }
+  .hero .meta span::before { content: "·  "; color: #8a8068; }
+  .hero .meta span:first-child::before { content: ""; }
+
+  section.page { max-width: var(--maxw); margin: 0 auto; padding: 64px 24px; border-bottom: 1px solid var(--rule); }
+  section.page:last-of-type { border-bottom: none; }
+  .lead { font-size: 1.12rem; color: var(--ink-soft); max-width: 70ch; border-left: 3px solid var(--sage); padding-left: 14px; margin: 14px 0 28px; }
+
+  .callout { border-radius: 10px; padding: 18px 20px; margin: 18px 0; border: 1px solid var(--rule); background: var(--card); box-shadow: 0 1px 0 rgba(0,0,0,0.02); }
+  .callout .label { display: inline-block; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; padding: 3px 9px; border-radius: 4px; margin-bottom: 8px; }
+  .callout.must { background: var(--warning-bg); border-color: #f1cdb8; }
+  .callout.must .label { background: var(--warning); color: white; }
+  .callout.nice { background: var(--good-bg); border-color: #cbd6c0; }
+  .callout.nice .label { background: var(--good); color: white; }
+  .callout.info { background: var(--info-bg); border-color: #c5d2dd; }
+  .callout.info .label { background: var(--info); color: white; }
+  .callout.warn { background: #fff4d6; border-color: #ebd58a; }
+  .callout.warn .label { background: var(--gold); color: #4a3a10; }
+  .callout p:first-of-type { margin-top: 0; }
+  .callout p:last-of-type { margin-bottom: 0; }
+
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 18px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.92rem; background: var(--card); border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; min-width: 640px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { background: #ecebe3; color: var(--slate-deep); font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  tbody tr:hover { background: #faf7f1; }
+  td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.78rem; font-weight: 600; }
+  .pill.best  { background: #d8e3d0; color: #3a4f3a; }
+  .pill.good  { background: #e4ecd6; color: #4a5a3a; }
+  .pill.ok    { background: #f1e8c8; color: #6e5a18; }
+  .pill.tough { background: #efd6c8; color: #7a3a1c; }
+  .pill.hard  { background: #d4d8db; color: #4a4f55; }
+
+  .grid { display: grid; gap: 16px; }
+  .grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 760px) { .grid.cols-2, .grid.cols-3 { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--rule); border-radius: 10px; padding: 18px 20px; }
+  .card h3 { margin-top: 0; color: var(--slate-deep); font-family: 'Fraunces', serif; }
+  .card .stat { font-size: 0.84rem; color: var(--muted); margin: 2px 0; }
+  .peak-card .pros, .peak-card .cons, .peak-card .gotcha { margin: 8px 0; font-size: 0.93rem; }
+  .peak-card .pros::before  { content: "Pros — "; font-weight: 700; color: var(--good); }
+  .peak-card .cons::before  { content: "Cons — "; font-weight: 700; color: var(--warning); }
+  .peak-card .gotcha::before{ content: "Gotcha — "; font-weight: 700; color: var(--gold); }
+
+  ul, ol { padding-left: 1.4em; color: var(--ink-soft); }
+  ul li, ol li { margin: 5px 0; }
+  ul.clean { list-style: none; padding-left: 0; }
+  ul.clean li { padding: 8px 0; border-bottom: 1px dashed var(--rule); }
+  ul.clean li:last-child { border-bottom: none; }
+
+  .src { font-size: 0.86rem; color: var(--muted); }
+  .src::before { content: "Source · "; color: var(--muted); }
+  .src a { color: var(--slate); }
+
+  .tldr { background: linear-gradient(180deg, #fdfaf2 0%, #f6efde 100%); border: 1px solid #ead9a7; border-radius: 12px; padding: 28px; margin: 8px 0 16px; }
+  .tldr h2 { color: #6e5a18; margin-bottom: 6px; }
+  .tldr .sub { color: #7a6722; font-size: 0.95rem; margin-top: 0; }
+  .tldr ol { margin: 12px 0 0; padding-left: 1.2em; }
+  .tldr li { color: #4d3e10; margin: 6px 0; }
+
+  .timeline { border-left: 2px solid var(--sage); margin: 16px 0; padding-left: 18px; }
+  .timeline .item { margin: 16px 0; }
+  .timeline .when { display: inline-block; font-family: 'Fraunces', serif; color: var(--rust); font-weight: 600; margin-right: 6px; }
+  .timeline .what { color: var(--ink-soft); }
+
+  footer { background: #2a3b4d; color: #c9bfaa; padding: 36px 24px 60px; text-align: center; font-size: 0.88rem; }
+  footer a { color: #d9c896; }
+  footer p { color: #c9bfaa; max-width: 60ch; margin: 8px auto; }
+
+  @media print {
+    .nav { display: none; }
+    .hero { background: white; color: black; }
+    .hero h1, .hero .sub, .hero .meta { color: black; }
+    section.page { page-break-inside: auto; padding: 24px 0; }
+    .callout, .card, table { box-shadow: none; }
+    body { font-size: 11pt; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Section navigation">
+  <div class="nav-inner">
+    <span class="nav-brand">Colorado 14er Guide · Summer 2026</span>
+    <a href="#tldr">TL;DR</a>
+    <a href="#peaks">1 · Peaks</a>
+    <a href="#combos">Multi-peak</a>
+    <a href="#gear">2 · Gear</a>
+    <a href="#timing">3 · Timing</a>
+    <a href="#guides">4 · Guides</a>
+    <a href="#lodging">5 · Lodging</a>
+    <a href="#weather">6 · Weather</a>
+    <a href="#food">7 · Food &amp; Water</a>
+    <a href="#acclim">8 · Acclimatization</a>
+    <a href="#itinerary">Sample trip</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <svg class="hero-art" viewBox="0 0 1200 360" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <linearGradient id="r1" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="#7e8c98" stop-opacity="0.6"/>
+        <stop offset="100%" stop-color="#3a4a55" stop-opacity="0.9"/>
+      </linearGradient>
+      <linearGradient id="r2" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0%" stop-color="#5d6f7d" stop-opacity="0.8"/>
+        <stop offset="100%" stop-color="#27343f" stop-opacity="1"/>
+      </linearGradient>
+    </defs>
+    <path d="M0,260 L80,180 L160,210 L260,140 L360,200 L460,150 L560,180 L660,120 L780,190 L880,150 L1000,210 L1120,170 L1200,220 L1200,360 L0,360 Z" fill="url(#r1)"/>
+    <path d="M0,310 L100,250 L200,290 L320,220 L420,280 L540,230 L640,290 L760,240 L880,290 L1000,250 L1120,300 L1200,260 L1200,360 L0,360 Z" fill="url(#r2)"/>
+    <path d="M260,140 L290,160 L240,165 Z" fill="#f0eee8" opacity="0.7"/>
+    <path d="M660,120 L695,150 L630,150 Z" fill="#f0eee8" opacity="0.7"/>
+    <path d="M460,150 L485,170 L435,170 Z" fill="#f0eee8" opacity="0.5"/>
+  </svg>
+  <div class="hero-inner">
+    <span class="kicker">Summer 2026 · Researched May 18, 2026</span>
+    <h1>One Kansan, one Parker local, one Colorado fourteener.</h1>
+    <p class="sub">A plain-spoken, link-rich guide for two first-time 14er hikers — you flying in from ~1,000 ft, your friend living in Parker just outside Denver — for the summer 2026 season. Which peak to pick, what to actually buy, when to leave the trailhead, where to camp, and how to keep monsoon lightning from ruining your trip.</p>
+    <div class="meta">
+      <span>Visitor from ~1,000 ft</span>
+      <span>Parker-based local (~5,870 ft)</span>
+      <span>June–September window</span>
+      <span>Day-hike + camping focus</span>
+      <span>Cites 14ers.com, CFI, REI, OpenSnow, NOAA, CDC</span>
+    </div>
+  </div>
+</header>
+
+<section class="page" id="tldr">
+  <div class="tldr">
+    <h2>TL;DR for the impatient hiker</h2>
+    <p class="sub">If you read nothing else.</p>
+    <ol>
+      <li><strong>Pick Quandary Peak or Mount Bierstadt.</strong> Quandary is the most-hiked 14er in Colorado, Class 1, ~6.75 mi, 3,450 ft of gain, with a real shuttle and reserved parking at the trailhead — and it's ~30 minutes from the Keystone condo. Bierstadt is shorter at ~7 mi with 2,850 ft of gain, the closest 14er to Denver/Parker, and starts you above 11,600 ft — easier hike, harder altitude punch.</li>
+      <li><strong>Book Quandary parking the day reservations open</strong> (mid-May for the June 13 – Sept 13, 2026 window). It's only ~$30–$55 per car or $7 for the Breck shuttle. Don't just show up — there's no roadside parking and tickets are aggressive.</li>
+      <li><strong>Want two summits in one day?</strong> Grays + Torreys is the only first-timer-friendly combo. DeCaLiBron's a fun four-peak loop but has access caveats. See <a href="#combos">the multi-peak section</a> for the honest breakdown.</li>
+      <li><strong>Plan to camp.</strong> Kite Lake (at the DeCaLiBron trailhead), Guanella Pass (at the Bierstadt trailhead), and Half Moon (at the Elbert trailhead) put you ~12 steps from the boots-on time. The Keystone condo is a great Plan B for weather, recovery, or a normal shower after summit day.</li>
+      <li><strong>Sleep at altitude before summit day.</strong> Whether camping at 11,000+ ft or in the Keystone condo (~9,280 ft), get out of Parker (5,870 ft) the night before. Your friend's Parker elevation is a small head start, not enough on its own.</li>
+      <li><strong>Trailhead by 5–6am, summit by 11am, off the ridge by noon.</strong> The Colorado monsoon means afternoon thunderstorms are the rule from mid-July through August. Lightning above treeline kills people every summer.</li>
+      <li><strong>Buy: trail runners or light hikers, two pairs of merino socks, a real rain shell, sun hoody, ball cap, sunglasses, sunscreen, a 20–25 L pack, two collapsible water bottles, trekking poles, a headlamp.</strong> Skip the heavy mountaineering boots. Total damage at REI: ~$500–$800 per person for things you'll keep using on weekend trips.</li>
+      <li><strong>Carry 3 L of water, 2,000 calories you'll actually eat, and one electrolyte mix per liter</strong> (Skratch for taste, LMNT if you're a heavy sweater). Eat every hour. Drink every 20 minutes.</li>
+      <li><strong>Watch the sky.</strong> If you can hear thunder, you are already in striking distance. Turn around. The mountain will still be there next weekend.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="page" id="peaks">
+  <h2>1. Which peak should we pick?</h2>
+  <p class="lead">Colorado has 58 named peaks over 14,000 ft. For two first-timers — one flying in from Kansas, one based in Parker — with no specialized gear, the realistic short list is about eight. Below is the full ranked list as context, then a detailed comparison of the eight best first-timer options, then deep dives on each. A separate <a href="#combos">multi-peak section</a> covers the rare hikes where you can bag two-plus 14ers in a single day.</p>
+
+  <h3>The full ranked list — all 58 named 14ers</h3>
+  <p>For context: there are 53 ranked 14ers (peaks with ≥300 ft of prominence) and 5 unranked named summits. The hardest ones — Capitol, Little Bear, North Maroon, Pyramid, Sunlight, Crestone Needle — are <strong>Class 4 with serious exposure and rockfall</strong> and have no business on a first-timer's list. The Class 3 group (Longs Peak via the Keyhole, Mt. Wilson, Wetterhorn, Crestone Peak, Maroon Peak, Snowmass, Eolus, Sneffels, Kit Carson) requires real scrambling, exposure to fall hazard, and route-finding skill. Don't pick from those groups for your first 14er — no matter how iconic the photo on Instagram.</p>
+
+  <div class="callout info">
+    <span class="label">Class system, briefly</span>
+    <p><strong>Class 1</strong> — walking on a maintained trail. <strong>Class 2</strong> — off-trail hiking, possibly using hands for balance through boulders. <strong>Class 3</strong> — easy scrambling, hands required, real fall consequences. <strong>Class 4</strong> — exposed climbing where a fall is likely fatal. <strong>Class 5</strong> — technical rock climbing with rope. <a href="https://www.14ers.com/difficultyratings.php">14ers.com difficulty system</a>.</p>
+  </div>
+
+  <h3>The eight best first-timer candidates — at a glance</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Peak</th><th>Class</th><th>Round-trip</th><th>Elev. gain</th><th>TH elev.</th><th>Typical time</th><th>Exposure</th><th>Crowds</th><th>Drive from Denver</th><th>First-timer fit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Mount Bierstadt</strong> (West Slopes)</td><td>2 (mostly 1)</td><td class="num">7.0 mi</td><td class="num">2,850 ft</td><td class="num">11,669 ft</td><td>5–7 hr</td><td>Low</td><td>Very high</td><td>~1:15</td><td><span class="pill best">Excellent</span></td></tr>
+        <tr><td><strong>Quandary Peak</strong> (East Ridge)</td><td>1</td><td class="num">6.75 mi</td><td class="num">3,450 ft</td><td class="num">10,850 ft</td><td>5–8 hr</td><td>Low</td><td>Very high</td><td>~1:45</td><td><span class="pill best">Excellent</span></td></tr>
+        <tr><td><strong>Grays Peak</strong> (North Slopes)</td><td>1</td><td class="num">7.5 mi</td><td class="num">3,000 ft</td><td class="num">11,280 ft</td><td>6–8 hr</td><td>Low</td><td>High</td><td>~1:15 + rough road</td><td><span class="pill best">Excellent</span></td></tr>
+        <tr><td><strong>Mount Sherman</strong> (SW Ridge)</td><td>1</td><td class="num">5.25 mi</td><td class="num">2,100 ft</td><td class="num">12,000 ft</td><td>4–6 hr</td><td>Low–med</td><td>Med</td><td>~2:15</td><td><span class="pill good">Strong</span></td></tr>
+        <tr><td><strong>Mount Elbert</strong> (NE Ridge)</td><td>1</td><td class="num">9.75 mi</td><td class="num">4,500 ft</td><td class="num">10,066 ft</td><td>7–10 hr</td><td>Low</td><td>High</td><td>~2:15</td><td><span class="pill ok">Doable, long</span></td></tr>
+        <tr><td><strong>Handies Peak</strong> (SW Slopes)</td><td>1</td><td class="num">5.75 mi</td><td class="num">2,500 ft</td><td class="num">11,580 ft</td><td>4–6 hr</td><td>Low</td><td>Low</td><td>~5:30 (San Juans)</td><td><span class="pill ok">Great peak, far drive + 4WD</span></td></tr>
+        <tr><td><strong>DeCaLiBron loop</strong> (Democrat / Cameron / Lincoln / Bross)</td><td>2</td><td class="num">7.25 mi loop</td><td class="num">3,700 ft</td><td class="num">12,000 ft</td><td>6–8 hr</td><td>Med</td><td>High</td><td>~2:00</td><td><span class="pill ok">Cool stunt, but private-land issues</span></td></tr>
+        <tr><td><strong>Pikes Peak</strong> (Barr Trail)</td><td>1</td><td class="num">26.2 mi</td><td class="num">7,400+ ft</td><td class="num">6,700 ft</td><td>10–14 hr</td><td>Low</td><td>Med</td><td>~1:30 to Manitou</td><td><span class="pill tough">No — ultra-distance</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src"><a href="https://www.14ers.com/routes_bydifficulty.php">14ers.com — routes by difficulty</a></p>
+
+  <h3>Deep dives</h3>
+  <div class="grid cols-2">
+
+    <div class="card peak-card">
+      <h3>Quandary Peak — 14,272 ft</h3>
+      <p class="stat">East Ridge · Class 1 · 6.75 mi RT · 3,450 ft gain · Tenmile Range, near Breckenridge</p>
+      <p>The most-hiked 14er in Colorado. Class 1 the entire way on a well-maintained, well-marked trail through krummholz, then up an exposed ridge of stable rock. Good cell coverage near the trailhead.</p>
+      <p class="pros">Best-developed beginner route. Restroom at the trailhead. Real shuttle service. Cute mountain goats. Pairs well with a Breckenridge weekend.</p>
+      <p class="cons">3,450 ft is a real day. The upper ridge is exposed to wind. Parking is reservation-only and limited from June 13–Sept 13, 2026.</p>
+      <p class="gotcha">No same-day walk-up parking. Reserve at <a href="https://hikequandary.com/">hikequandary.com</a> ($30–$55) or take the Breck shuttle ($7, 5am–5pm). McCullough Gulch road is closed to private cars in the same window; shuttle runs 8am–4pm to that trailhead. Roadside parking gets ticketed and towed.</p>
+      <p class="src"><a href="https://www.14ers.com/route.php?route=quan1">14ers.com route</a> · <a href="https://www.summitcountyco.gov/services/community_development/open_space_trails/quandary_peak___mccullough_gulch/faqs.php">Summit County FAQ</a></p>
+    </div>
+
+    <div class="card peak-card">
+      <h3>Mount Bierstadt — 14,066 ft</h3>
+      <p class="stat">West Slopes · Class 2 (easy) · ~7 mi RT · 2,850 ft gain · Front Range, off Guanella Pass</p>
+      <p>The "everyone's first 14er." Paved trailhead at 11,669 ft, well-marked trail across the Sawtooth-facing valley, gentle willow boardwalks at the bottom, scree-y but obvious final pitch. The smallest total elevation gain of any popular Front Range 14er.</p>
+      <p class="pros">Closest 14er to Denver, ~75 minutes via I-70 / Georgetown / Guanella Pass. Standard car drives right to the trailhead. Free self-issued wilderness permit at the kiosk. Forgiving terrain.</p>
+      <p class="cons">Starts so high (11,669 ft) that flatlanders feel altitude immediately. Final 400 ft is loose Class 2 boulders, slow on the descent. Trailhead parking fills by sunrise on summer weekends — be early.</p>
+      <p class="gotcha">Don't accidentally try to bag Mt. Blue Sky (formerly Evans) on the same day via the Sawtooth — that adds Class 3 scrambling and a long valley exit. Stay on the Bierstadt-only out-and-back.</p>
+      <p class="src"><a href="https://www.14ers.com/route.php?route=bier1">14ers.com route</a> · <a href="https://www.hikingproject.com/trail/7001739/mt-bierstadt-west-slopes">Hiking Project</a></p>
+    </div>
+
+    <div class="card peak-card">
+      <h3>Grays &amp; Torreys — 14,275 ft / 14,272 ft</h3>
+      <p class="stat">Grays N. Slopes Class 1 · 7.5 mi RT · 3,000 ft gain. Combo Class 2 · 8.25 mi · ~3,600 ft gain.</p>
+      <p>Two 14ers in one day if you're feeling strong; just Grays as a friendly first walk-up. About an hour from Denver via I-70 (exit 221) and Stevens Gulch Road.</p>
+      <p class="pros">Class 1, well-graded trail. Two summits within reach for fit hikers. Continental Divide views. Reasonable mileage.</p>
+      <p class="cons">Stevens Gulch Road is rough — high-clearance strongly recommended for the upper trailhead. Without 4WD/AWD, you'll park at the Chimney Lot and add 3 miles and 1,460 ft each way. Lot fills very early.</p>
+      <p class="gotcha">Don't try Torreys-then-Grays in poor weather. The saddle between is the most exposed point of the day. If clouds are building, summit Grays alone and turn around.</p>
+      <p class="src"><a href="https://www.14ers.com/route.php?route=gray1">Grays route</a> · <a href="https://www.fs.usda.gov/r02/arp/recreation/grays-peak-trailhead">USFS Grays Peak TH</a></p>
+    </div>
+
+    <div class="card peak-card">
+      <h3>Mount Sherman — 14,043 ft</h3>
+      <p class="stat">SW Ridge · Class 1 · 5.25 mi RT · 2,100 ft gain · Mosquito Range, near Leadville/Fairplay</p>
+      <p>The shortest standard 14er hike in Colorado. Starts at 12,000 ft, summits in about 2 hours of climbing for fit folks. Old mine ruins along the way.</p>
+      <p class="pros">Smallest total day on the list. Easy navigation along an obvious ridge. Big payoff for moderate effort.</p>
+      <p class="cons">Trailhead starts <em>high</em> — the altitude hits flatlanders the second they step out of the car. The Iowa Gulch road to the upper TH has historically been closed; double-check the day before. Approaches cross private land — stick to the trail.</p>
+      <p class="gotcha">It's exposed almost the entire way. Almost no place to hide if a storm builds. Be extra strict about your turnaround time.</p>
+      <p class="src"><a href="https://www.14ers.com/route.php?route=sher1">14ers.com Southwest Ridge</a> · <a href="https://www.fs.usda.gov/r02/psicc/recreation/mount-sherman-fourteener">USFS page</a></p>
+    </div>
+
+    <div class="card peak-card">
+      <h3>Mount Elbert — 14,438 ft</h3>
+      <p class="stat">NE Ridge · Class 1 · 9.75 mi RT · 4,500 ft gain · Sawatch Range, near Leadville</p>
+      <p>Colorado's highest. A "gentle giant" — non-technical and entirely walkable, but a long day with the most elevation gain of any peak on this short list.</p>
+      <p class="pros">Colorado's highest summit is a great bragging right. Trail is unmistakable. Wide-open camping options near Leadville.</p>
+      <p class="cons">4,500 ft of gain is significantly more than Quandary or Bierstadt. The "false summits" are demoralizing. Long descent on tired legs.</p>
+      <p class="gotcha">Only recommend this as a first 14er if both of you regularly do 8+ mile training hikes carrying a pack at home. Otherwise pick something shorter and save Elbert for trip #2.</p>
+      <p class="src"><a href="https://www.14ers.com/route.php?route=elbe1">14ers.com NE Ridge</a></p>
+    </div>
+
+    <div class="card peak-card">
+      <h3>Handies Peak — 14,058 ft</h3>
+      <p class="stat">SW Slopes from American Basin · Class 1 · 5.75 mi RT · 2,500 ft gain · San Juans</p>
+      <p>One of the easiest 14ers physically, set in a postcard wildflower basin. Often called the most beautiful "easy" 14er in the state.</p>
+      <p class="pros">Short, scenic, gentle. Light crowds. The basin in July is unreal.</p>
+      <p class="cons">5.5 hour drive from Denver each way, and the last several miles of Cinnamon Pass Road require a high-clearance 4WD. Without one, you start lower and add hours.</p>
+      <p class="gotcha">Not realistic for a single weekend from Denver. Best paired with a Lake City / Silverton / Ouray base camp of 2+ days.</p>
+      <p class="src"><a href="https://www.14ers.com/route.php?route=hand1">14ers.com SW Slopes</a></p>
+    </div>
+
+    <div class="card peak-card">
+      <h3>DeCaLiBron — Democrat, Cameron, Lincoln, Bross</h3>
+      <p class="stat">Class 2 loop · ~7.25 mi · ~3,700 ft gain · Mosquito Range, from Kite Lake (Alma)</p>
+      <p>Four 14ers in one ~6-hour loop. Each peak is mellow on its own but the cumulative gain and exposure adds up.</p>
+      <p class="pros">Most 14ers-per-step in Colorado. Genuinely fun above-treeline ridge walk. Kite Lake Road reopened in 2026 after construction.</p>
+      <p class="cons">Three summits are on or near public land but <strong>Mt. Bross's true summit remains on private property</strong>; hikers are expected to use the bypass trail just below the top. Lots of exposure for many hours — bad in a storm. Parking at Kite Lake is $8 and limited.</p>
+      <p class="gotcha">Only attempt with a bluebird forecast and a 4:30am trailhead arrival. If the morning is grey, do Democrat alone and bail.</p>
+      <p class="src"><a href="https://www.14ers.com/route.php?route=bros6">14ers.com Decalibron combo</a> · <a href="https://thenextsummit.org/major-improvements-coming-to-revitalize-the-kite-lake-trailhead-and-decalibron-14ers/">2026 Kite Lake updates</a></p>
+    </div>
+
+    <div class="card peak-card">
+      <h3>Pikes Peak via Barr Trail — 14,109 ft</h3>
+      <p class="stat">Class 1 · 26.2 mi RT · 7,400+ ft gain · Front Range, from Manitou Springs</p>
+      <p>An iconic walk-up but a marathon in distance and elevation. Plan 10–14 hours or split it via Barr Camp.</p>
+      <p class="pros">Can be done one-way: hike up, take the Cog Railway down (when running, reserve well in advance). Lower starting elevation means less altitude stress at the trailhead.</p>
+      <p class="cons">This is an ultra-distance day. For first-timers from Kansas, almost guaranteed to be miserable or unfinished.</p>
+      <p class="gotcha">If you absolutely want Pikes on this trip, drive up and walk the last ~3 miles from the Devil's Playground lot. You technically didn't "climb" it, but you stood on the summit.</p>
+      <p class="src"><a href="https://www.fs.usda.gov/r02/psicc/recreation/trails/barr-trail-620">USFS Barr Trail</a></p>
+    </div>
+
+  </div>
+
+  <div class="callout must" style="margin-top:24px;">
+    <span class="label">Recommendation</span>
+    <p><strong>Pick Quandary if you want the most polished beginner experience</strong> — real shuttle, predictable trail, classic Colorado summit, easy weekend in Breckenridge. <strong>Pick Bierstadt if you want the shortest, closest, easiest-logistics first 14er</strong> — wake up in Denver, drive to Guanella Pass, summit, be home by dinner. Either is a great first 14er. We'd lean Quandary because the lower starting elevation gives you a longer climb to find your altitude tolerance — and Quandary is the closest 14er to the Keystone condo.</p>
+  </div>
+
+  <h3>2026 trailhead reservation &amp; access summary</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Peak / Trailhead</th><th>Permit / Reservation</th><th>Cost</th><th>Window</th><th>Where to book</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Quandary Peak</td><td>Parking reservation required; or take the shuttle</td><td>$30–$55 park / $7 shuttle</td><td>June 13 – Sept 13, 2026</td><td><a href="https://hikequandary.com/">hikequandary.com</a></td></tr>
+        <tr><td>McCullough Gulch (nearby)</td><td>No private cars; mandatory shuttle 8am–4pm</td><td>Free shuttle, $5 Alpine Corridor permit</td><td>June 13 – Sept 13, 2026</td><td><a href="https://www.summitcountyco.gov/services/community_development/open_space_trails/quandary_peak___mccullough_gulch/faqs.php">Summit County</a></td></tr>
+        <tr><td>Mt. Blue Sky (formerly Evans, drive-up)</td><td>Timed-entry vehicle reservation required</td><td>$20 car / $15 motorcycle</td><td>~May 22 – Sept 30, 2026, 7am–6pm</td><td><a href="https://www.recreation.gov/timed-entry/10087438">Recreation.gov</a></td></tr>
+        <tr><td>Mt. Bierstadt (Guanella Pass)</td><td>No reservation; free self-issue wilderness permit at TH</td><td>Free</td><td>All season</td><td>—</td></tr>
+        <tr><td>Grays / Torreys (Stevens Gulch)</td><td>No reservation; first-come parking, fills early</td><td>Free</td><td>All season (rough road)</td><td>—</td></tr>
+        <tr><td>DeCaLiBron (Kite Lake)</td><td>Parking fee at trailhead</td><td>$8</td><td>Road open ~Memorial Day–Oct, weather permitting</td><td>On site</td></tr>
+        <tr><td>Mt. Sherman (Iowa Gulch)</td><td>No reservation; upper road has been closed in recent seasons — verify before driving</td><td>Free</td><td>All season if road open</td><td>—</td></tr>
+        <tr><td>Mt. Elbert (Mt. Elbert TH)</td><td>No reservation</td><td>Free</td><td>All season</td><td>—</td></tr>
+        <tr><td>Culebra Peak</td><td>Private land — paid permit required from Cielo Vista Ranch</td><td>~$150 per person</td><td>Limited days, summer only</td><td>Cielo Vista Ranch (book months ahead)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src"><a href="https://www.recreation.gov/timed-entry/10087438">Mount Blue Sky reservations</a> · <a href="https://hikequandary.com/">Hike Quandary parking</a> · <a href="https://gazette.com/2026/04/24/plan-outlines-reservations-shuttles-at-popular-trailheads-near-colorado-14er-expanding-pay-to-play-model/">Denver Gazette — 2026 trailhead reservation expansion</a></p>
+
+  <div class="callout warn">
+    <span class="label">CFI shout-out</span>
+    <p>The Colorado Fourteeners Initiative builds and maintains nearly all the standard routes on this list. Their crews are out in the alpine all summer — pack out your trash, stay on trail, donate $20 if you can. <a href="https://www.14ers.org/">14ers.org</a>.</p>
+  </div>
+
+  <h3 id="combos">Bagging multiple summits in one hike</h3>
+  <p>You've seen the videos: someone tagging three or four 14er summits in a single morning, dragging a list of completed peaks across the alpine. It's real, but the realistic options for first-timers are narrower than YouTube suggests. Most "combo" peaks involve significant exposure, route-finding, or a long ridge that locks you above treeline for hours — a bad place to be when the monsoon builds.</p>
+  <p>For first-timers from low elevation, only two multi-summit hikes are genuinely appropriate, and only one of them is unequivocally a good idea.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Combo</th><th>Peaks</th><th>Class</th><th>Distance</th><th>Gain</th><th>Time</th><th>First-timer fit</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Grays + Torreys</strong></td><td>2 ranked 14ers</td><td>Class 2 (one short scramble at the saddle)</td><td class="num">8.25 mi</td><td class="num">~3,600 ft</td><td>6–9 hr</td><td><span class="pill best">Recommended</span> — the only beginner-friendly combo</td></tr>
+        <tr><td><strong>DeCaLiBron loop</strong></td><td>4 named summits (3 ranked: Democrat, Lincoln, Bross; Cameron unranked)</td><td>Class 2 throughout</td><td class="num">7.25 mi loop</td><td class="num">~3,700 ft</td><td>6–8 hr</td><td><span class="pill ok">Caveats apply</span> — see below</td></tr>
+        <tr><td><strong>Democrat + Cameron only ("DeCa")</strong></td><td>1 ranked + 1 unranked</td><td>Class 2</td><td class="num">~4 mi</td><td class="num">~2,200 ft</td><td>4–5 hr</td><td><span class="pill good">Solid Plan B</span> if weather looks marginal at Kite Lake</td></tr>
+        <tr><td>Belford + Oxford</td><td>2 ranked</td><td>Class 2</td><td class="num">11 mi</td><td class="num">5,900 ft</td><td>9–12 hr</td><td><span class="pill tough">Skip</span> — too long for first-timers</td></tr>
+        <tr><td>Mount Wilson + El Diente</td><td>1 ranked + 1 unranked, ridge traverse</td><td>Class 4 with serious exposure</td><td>—</td><td>—</td><td>—</td><td><span class="pill hard">No</span> — advanced only</td></tr>
+        <tr><td>Crestone Peak + Needle</td><td>2 ranked, ridge traverse</td><td>Class 5 (Red Couloir + traverse)</td><td>—</td><td>—</td><td>—</td><td><span class="pill hard">No</span> — technical climbing</td></tr>
+        <tr><td>Maroon Bells traverse</td><td>2 ranked</td><td>Class 5, rotten rock</td><td>—</td><td>—</td><td>—</td><td><span class="pill hard">No</span> — among the deadliest routes in CO</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid cols-2" style="margin-top:18px;">
+    <div class="card peak-card">
+      <h3>Grays + Torreys — the right first-timer combo</h3>
+      <p class="stat">Class 2 · 8.25 mi RT · ~3,600 ft gain · Stevens Gulch TH · Front Range</p>
+      <p>Climb Grays first (Class 1, well-graded trail), drop ~580 ft to the saddle between them, then climb Torreys (a short, slightly looser Class 2 section near the saddle). Reverse off Torreys back to the same saddle, then descend Grays' standard trail.</p>
+      <p class="pros">Two summits for ~1.25 extra miles and ~600 extra feet over Grays alone. The saddle is short — you're not on the connecting ridge for long. Same trailhead, same parking, same drive. Best efficiency-to-difficulty ratio of any combo in the state.</p>
+      <p class="cons">Total day is a real 6–9 hours. The Torreys descent back to the saddle is the trickiest footing of the day for tired legs.</p>
+      <p class="gotcha">Have a Plan A and Plan B before you start. Plan A: Grays first, then Torreys. Plan B: if weather builds while you're on Grays, bail on Torreys, descend back to the car, and call it a successful 14er day. <strong>Do not</strong> commit to the saddle if clouds are stacking.</p>
+      <p class="src"><a href="https://www.14ers.com/route.php?route=torr5">14ers.com — Grays/Torreys combination route</a></p>
+    </div>
+
+    <div class="card peak-card">
+      <h3>DeCaLiBron — fun, popular, complicated</h3>
+      <p class="stat">Class 2 loop · ~7.25 mi · ~3,700 ft gain · Kite Lake TH · Mosquito Range</p>
+      <p>Four named summits in one loop: <strong>De</strong>mocrat → <strong>Ca</strong>meron → <strong>Li</strong>ncoln → <strong>Bro</strong>ss. Of those, only Democrat, Lincoln, and Bross are ranked; Cameron is an unranked sub-peak. So a "completed" DeCaLiBron gets you three ranked 14ers in one day, which is the second-best efficiency in Colorado (after Grays/Torreys).</p>
+      <p class="pros">Three ranked summits in one hike. Beautiful above-treeline ridge walk. Kite Lake trailhead reopened in 2026 with a re-graded passenger-car road, more vault toilets, and an $8 parking fee.</p>
+      <p class="cons">You're locked above treeline for most of the day — bad in a building storm. <strong>Mt. Bross's true summit remains on private property</strong> and the official route skirts it on a CFI-built bypass trail. The cumulative 3,700 ft of gain on tired legs at altitude is more than it sounds. Trailhead crowds on summer weekends.</p>
+      <p class="gotcha">Three rules for DeCaLiBron: (1) Only attempt with a bluebird forecast. (2) Be at the trailhead by 4:30am — earlier than for a single-summit day. (3) Have a turnaround plan for each peak: if weather builds, descend off the loop and skip the remaining summits. Most years, more parties have to bail than complete the full loop.</p>
+      <p class="src"><a href="https://www.14ers.com/route.php?route=bros6">14ers.com Decalibron combo</a></p>
+    </div>
+  </div>
+
+  <div class="callout info" style="margin-top:18px;">
+    <span class="label">Our honest recommendation</span>
+    <p>For your first 14er trip, <strong>do a single summit</strong> (Quandary or Bierstadt) and tag two only if you both feel strong and the forecast is perfect. Grays/Torreys is a great target for trip #2. DeCaLiBron is a great target for trip #3, after you know how your bodies handle altitude. The temptation to "knock out" multiple summits is real, but the math is brutal: each extra summit roughly doubles your above-treeline exposure window, which is exactly the window where weather will hurt you.</p>
+  </div>
+</section>
+
+<section class="page" id="gear">
+  <h2>2. Equipment guide</h2>
+  <p class="lead">Buy enough gear to be safe and comfortable; don't buy a closet full of stuff you'll never use again. Below is a three-tier list with weight, price, and at least two specific models. Total damage to outfit one person from scratch is roughly <strong>$450 (budget) to $950 (premium)</strong>, plus footwear.</p>
+
+  <h3>Tier 1 — Must-have</h3>
+  <p>You should not start the hike without these.</p>
+
+  <div class="callout must">
+    <span class="label">Critical</span>
+    <p><strong>Rain shell + insulating layer + sun hoody + hat + sunglasses + sunscreen + 2–3 L of water + headlamp + map app downloaded offline.</strong> Missing any of these has killed people on 14ers. Cotton tee shirts are the #1 mistake — they don't dry, they freeze your core when you sweat then stop, and they're the most common contributing factor to hypothermia in summer.</p>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Why</th><th>Approx. weight</th><th>Budget pick</th><th>Premium pick</th><th>Storage burden</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Footwear</strong> — trail runners or light hikers</td><td>Comfort &gt; ankle support on dry summer 14ers. Heavy boots are overkill.</td><td>~1.5 lb pair</td><td>Merrell Moab 3 (~$130)</td><td>Salomon X Ultra 4 GTX ($175) · Hoka Speedgoat 6 ($155)</td><td>Low — you'll wear them on every weekend hike</td></tr>
+        <tr><td><strong>Socks</strong> — merino wool, mid-cushion (×2 pair)</td><td>Blister prevention. Bring a dry second pair for the summit.</td><td>~3 oz pair</td><td>REI Co-op merino ($14)</td><td>Darn Tough Hiker Micro Crew ($25, lifetime warranty)</td><td>None</td></tr>
+        <tr><td><strong>Base layer top</strong> — synthetic or merino, long-sleeve sun hoody</td><td>Wicks sweat, blocks UV at altitude. Replaces sunscreen on arms.</td><td>5–7 oz</td><td>REI Co-op Sahara Shade Hoodie ($45)</td><td>Outdoor Research Echo Hoodie ($69) · Smartwool Merino Plus 15 ($95)</td><td>Low — also useful for running, kayaking, yard work</td></tr>
+        <tr><td><strong>Hiking pants or convertible</strong></td><td>Quick-dry, light, wind-resistant. Skip jeans.</td><td>~10 oz</td><td>Eddie Bauer Guide Pro Pants ($90)</td><td>Patagonia Quandary Pants ($99) · Arc'teryx Gamma LT ($179)</td><td>Low</td></tr>
+        <tr><td><strong>Insulating mid-layer</strong> — fleece or lightweight puffy</td><td>For the summit and any wind break. Fleece keeps warming when damp; puffy is lighter.</td><td>10–14 oz</td><td>REI Co-op Trailmade Fleece ($60)</td><td>Patagonia R1 Air Hoody ($169) · Patagonia Nano Puff ($249)</td><td>Low</td></tr>
+        <tr><td><strong>Rain shell</strong> — fully waterproof, hood, pit zips ideal</td><td>The single most important piece of gear. Storms come fast.</td><td>~10 oz</td><td>REI Co-op Rainier Jacket ($110)</td><td>Outdoor Research Helium ($199) · Arc'teryx Beta SL ($400)</td><td>Low — use it for travel, biking, ski lift lines</td></tr>
+        <tr><td><strong>Sun protection</strong></td><td>UV at 14,000 ft is ~50% stronger than at sea level. Sunburn is the most common 14er injury.</td><td>Negligible</td><td>Ball cap + Goodr Sunglasses ($25) + Banana Boat 50 SPF</td><td>Wide brim Outdoor Research Sun Runner ($45) + Smith Lowdown XL ($175) + Supergoop Play stick ($22)</td><td>None</td></tr>
+        <tr><td><strong>Gloves</strong> — light fleece or wind</td><td>Summit ridge wind chill drops to the 20s°F any month.</td><td>~2 oz</td><td>Manzella Tempest Windstopper ($25)</td><td>Outdoor Research Vigor Lightweight ($45)</td><td>None</td></tr>
+        <tr><td><strong>Warm hat / beanie</strong></td><td>You'll want it at the summit and again at sunrise on the drive in.</td><td>~2 oz</td><td>Carhartt Acrylic Watch Hat ($12)</td><td>Smartwool Merino Cuffed Beanie ($30)</td><td>None</td></tr>
+        <tr><td><strong>Daypack</strong> — 20–28 L, hip belt, hydration sleeve</td><td>Holds water, layers, food, first aid. Hip belt transfers weight off shoulders.</td><td>1.5–2.5 lb</td><td>REI Co-op Trail 25 ($90)</td><td>Osprey Talon 22 / Tempest 20 ($170) · Black Diamond Pursuit 30 ($180)</td><td>Low — works for every day hike</td></tr>
+        <tr><td><strong>Water — 3 L capacity</strong></td><td>Most efficient: 2 L hydration bladder + 1 L bottle for electrolyte mix.</td><td>3 L water = 6.6 lb</td><td>Platypus Big Zip 2L ($35) + Smartwater 1L ($2)</td><td>Osprey Hydraulics 2.5L ($45) + Hydrapak SoftFlask ($16)</td><td>None</td></tr>
+        <tr><td><strong>Headlamp + spare batteries</strong></td><td>You will start in the dark. You may finish in the dark.</td><td>~3 oz</td><td>Black Diamond Astro 300 ($25)</td><td>Petzl Actik Core ($65, rechargeable)</td><td>None</td></tr>
+        <tr><td><strong>Navigation</strong> — AllTrails+ or Gaia GPS, offline map downloaded</td><td>Cell coverage drops above treeline. Download the route the night before.</td><td>0 oz (phone)</td><td>AllTrails+ ($36/yr)</td><td>Gaia GPS Premium ($60/yr) · CalTopo (free)</td><td>None</td></tr>
+        <tr><td><strong>First aid kit</strong> — small</td><td>Bandages, Leukotape (for blisters), ibuprofen, Benadryl, electrolyte tabs.</td><td>~6 oz</td><td>Adventure Medical Kits Ultralight .5 ($25)</td><td>AMK Mountain Series Backcountry ($70)</td><td>Low</td></tr>
+        <tr><td><strong>Emergency essentials</strong> — whistle, space blanket, lighter</td><td>The Ten Essentials buy you time if things go sideways.</td><td>~4 oz</td><td>SOL Emergency Bivvy ($18) + Fox 40 whistle ($8) + Bic lighter ($2)</td><td>SOL Heatsheets 2-Person ($28)</td><td>None</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src"><a href="https://www.rei.com/learn/expert-advice/ten-essentials.html">REI — The Ten Essentials</a> · <a href="https://www.14ers.com/gearlist.php">14ers.com gear list</a></p>
+
+  <h3>Tier 2 — Strongly recommended (nice-to-have)</h3>
+  <div class="callout nice">
+    <span class="label">Buy these for your second trip — or before, if budget allows</span>
+    <p>None of these are life-or-death on a Class 1 summer 14er, but each one materially improves the experience.</p>
+  </div>
+
+  <ul class="clean">
+    <li><strong>Trekking poles</strong> — saves your knees on the 3,000 ft descent. <em>Budget:</em> Cascade Mountain Tech ($30). <em>Mid:</em> Black Diamond Trail Back ($100). <em>Premium:</em> Leki Black Series FX Carbon ($250). Weight: 12–18 oz per pair. <a href="https://www.outdoorgearlab.com/topics/camping-and-hiking/best-trekking-poles">OutdoorGearLab 2026 review</a>.</li>
+    <li><strong>Garmin inReach Mini 2 or ZOLEO</strong> — satellite SOS device for above-treeline use where cell service vanishes. inReach Mini 2 is $349 + $14.95/mo plan; ZOLEO is $199 + $20/mo. For two people sharing one, the inReach is the lighter, more independent option. <a href="https://www.adventurealan.com/best-satellite-communicator-zoleo-vs-inreach/">Adventure Alan comparison</a>.</li>
+    <li><strong>Microspikes</strong> — Kahtoola MICROspikes ($80). Only needed in June (snow patches lingering on north-facing slopes) or September (early snow). In July–August on Bierstadt or Quandary you almost never need them. Skip for first trip if hiking late July through August.</li>
+    <li><strong>Buff / neck gaiter</strong> ($20) — sun, wind, dust, makeshift handkerchief. Cheap and obviously useful.</li>
+    <li><strong>Power bank</strong> — small 5,000 mAh ($25). Your phone burns battery faster in the cold while running GPS.</li>
+    <li><strong>Real water filter</strong> — Sawyer Squeeze ($45). Only needed for hikes where you'd refill mid-route (Elbert is one). For Quandary/Bierstadt, just carry all your water.</li>
+  </ul>
+
+  <h3>Tier 3 — Convenience / luxury</h3>
+  <ul class="clean">
+    <li><strong>Down summit jacket</strong> — Patagonia Down Sweater ($279) or REI 650 Down ($100). Useful for September trips and for sitting on the summit longer than 10 minutes.</li>
+    <li><strong>Gaiters</strong> — Outdoor Research Helium ($65). Keeps scree out of your shoes on Quandary's upper ridge. Mostly luxury for summer.</li>
+    <li><strong>Trekking umbrella</strong> — Six Moon Designs Silver Shadow ($45). For long sun-exposed approaches. Niche.</li>
+    <li><strong>GPS watch with altimeter</strong> — Garmin Instinct 2 ($300+). Fun, not necessary. Your phone does most of this.</li>
+    <li><strong>Camp shoes</strong> — Crocs in the car for the drive home. Your feet will thank you.</li>
+  </ul>
+
+  <h3>Footwear: trail runners vs. light hikers vs. boots</h3>
+  <p>For Class 1 and Class 2 summer 14ers on dry trails, <strong>most experienced 14er hikers now wear trail runners or light hikers, not boots.</strong> The argument for boots — ankle support — matters less than the argument against: heavy boots fatigue your legs over a 7-mile day and almost never prevent the ankle rolls they were sold for. <a href="https://www.rei.com/learn/expert-advice/hiking-boots-vs-trail-runners-the-great-debate.html">REI breakdown</a>.</p>
+  <p>For first-timers with no broken-in boots: <strong>buy mid-cut light hikers</strong> like the Salomon X Ultra 4 GTX or Merrell Moab 3 — they split the difference and you can wear them as regular shoes too. If you already love a pair of cushy running shoes (Hoka Bondi, Brooks Ghost), a trail-runner version of the same brand is a totally reasonable substitute.</p>
+
+  <h3>Sample "ready to go" pack — what's actually in the bag</h3>
+  <div class="callout info">
+    <span class="label">Pack list, with weights</span>
+    <ul>
+      <li>Daypack (Osprey Talon 22) — 1 lb 14 oz</li>
+      <li>Hydration bladder, full 2 L — 4 lb 6 oz</li>
+      <li>1 L Smartwater bottle + electrolytes — 2 lb 2 oz</li>
+      <li>Rain shell — 9 oz</li>
+      <li>Light puffy / fleece — 10 oz</li>
+      <li>Wind gloves + beanie — 4 oz</li>
+      <li>Extra socks — 2 oz</li>
+      <li>Food (2,000 cal) — 1 lb 6 oz</li>
+      <li>First aid kit — 5 oz</li>
+      <li>Headlamp + batteries — 3 oz</li>
+      <li>Sunscreen + lip balm + phone — 5 oz</li>
+      <li>Emergency bivvy + whistle + lighter — 4 oz</li>
+      <li>Trekking poles (stowed) — 14 oz</li>
+      <li>Map / car keys / wallet — 4 oz</li>
+    </ul>
+    <p><strong>Total: ~14 lb, of which ~6.5 lb is water you'll drink.</strong> By summit you're carrying ~10 lb. That's the right ballpark for a day-hike 14er.</p>
+  </div>
+</section>
+
+<section class="page" id="timing">
+  <h2>3. Timing — daily, seasonal, and pacing</h2>
+
+  <h3>Daily: the alpine start</h3>
+  <p>The non-negotiable rule of summer 14er hiking: <strong>summit by 11am, off the ridge by noon.</strong> Lightning kills more people on Colorado 14ers than any other hazard, and the storms are predictable to within an hour. <a href="https://opensnow.com/news/post/expert-tips-avoiding-thunderstorms-on-colorado-fourteeners">OpenSnow on 14er thunderstorms</a>.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Time</th><th>Where you should be</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td class="num">3:30am</td><td>Wake up, eat 400 cal of carbs, drink 16 oz of water + electrolytes</td><td>Get fueled before your body wants food</td></tr>
+        <tr><td class="num">4:00am</td><td>Drive from your lodging to the trailhead</td><td>Most Front Range 14ers are within 30–60 min of the towns we recommend</td></tr>
+        <tr><td class="num">5:00–5:30am</td><td>Boots on trail. Headlamps on, then off as sun rises ~5:45</td><td>The first hour is cold and dark; do it while you're fresh</td></tr>
+        <tr><td class="num">7:30–8:30am</td><td>Above treeline, ~1,500 ft into the climb</td><td>Watch the sky — first puffy cumulus often appear 9–10am</td></tr>
+        <tr><td class="num">10:00–11:00am</td><td>On the summit, photos, eat, pee, sign register</td><td>Don't linger more than 30 min</td></tr>
+        <tr><td class="num">12:00pm</td><td>Back below treeline</td><td>This is the firm turnaround — if you're not making this, you started too late</td></tr>
+        <tr><td class="num">1:30–3:00pm</td><td>Back at the car</td><td>Drive home or back to your lodging for a celebratory beer</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout must">
+    <span class="label">The hard turnaround rule</span>
+    <p>If you're not within 30 minutes of the summit by <strong>10:30am</strong>, you turn around. No exceptions. The summit will exist next weekend. You will not, if you're caught in an above-treeline lightning storm. The most senior alpinists in Colorado follow this rule; you should too.</p>
+  </div>
+
+  <h3>Seasonal: what each month actually looks like</h3>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>June</h3>
+      <p><strong>The shoulder.</strong> Most years, mid-July to August are when 14ers are reliably snow-free; in some years snow lingers into early July. June can be either summer or winter depending on the snowpack. <a href="https://www.14ers.com/forum/viewtopic.php?t=51772">14ers.com forum: when do 14ers go snow-free?</a></p>
+      <ul>
+        <li>Carry microspikes for north-facing slopes</li>
+        <li>Streams may be high and unbridged</li>
+        <li>Wildflowers haven't peaked yet</li>
+        <li>Best for: Bierstadt or Quandary, which clear early</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>July</h3>
+      <p><strong>The classic month, with the monsoon.</strong> Snow is gone, wildflowers peak around the 4th. But the North American Monsoon arrives in early–mid July and runs through August, bringing daily afternoon thunderstorms. <a href="https://climate.colostate.edu/co_nam.html">CO Climate Center on the monsoon</a>.</p>
+      <ul>
+        <li>Get to the trailhead by 5am, no exceptions</li>
+        <li>Best for: any of the eight peaks above</li>
+        <li>Permits/parking absolutely required at Quandary</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>August</h3>
+      <p><strong>The sweet spot.</strong> Trails are dry and pounded smooth. Monsoon is still daily but storms often form slightly later. Crowds are heavy on weekends — go Tuesday–Thursday if you can.</p>
+      <ul>
+        <li>Best overall month for first-timers</li>
+        <li>Coolest summit temps of summer (mid-50s°F)</li>
+        <li>Hotel rates peak in mountain towns</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>September</h3>
+      <p><strong>Quiet trails, real risk.</strong> Crowds drop sharply after Labor Day, aspens turn the last 10 days. But the first snowstorms can arrive any time after mid-September.</p>
+      <ul>
+        <li>Carry microspikes after Sept 15</li>
+        <li>Daylight shortens — bump your start to 4:30am</li>
+        <li>Check forecast religiously — a summer day can become winter in 6 hours</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Day-of pacing — what feels right</h3>
+  <p>The flatlander mistake is going out too fast in the first hour and blowing up at 13,000 ft. The fix is the "conversational pace" rule: <strong>you should be able to speak in full sentences without gasping</strong>. If you can't, slow down. Plan to hike about <strong>1.0–1.5 mph on the way up</strong> (slower above 13,000 ft) and <strong>2.0–2.5 mph on the way down</strong>. Take 5-minute breaks every 45 minutes; you're managing energy, not making time.</p>
+</section>
+
+<section class="page" id="guides">
+  <h2>4. Do you need a guide?</h2>
+  <p class="lead">For a Class 1 or Class 2 summer 14er with a clear forecast and good fitness, <strong>no</strong>. The standard routes on Quandary, Bierstadt, Grays, Elbert, and Sherman are well-trodden, well-marked, and frequented by thousands of unguided hikers every weekend. A guide is mostly buying you confidence, not necessary safety.</p>
+
+  <h3>When a guide IS worth it</h3>
+  <ul>
+    <li>You're attempting a Class 3+ peak as your first (Longs Peak, Crestone Peak, Sneffels). Don't.</li>
+    <li>You want a winter 14er (Jan–May) — totally different skill set, requires axe/crampons/avalanche training.</li>
+    <li>You're nervous about route-finding or want someone monitoring weather while you focus on hiking.</li>
+    <li>You want to learn skills you'll use on harder peaks later — read it as "tuition" not "safety insurance".</li>
+  </ul>
+
+  <h3>Reputable Colorado guiding services</h3>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>Colorado Mountain School</h3>
+      <p>Based in Estes Park. AMGA-certified guides. Wide range of mountaineering and rock courses; runs guided ascents of Longs Peak and many Class 3/4 14ers. Most beginner-friendly day trips fall in the $400–$700 per-person range for a private group of 2; group days are usually less. <a href="https://coloradomountainschool.com/">coloradomountainschool.com</a></p>
+    </div>
+    <div class="card">
+      <h3>Apex Mountain School</h3>
+      <p>Family-owned, based in Vail. 25+ years operating. Offers summer guided 14ers in the Sawatch and winter peak ascents. Winter ascent of Mt. Elbert is published at $950 for 1–2 people. Summer prices typically run a few hundred per person. <a href="https://www.apexmountainschool.com/">apexmountainschool.com</a></p>
+    </div>
+    <div class="card">
+      <h3>Colorado Adventure Guides</h3>
+      <p>Based in Frisco / Summit County. Guides Quandary, Grays, Torreys, and several Tenmile Range peaks. Convenient if Breckenridge is your base. <a href="https://www.coloradoadventureguides.com/summer/peak-ascents/">coloradoadventureguides.com</a></p>
+    </div>
+    <div class="card">
+      <h3>American Mountain Guides Association</h3>
+      <p>Use the AMGA directory to verify any guide service's credentials before booking. Avoid non-certified outfits, particularly for technical peaks.</p>
+    </div>
+  </div>
+
+  <h3>What a guided day typically costs (Colorado, 2026 ballpark)</h3>
+  <ul>
+    <li>Group climb of an easy 14er (4–6 clients): <strong>$200–$350 per person</strong></li>
+    <li>Private guided easy 14er (2 clients, 1 guide): <strong>$500–$800 total</strong></li>
+    <li>Private guided Class 3+ 14er: <strong>$700–$1,200 total per day</strong></li>
+    <li>Two-day Longs Peak Keyhole guided trip: <strong>$1,500–$2,500 total</strong></li>
+  </ul>
+
+  <div class="callout info">
+    <span class="label">Our take</span>
+    <p>Don't hire a guide for your first 14er if you're picking from the eight peaks above and the forecast is good. Spend the money on better gear, an extra night at altitude, and a celebratory dinner. If you fall in love with this and want to climb Longs Peak next year, <em>that</em> is when a guide pays for itself.</p>
+  </div>
+</section>
+
+<section class="page" id="lodging">
+  <h2>5. Lodging — where to sleep before and after</h2>
+  <p class="lead">For this trip you have an unusually good set of options: <strong>(1) camp at or near the trailhead</strong> (most fun, lowest cost, best acclimatization); <strong>(2) use the Keystone condo</strong> (free, comfortable, ~9,280 ft, well-positioned for Front Range and Tenmile peaks); <strong>(3) drive from Parker same morning</strong> (only realistic for Bierstadt and only with a brutal alarm). Mix and match across the weekend — camp Saturday night, retreat to the condo Sunday for hot showers.</p>
+
+  <div class="callout nice">
+    <span class="label">The Keystone condo — your safety net</span>
+    <p>Keystone sits at ~<strong>9,280 ft</strong>, which is genuinely useful altitude exposure. Even if your goal is to camp, treat the condo as a flexible backup:</p>
+    <ul>
+      <li><strong>Use it if Friday's weather is awful</strong> — drive up after work, sleep in a real bed, decide camping plans Saturday morning</li>
+      <li><strong>Use it after summit day</strong> — hot shower, real food, a couch beats a tent when you're exhausted</li>
+      <li><strong>Use it as Acclimatization Night 1</strong> — sleep at the condo Friday, camp at the trailhead Saturday night, summit Sunday</li>
+    </ul>
+    <p>Drive times from Keystone (rough): <strong>Quandary ~30 min, Grays/Torreys ~35 min, Bierstadt ~75 min, DeCaLiBron (Kite Lake) ~60 min, Mt. Sherman (Iowa Gulch) ~1:45, Mt. Elbert ~2:00.</strong> If you wanted to do nothing but use the condo as your base, Quandary or Grays+Torreys is your peak.</p>
+  </div>
+
+  <h3>Same-morning from Parker — only if it's Bierstadt</h3>
+  <p>Bierstadt is the one 14er your friend can credibly drive to from Parker on summit morning. Parker → Guanella Pass is about 1:45 via C-470 and US-285; you'd leave at 3:15am, be at the trailhead by 5:00, and climbing by 5:15. <strong>But</strong> — you're skipping the most important acclimatization advantage of sleeping higher, and as the visitor from Kansas you'll feel it. We'd still recommend at least one night at altitude (camp or condo) before any summit attempt.</p>
+
+  <h3>Front Range and Tenmile mountain-town hotels</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Town</th><th>Elevation</th><th>Best for which peak</th><th>Vibe / notes</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Idaho Springs</strong></td><td class="num">7,526 ft</td><td>Bierstadt, Grays/Torreys, Blue Sky</td><td>Cheapest pre-summit town, 35 min from Denver. Beau Jo's pizza is a Colorado institution. Mid-range hotels $120–$180/night.</td></tr>
+        <tr><td><strong>Georgetown</strong></td><td class="num">8,530 ft</td><td>Bierstadt, Grays/Torreys</td><td>Tiny historic town, charming. Closer to Guanella Pass than Idaho Springs. Limited rooms; book early.</td></tr>
+        <tr><td><strong>Silverthorne / Frisco</strong></td><td class="num">9,035 ft</td><td>Quandary, Grays/Torreys</td><td>Best lodging supply on I-70. Hampton Inn, Marriott options $180–$280. Lots of restaurants.</td></tr>
+        <tr><td><strong>Breckenridge</strong></td><td class="num">9,600 ft</td><td>Quandary (15 min away!)</td><td>Touristy but fun. Higher sleeping altitude is a big acclimatization plus. $250–$450/night in summer.</td></tr>
+        <tr><td><strong>Alma</strong></td><td class="num">10,578 ft</td><td>DeCaLiBron, Sherman</td><td>"Highest incorporated town in North America." Few options — South Park Lodge, vacation rentals. Strong acclimatization at this elevation.</td></tr>
+        <tr><td><strong>Fairplay</strong></td><td class="num">9,953 ft</td><td>DeCaLiBron, Sherman</td><td>Yes, the South Park town. Practical motels ($120–$180), groceries, gas. Good budget base for the Mosquito Range.</td></tr>
+        <tr><td><strong>Leadville</strong></td><td class="num">10,158 ft</td><td>Elbert, Massive, Sherman</td><td>Highest incorporated city in the US. Best altitude exposure on this list. Delaware Hotel, Silver King Inn, Tabor Inn. $150–$250.</td></tr>
+        <tr><td><strong>Buena Vista</strong></td><td class="num">7,965 ft</td><td>Princeton, Yale, Harvard</td><td>Lower elevation, river-town charm. Surf Hotel is fancy; Riverside Hotel is reasonable. ~3 hr from Denver.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src"><a href="https://www.fourteenernet.com/businesses/lodging">Fourteener Country lodging directory</a></p>
+
+  <h3>Camping — and the camping-to-peak matrix</h3>
+  <p>Since camping is the plan, here's the matrix you actually want: for each first-timer peak, the best designated campground (with elevation, cost, and reservation info), the closest free dispersed area, and how long the morning drive to the trailhead will be from each.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Peak</th><th>Best designated campground</th><th>Elev. / cost / reservation</th><th>Drive to TH</th><th>Best dispersed (free) option</th><th>Drive to TH</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Mount Bierstadt</strong></td><td>Guanella Pass Campground (USFS)</td><td class="num">10,860 ft · ~$25 · <a href="https://www.recreation.gov/">recreation.gov</a> required</td><td><strong>5 min</strong> (essentially at TH)</td><td>Guanella Pass Road pullouts (below the pass, on the Georgetown side)</td><td>15–30 min</td></tr>
+        <tr><td><strong>Quandary Peak</strong></td><td>Peak One Campground (Dillon Reservoir) or Heaton Bay CG</td><td class="num">9,000–9,200 ft · ~$28–$32 · rec.gov required, books out fast</td><td>30–35 min</td><td>McCullough Gulch dispersed sites (FR 29, ~3 sites, $5 Alpine Corridor permit required from <a href="https://www.summitcountyco.gov/services/community_development/open_space_trails/quandary_peak_mccullough_gulch/index.php">Summit County</a>)</td><td>10–15 min</td></tr>
+        <tr><td><strong>Grays + Torreys</strong></td><td>Clear Lake Campground or Echo Lake CG</td><td class="num">10,000–10,600 ft · ~$25–$30 · rec.gov</td><td>40–60 min (Echo Lake) / 50 min (Clear Lake)</td><td>Stevens Gulch Road dispersed pullouts (on the way to TH; first-come, no fee, high-clearance recommended)</td><td>0–20 min (some sites are <em>at</em> the TH)</td></tr>
+        <tr><td><strong>Mount Sherman</strong></td><td>Printer Boy Campground or Sayres Gulch (near Leadville)</td><td class="num">~10,000 ft · varies · check on <a href="https://www.recreation.gov/">recreation.gov</a></td><td>45–60 min</td><td>Fourmile Creek dispersed area (between Fairplay and the Iowa Gulch road)</td><td>30–45 min</td></tr>
+        <tr><td><strong>Mount Elbert</strong></td><td><strong>Half Moon Campground</strong> (literally at the NE TH)</td><td class="num">9,920 ft · ~$23 · first-come/first-served (arrive Thursday)</td><td><strong>5 min</strong> (essentially at TH)</td><td>Lake County Rd 11 dispersed pullouts (off the Elbert TH road)</td><td>0–15 min</td></tr>
+        <tr><td><strong>DeCaLiBron</strong></td><td><strong>Kite Lake Campground</strong> (literally at the TH)</td><td class="num">12,000 ft · ~$15–$20 · 4 walk-in sites, first-come — show up Thursday for weekend</td><td><strong>0 min</strong> (you camp at the trailhead)</td><td>Buckskin Gulch / Mosquito Creek dispersed area (multiple turnoffs on the road up from Alma)</td><td>10–25 min</td></tr>
+        <tr><td><strong>Handies Peak</strong></td><td>Mill Creek CG (Lake City) or Williams Creek CG</td><td class="num">8,800–9,000 ft · ~$20 · partially reservable</td><td>~1:00 (high-clearance road to TH)</td><td>American Basin / Cinnamon Pass Road dispersed (multiple sites, very high — up to 11,500 ft)</td><td>0–30 min (4WD required)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout must">
+    <span class="label">The three campsites that change the calculus</span>
+    <p>Three campgrounds on this list put you <em>at</em> the trailhead, which means you can roll out of the tent and be hiking in 20 minutes — no 3:30am driving, no headlamp navigation, no missed turn in the dark.</p>
+    <ul>
+      <li><strong>Half Moon CG → Mount Elbert NE Trailhead</strong> — best in class, but FCFS and Elbert is a long day</li>
+      <li><strong>Kite Lake CG → DeCaLiBron</strong> — only 4 sites, fills by Thursday afternoon in summer, but unbeatable if you score one</li>
+      <li><strong>Guanella Pass CG → Mt. Bierstadt</strong> — books on rec.gov, weekends sell out 4–6 months ahead</li>
+    </ul>
+    <p>If you can land one of these for a Saturday night, the logistics of summit day get dramatically easier and you sleep at 10,000+ ft, which doubles as acclimatization.</p>
+  </div>
+
+  <h4>Dispersed (free) camping — the rules</h4>
+  <p>Most of Colorado's National Forest land allows free dispersed camping, generally <strong>at least 100 ft from any road, trail, or water source, with a 14-day max stay</strong>. You're expected to follow Leave No Trace: pack out all trash, use a wag bag or dig a 6" cathole, no fires in dry season (check the local fire ban first), and use a pre-existing fire ring if one is present rather than building a new one.</p>
+  <p>The trick: many of the best dispersed sites near 14er trailheads are <strong>now permitted or regulated</strong> due to overuse. McCullough Gulch (Quandary area) now requires Summit County's Alpine Corridor permit. Some Mosquito Range dispersed areas now have day-use parking limits. Check the local USFS ranger district page the week before. <a href="https://www.fs.usda.gov/r02/psicc/recreation/camping-cabins">Pike-San Isabel NF camping</a> · <a href="https://dispersedapp.com/usfs-camping/colorado/pike-and-san-isabel-national-forests/">Dispersed.app for site maps</a>.</p>
+
+  <h4>What to bring (camping basics, not 14er-specific)</h4>
+  <p>Since the friend likely has some gear in Parker already, the visitor's side: <strong>sleeping bag rated to 20°F</strong> (mountain nights at 10,000+ ft drop to the 30s°F even in July), <strong>sleeping pad with R-value ≥ 3</strong> (REI Co-op Trailbreak ($60) or Therm-a-Rest NeoAir XLite ($210)), and a <strong>tent that fits two</strong> (Big Agnes Copper Spur HV UL2, REI Half Dome SL 2+). If renting/borrowing, just confirm the bag is good below freezing — summer-weight bags rated to 40°F+ are not enough at this elevation.</p>
+
+  <h3>Camper van rentals</h3>
+  <p>If you skip the condo and want full mobility, pick up in Denver, mountain-town camping flexibility, no hotel reservations.</p>
+  <div class="grid cols-3">
+    <div class="card">
+      <h3>Native Campervans</h3>
+      <p>Denver-based local company. Smaller, Promaster-converted vans (the Squaddie, the Biggie). $150–$250/night summer. Built specifically for Colorado outdoor trips. <a href="https://nativecampervans.com/denver-colorado/">nativecampervans.com</a></p>
+    </div>
+    <div class="card">
+      <h3>Escape Campervans</h3>
+      <p>Hand-painted Dodge Caravans (Mavericks, Big Sur). Lower starting price, more basic. $99–$180/night summer. Pickup just outside Denver in Aurora. <a href="https://escapecampervans.com/locations/denver-colorado/">escapecampervans.com</a></p>
+    </div>
+    <div class="card">
+      <h3>Outdoorsy</h3>
+      <p>Peer-to-peer rental marketplace (Airbnb for vans). Huge selection in Denver — Sprinter conversions to small RVs. Prices vary wildly. <a href="https://www.outdoorsy.com/l/camper-van_rental/co_denver">outdoorsy.com</a></p>
+    </div>
+  </div>
+
+  <h3>Recommended sleeping setup, by peak</h3>
+  <p>Putting hotel, condo, and camping options on one chart for the recommended peaks:</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Peak</th><th>Best camping (1st choice)</th><th>From Keystone condo</th><th>Mountain-town hotel option</th><th>Same-morning from Parker?</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Mount Bierstadt</td><td><strong>Guanella Pass CG</strong> (at TH)</td><td>~75 min via I-70 + Georgetown</td><td>Georgetown or Idaho Springs</td><td>Yes, with a 3:15am alarm</td></tr>
+        <tr><td>Quandary Peak</td><td>McCullough Gulch dispersed (~10 min); Peak One CG (~30 min)</td><td><strong>~30 min via Swan Mtn Rd</strong> — ideal</td><td>Breckenridge or Frisco</td><td>No — too far</td></tr>
+        <tr><td>Grays / Torreys</td><td>Stevens Gulch dispersed (at TH, 4WD); Clear Lake CG</td><td><strong>~35 min via I-70 east</strong> — ideal</td><td>Silverthorne, Idaho Springs</td><td>Possible but tight</td></tr>
+        <tr><td>Mount Sherman</td><td>Fourmile Creek dispersed (~30 min)</td><td>~1:45 via Hoosier Pass</td><td>Fairplay, Alma, Leadville</td><td>No</td></tr>
+        <tr><td>Mount Elbert</td><td><strong>Half Moon CG</strong> (at TH, FCFS)</td><td>~2:00</td><td>Leadville</td><td>No</td></tr>
+        <tr><td>DeCaLiBron</td><td><strong>Kite Lake CG</strong> (at TH, 4 sites only)</td><td>~60 min via Hoosier Pass</td><td>Alma or Fairplay</td><td>No</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout info" style="margin-top:14px;">
+    <span class="label">Our recommended setup</span>
+    <p>If the goal is camping <em>and</em> a Quandary or Grays/Torreys summit: <strong>Friday night sleep at the Keystone condo</strong> (real bed after the flight + travel day), <strong>Saturday camp at the trailhead</strong> (Kite Lake if available, otherwise McCullough Gulch dispersed near Quandary, or Stevens Gulch dispersed near Grays), <strong>Sunday summit and retreat to the condo</strong> for showers before driving back to Parker. You get all three modes — comfortable bed, real camping, hot shower — and the altitude profile is nearly optimal.</p>
+  </div>
+</section>
+
+<section class="page" id="weather">
+  <h2>6. Weather — the part that actually kills people</h2>
+  <p class="lead">Colorado's afternoon thunderstorms are the dominant safety factor on every summer 14er. The pattern is so reliable that you can plan your day around it. Here's the model in your head.</p>
+
+  <h3>Why the afternoon storms exist</h3>
+  <p>Two mechanisms work together. First, <strong>orographic lifting</strong>: as the day warms, the heated air over the plains rises, hits the Rockies, and is forced up the slope. Rising air cools, water condenses, clouds build. Second, the <strong>North American Monsoon</strong>: from early July through August, a seasonal shift in atmospheric circulation pulls subtropical moisture up from the Gulf of California and Gulf of Mexico into the Southwest. Mix moist air with afternoon orographic lift over a 14,000 ft pile of granite and you get reliable thunderstorms most July and August afternoons. <a href="https://medium.com/14ers-forecast/colorado-and-the-north-american-monsoon-79930ccfe891">Highpoint Weather explainer</a>.</p>
+
+  <h3>Lightning above treeline</h3>
+  <div class="callout must">
+    <span class="label">Lightning is the dominant 14er hazard</span>
+    <p>Above treeline, <strong>you are the tallest thing in a half-mile radius</strong>. Lightning strikes the highest object. Colorado averages 5–10 lightning fatalities per year, the majority above treeline in summer. If you can hear thunder, you are already within strike range.</p>
+  </div>
+
+  <h3>How to read the sky</h3>
+  <ul>
+    <li><strong>Morning, blue sky, no clouds</strong> — go.</li>
+    <li><strong>Small puffy cumulus by 9–10am</strong> — normal, but the clock is ticking. Push the summit, don't linger.</li>
+    <li><strong>Towering vertical buildup (cauliflower-shaped, gray bases)</strong> — turn around <em>now</em>, even if you can see the summit.</li>
+    <li><strong>Dark gray sheets / virga (rain that doesn't reach ground)</strong> — get to treeline fast.</li>
+    <li><strong>Halo, anvil, lenticular cloud over the peak</strong> — bail.</li>
+  </ul>
+
+  <h3>What to do if caught above treeline in a storm</h3>
+  <ol>
+    <li><strong>Get off ridges and summits.</strong> Drop 200–500 ft of elevation if you can.</li>
+    <li><strong>Spread out from your hiking partner</strong> (15–20 ft apart) so a single strike can't injure both of you.</li>
+    <li><strong>Drop trekking poles, metal-framed packs</strong> — anything pointy or conductive.</li>
+    <li><strong>Crouch on the balls of your feet on top of your pack</strong> (insulation). Don't lie down — ground current spreads through wet rock.</li>
+    <li><strong>Avoid wet gullies and crack systems</strong> — they channel ground current.</li>
+    <li><strong>Wait 30 minutes after last thunder</strong> before resuming.</li>
+  </ol>
+  <p class="src"><a href="https://thenextsummit.org/lightning-on-14ers-tips-for-staying-safe/">The Next Summit — lightning safety</a> · <a href="https://opensnow.com/news/post/lightning-safety-in-the-mountains">OpenSnow lightning</a></p>
+
+  <h3>Forecast sources we actually use</h3>
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>OpenSnow PEAKS forecast</h3>
+      <p>Best in class for Colorado mountain weather. Proprietary model trained for high terrain; ensembles ECMWF, GFS, GDPS, ICON. Has a specific forecast page for every 14er. Worth the subscription ($30/yr) if you're doing this seriously. <a href="https://opensnow.com/">opensnow.com</a></p>
+    </div>
+    <div class="card">
+      <h3>NOAA Point Forecast</h3>
+      <p>Free, official. Drop a pin on the summit at <a href="https://forecast.weather.gov/">forecast.weather.gov</a>; look at the hourly graph (wind, precip probability, T-storm chance). The "Detailed Forecast" tab is good for plain language.</p>
+    </div>
+    <div class="card">
+      <h3>14ers.com peak forecasts</h3>
+      <p>NWS data, pre-formatted for every 14er. Free, no account needed. <a href="https://www.14ers.com/php14ers/weather.php">14ers.com weather</a></p>
+    </div>
+    <div class="card">
+      <h3>Mountain-Forecast.com</h3>
+      <p>Popular globally but the 14er community is skeptical — it's often optimistic on wind and precip. Use as a sanity check, not a primary source.</p>
+    </div>
+  </div>
+
+  <h3>Hypothermia in July?</h3>
+  <p>Yes — wet, windy, and 40°F is hypothermia weather, and that's a perfectly possible combination on a 14er summit in any month. <strong>Cotton kills</strong>: it loses 90% of insulation when wet. The two-piece rule: synthetic or merino base + waterproof shell, always in the pack regardless of forecast.</p>
+
+  <h3>Snow and ice by month</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Month</th><th>Snow on standard routes?</th><th>Microspikes?</th></tr></thead>
+      <tbody>
+        <tr><td>June</td><td>Yes — north-facing slopes, willows, gullies</td><td>Yes — carry them</td></tr>
+        <tr><td>Early July</td><td>Patchy; rapidly melting</td><td>Maybe; carry on first week of July</td></tr>
+        <tr><td>Mid-July to Mid-Sept</td><td>Almost none on Bierstadt/Quandary/Sherman/Elbert</td><td>No</td></tr>
+        <tr><td>Late September</td><td>Possible early storms; could be 6+ inches</td><td>Yes — carry them</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="page" id="food">
+  <h2>7. Nutrition &amp; hydration</h2>
+  <p class="lead">Don't overthink this. At altitude, your stomach is finicky — go with food you already love, weighted toward carbs, in small frequent bites. A 6–8 hour 14er burns roughly 3,000–4,500 calories; you'll eat back maybe 1,500 of those on trail and the rest at dinner.</p>
+
+  <h3>The night before</h3>
+  <p>A normal dinner: pasta, rice bowl, burrito. Something carb-heavy and unsurprising. <strong>Skip the giant steak</strong> — fat and protein digest slowly, and at altitude you don't want anything sitting in your stomach. Limit alcohol to one drink at most (it interferes with acclimatization and sleep). Drink 24 oz of water with electrolytes before bed. Lay out your gear so you don't fumble at 3:30am.</p>
+
+  <h3>Breakfast</h3>
+  <p>Eat 400–600 calories about 60–90 minutes before hiking. Oatmeal + banana + peanut butter. Bagel + cream cheese. McDonald's egg McMuffin and a hash brown if you're getting an alpine start from Idaho Springs (the 24-hour McDonald's is a 14er institution). Plus 16 oz of water with electrolytes.</p>
+
+  <h3>On trail — 200–300 calories per hour</h3>
+  <p>Eat <strong>every 45–60 minutes</strong>, in 100–150 calorie bites, before you feel hungry. Prioritize carbs over fat or protein — at altitude your body produces ATP more efficiently from carbs. <a href="https://www.peaktopeaknutrition.com/blog/avoid-these-5-common-mistakes-on-your-next-14er">Peak to Peak Nutrition</a>.</p>
+
+  <h4>Snacks that hold up at altitude</h4>
+  <ul class="clean">
+    <li><strong>Honey Stinger waffles</strong> — 150 cal, easy on stomach, cult favorite</li>
+    <li><strong>Pop-Tart, frosted, in a Ziploc</strong> — 200 cal, sugar + carbs, weirdly perfect</li>
+    <li><strong>Salted Trader Joe's trail mix</strong> — handful = 200 cal, balanced</li>
+    <li><strong>Picky Bars or Skratch Anytime Bars</strong> — real food, low junk</li>
+    <li><strong>Pretzel sticks + a small block of cheese</strong> — salt cravings get real above 13,000 ft</li>
+    <li><strong>Salami or Chomps meat sticks</strong> — protein for the descent</li>
+    <li><strong>Honey Stinger gels or Spring Energy gels</strong> — for the steep upper section, when you can't chew</li>
+    <li><strong>One real sandwich for the summit</strong> — turkey, mustard, white bread. The summit sandwich is sacred.</li>
+  </ul>
+
+  <h4>What to avoid</h4>
+  <ul>
+    <li>Greasy fast food the night before</li>
+    <li>Anything chocolate-coated — it melts in your pack, then freezes into a rock at the summit</li>
+    <li>Pure protein bars (RXBAR, etc.) — too dry and dense at altitude</li>
+    <li>Gas-producing foods (broccoli, beans, large salads)</li>
+  </ul>
+
+  <h3>Hydration — 3 liters, with electrolytes</h3>
+  <p>Carry <strong>3 liters of water</strong>. Drink 8–10 oz every 20–30 minutes — sips, not chugs. Add electrolytes to at least one of those liters. Dehydration is the #1 mimic of altitude sickness, and it's avoidable.</p>
+
+  <h4>Electrolyte mix comparison</h4>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Brand</th><th>Sodium per serving</th><th>Sugar / carbs</th><th>Tonicity</th><th>Best for</th></tr></thead>
+      <tbody>
+        <tr><td><strong>LMNT</strong></td><td class="num">1,000 mg</td><td>0 g / 0 g</td><td>Hypertonic</td><td>Heavy sweaters, hot days, long efforts &gt;2 hr. Salty taste — Citrus is the safest flavor.</td></tr>
+        <tr><td><strong>Liquid IV</strong></td><td class="num">500 mg</td><td>11 g / 11 g carbs</td><td>Hypertonic</td><td>Easy taste, sugar + sodium, good "after the hike" recovery</td></tr>
+        <tr><td><strong>Skratch Labs Sport</strong></td><td class="num">380 mg</td><td>20 g carbs</td><td>Isotonic</td><td>Best on-trail energy drink. Real fruit. Absorbs fastest of the three.</td></tr>
+        <tr><td><strong>Nuun</strong></td><td class="num">300 mg</td><td>1 g</td><td>Isotonic</td><td>Cheapest. Tablet form, no measuring. Lighter on stomach than LMNT.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src"><a href="https://www.cleverhiker.com/hiking/best-hydration-mixes/">CleverHiker 2026 hydration mix review</a></p>
+  <p><strong>Our pick for the two of you:</strong> carry one packet of Skratch in your bottle for the climb, sip plain water from the bladder all day, and have one LMNT in the car for the drive home. If either of you is a heavy sweater, swap Skratch for LMNT on trail.</p>
+
+  <h3>Caffeine</h3>
+  <p>If you normally drink coffee, drink it. Caffeine 30 min before the hike is fine and probably helps perceived effort. Don't start a new caffeine habit the morning of — diuretic effects can backfire.</p>
+
+  <h3>Sample day's food intake (one person, ~3,500 cal burned)</h3>
+  <div class="callout info">
+    <span class="label">A real day's eating</span>
+    <ul>
+      <li>3:30am — banana + peanut butter, 24 oz water with LMNT (~250 cal)</li>
+      <li>4:00am — bagel sandwich at gas station, large coffee (~500 cal)</li>
+      <li>6:30am, treeline — Honey Stinger waffle + 16 oz Skratch (~250 cal)</li>
+      <li>8:00am — Pop-Tart + handful of trail mix (~350 cal)</li>
+      <li>9:30am — Picky Bar + gel (~250 cal)</li>
+      <li>10:45am summit — turkey sandwich, 8 oz Skratch (~450 cal)</li>
+      <li>12:30pm descent — meat stick, pretzels (~200 cal)</li>
+      <li>3:00pm car — LMNT + 32 oz water (~10 cal)</li>
+      <li>6:00pm dinner — burger, fries, beer (~1,400 cal)</li>
+      <li><strong>Total: ~3,650 cal in, ~3,500 burned. You'll sleep great.</strong></li>
+    </ul>
+  </div>
+</section>
+
+<section class="page" id="acclim">
+  <h2>8. Acclimatization — from Kansas and from Parker</h2>
+  <p class="lead">You're flying in from ~1,000 ft, your friend lives at ~5,870 ft in Parker. You'll feel altitude far more than they will, but neither of you is acclimatized to 14,000 ft — that's a different physiological world. Your body can adapt, partially, in 24–72 hours if you give it the chance. The single highest-leverage thing you can do is <strong>sleep at altitude for one or two nights before summit day</strong>.</p>
+
+  <h3>Does Parker (or past ski trips) carry over?</h3>
+  <p>Partially for your friend, not really for you. Acclimatization at altitude — the physiological changes (increased respiratory drive, plasma volume changes, eventually more red blood cells) — <strong>begins to reverse within days of returning to lower elevation, and is mostly gone within two weeks</strong>. Living in Parker at ~5,870 ft does give your friend a permanent baseline edge over a flatlander, but it doesn't substitute for sleeping above 9,000 ft the night before a 14er. Past ski trips don't carry over at all months later.</p>
+
+  <h3>A realistic plan for one Kansan + one Parker local</h3>
+  <div class="callout info">
+    <span class="label">The 3-day acclimatization plan</span>
+    <ul>
+      <li><strong>Day −7 to Day −1 at home (Kansan)</strong>: hydrate hard (target ~100 oz of water/day), cut alcohol back, sleep 8 hours. Optional: ask your doctor about acetazolamide (Diamox).</li>
+      <li><strong>Day 1 (Friday)</strong>: Fly to Denver in the morning. Drive directly up to Keystone (~9,280 ft) — <em>don't</em> spend the night in Parker if you can help it. Skip the 5,280 ft of Denver and the 5,870 ft of Parker and sleep at 9,000+ ft. Take a 1–2 hour walk at moderate elevation that afternoon. Light dinner. Big water. In bed by 9pm.</li>
+      <li><strong>Day 2 (Saturday)</strong>: A "climb high, sleep low" day. Hike Mount Royal in Frisco (2,200 ft gain to 10,500 ft), Mohawk Lakes (to ~11,500 ft), or any trail that takes you above 11,000 ft for a few hours. Then drive to camp for the night (10,000+ ft if possible). Hydrate, eat, early bed.</li>
+      <li><strong>Day 3 (Sunday) — summit day</strong>: alpine start as planned. By now you've had ~36 hours at altitude, including two nights of sleep at 9,000+ ft. Your body has started its adaptation.</li>
+    </ul>
+  </div>
+
+  <h3>Sleep elevation — climb high, sleep low (modified)</h3>
+  <p>Once above 9,000 ft, the standard guidance is to increase your sleeping elevation by no more than 1,600 ft per day. <a href="https://www.princeton.edu/~oa/safety/altitude.html">Princeton's altitude guide</a>. For a 3-day trip, you don't need to be that conservative — sleeping at Keystone (9,280 ft) Friday and at a 10,000–12,000 ft campsite Saturday before summiting Quandary (14,272 ft) Sunday is well-tolerated by most healthy adults. If you can score Kite Lake CG (12,000 ft) Saturday before a DeCaLiBron attempt, even better.</p>
+
+  <h3>Diamox (acetazolamide) — talk to your doctor</h3>
+  <p>Diamox is a prescription drug that speeds altitude adaptation by slightly acidifying the blood, which stimulates breathing. The CDC and most travel-medicine guidelines recommend it for travelers ascending rapidly to &gt;8,000 ft. <a href="https://www.cdc.gov/yellow-book/hcp/environmental-hazards-risks/high-altitude-travel-and-altitude-illness.html">CDC Yellow Book</a>. The visitor from Kansas is the higher-priority candidate; the Parker local probably doesn't need it.</p>
+  <ul>
+    <li><strong>Typical dose:</strong> 125 mg twice daily, starting 24 hours before ascent and continuing for 2 days at altitude</li>
+    <li><strong>Side effects:</strong> tingling in fingers/lips, increased urination (drink more), carbonation tastes weird</li>
+    <li><strong>Who should avoid:</strong> sulfa-allergic people, certain kidney issues</li>
+    <li><strong>How to get it:</strong> ask your primary care doctor — many will prescribe it for a Colorado trip after a quick conversation</li>
+  </ul>
+  <p><em>This isn't medical advice and we're not your doctor. But it's the most-asked-about altitude question and worth raising with yours.</em></p>
+
+  <h3>Symptoms of Acute Mountain Sickness (AMS) — and when to bail</h3>
+  <div class="callout warn">
+    <span class="label">Know these by heart</span>
+    <p><strong>AMS = "the worst hangover of your life."</strong> The classic four symptoms above 8,000 ft: <strong>headache, nausea/loss of appetite, fatigue/weakness, dizziness/poor sleep.</strong> Mild AMS is uncomfortable but manageable — slow down, drink, eat carbs, descend a few hundred feet if symptoms persist.</p>
+  </div>
+  <p><strong>Bail and descend immediately</strong> if either of you shows:</p>
+  <ul>
+    <li><strong>HACE</strong> (High Altitude Cerebral Edema): confusion, ataxia (can't walk a straight line), severe headache that doesn't respond to ibuprofen, hallucinations</li>
+    <li><strong>HAPE</strong> (High Altitude Pulmonary Edema): shortness of breath at rest, gurgling in chest, pink frothy sputum, blue lips/fingernails</li>
+  </ul>
+  <p>Both are life-threatening. The only treatment is descent — fast and far. Call 911 if you can.</p>
+
+  <h3>Fitness prep — from Kansas, from Parker</h3>
+  <p>You don't need to be a marathoner. You need cardiovascular endurance and the leg strength to lift your body and a 14-lb pack 3,000 ft of vertical, then back down. In 6–8 weeks of consistent training you can be ready. <a href="https://www.rei.com/learn/expert-advice/14er-mountain-climb-goal-training.html">REI 14er training plan</a>.</p>
+
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>What to actually do (3–4 days/week)</h3>
+      <ul>
+        <li><strong>Stair-climber or stadium stairs</strong> 2× week, 30–45 min. The gym StairMaster is uncannily good prep — and it's the best option for the Kansan since there are no hills.</li>
+        <li><strong>Long walks with a pack</strong> 1× week, building from 4 mi / 10 lb to 8 mi / 15 lb over a month. The Parker friend should head into the foothills (Roxborough State Park, Castlewood Canyon, Mount Falcon) for real elevation under foot.</li>
+        <li><strong>Zone-2 cardio</strong> (jog, bike, row) 1–2× week, 30–60 min — conversational pace</li>
+        <li><strong>Lower-body strength</strong> 1× week — squats, lunges, step-ups, calf raises</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>What doesn't help much</h3>
+      <ul>
+        <li>"Altitude training masks" — overwhelming research consensus is they don't replicate altitude</li>
+        <li>One epic 20-mile hike the weekend before — overtrains, doesn't acclimatize</li>
+        <li>Pure weightlifting without cardio</li>
+        <li>Holding your breath</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Other practical pre-trip tips</h3>
+  <ul>
+    <li><strong>Hydrate hard the 3 days before the flight</strong> — get to ~100 oz/day. Cut caffeine in half.</li>
+    <li><strong>No alcohol for 24 hours before summit day.</strong> Alcohol blunts sleep quality and worsens AMS.</li>
+    <li><strong>Sleep 8 hours every night of the trip.</strong> Sleep is when most acclimatization happens.</li>
+    <li><strong>Eat carbohydrates.</strong> Your body uses carbs more efficiently than fat under hypoxia.</li>
+    <li><strong>Don't try a new prescription drug for the first time at altitude.</strong> If you're trying Diamox, test it at home first.</li>
+  </ul>
+</section>
+
+<section class="page" id="itinerary">
+  <h2>Putting it all together — a sample weekend (Quandary, camping + Keystone)</h2>
+  <p class="lead">Friday morning flight from Kansas to a Sunday-evening summit, using the Keystone condo as Friday-night base and a Saturday-night campsite for maximum acclimatization. The friend in Parker drives up Friday afternoon to meet at Keystone. Adapt the same shape for Bierstadt (skip the camp night and start from Keystone instead) or Grays/Torreys (Stevens Gulch dispersed camp instead of Quandary).</p>
+
+  <div class="timeline">
+    <div class="item"><span class="when">Friday, 11:00am</span><span class="what">Visitor flies from Kansas to DEN. Picks up rental car (or gets picked up by Parker friend). Stop at REI or grocery on the way through Denver — snacks, sandwich fixings, gas-station coffee fixings.</span></div>
+    <div class="item"><span class="when">2:30pm</span><span class="what">Both head west on I-70 toward Keystone. ~90 min from Parker, longer if it's a Friday in summer. Aim to arrive Keystone by 5:00pm before Eisenhower Tunnel rush hour.</span></div>
+    <div class="item"><span class="when">5:30pm</span><span class="what">Arrive at the Keystone condo (~9,280 ft). Unpack camping gear, lay out tomorrow's daypack. Walk around outside for 30 min to start adjusting.</span></div>
+    <div class="item"><span class="when">7:00pm</span><span class="what">Dinner in Keystone or Dillon — easy carbs, modest portions. One drink max. Big water.</span></div>
+    <div class="item"><span class="when">9:30pm</span><span class="what">Sleep at altitude in a real bed. Set 7:00am alarm.</span></div>
+    <div class="item"><span class="when">Saturday, 8:00am</span><span class="what">Breakfast at the condo. Pre-load the car with camping gear, water, food, summit-day daypack.</span></div>
+    <div class="item"><span class="when">10:00am</span><span class="what">Drive to your Saturday-night campsite — McCullough Gulch dispersed area (with Alpine Corridor permit) if you didn't score Kite Lake / Guanella Pass / Half Moon. Set up camp.</span></div>
+    <div class="item"><span class="when">11:30am</span><span class="what">Acclimatization hike — Mohawk Lakes trailhead from Spruce Creek Road, ~4 mi round trip to Lower Mohawk Lake (~11,500 ft). Easy pace, lots of water. "Climb high, sleep low" in action.</span></div>
+    <div class="item"><span class="when">3:30pm</span><span class="what">Back at camp. Re-check tomorrow's weather (NOAA point forecast + OpenSnow for Quandary). Pre-pack tomorrow's daypack and lay clothes out in the tent vestibule.</span></div>
+    <div class="item"><span class="when">5:30pm</span><span class="what">Camp dinner — pre-made backpacker meals (Mountain House, Good To-Go) plus a real loaf of bread, salami, and cheese for protein. No alcohol. Lots of water.</span></div>
+    <div class="item"><span class="when">8:00pm</span><span class="what">Phones charged off a power bank. Take Diamox if your doctor prescribed it. Headlamps within arm's reach. Phone alarm set to 3:30am. Sleep.</span></div>
+    <div class="item"><span class="when">Sunday, 3:30am</span><span class="what">Wake in the tent. Eat banana + peanut butter + 16 oz of water with electrolytes. Get dressed in your bag where it's warm.</span></div>
+    <div class="item"><span class="when">4:15am</span><span class="what">Drive ~15 min from camp to the Quandary Peak trailhead. Park in your reserved spot, or shuttle in.</span></div>
+    <div class="item"><span class="when">5:00am</span><span class="what">Boots on, headlamps on, on the trail. Set the conversational pace.</span></div>
+    <div class="item"><span class="when">5:45am</span><span class="what">Sunrise. Headlamps off. You're at ~12,000 ft, above treeline.</span></div>
+    <div class="item"><span class="when">7:30am</span><span class="what">First snack break. Look at the sky — clear? Keep going. Clouds building fast? Reassess.</span></div>
+    <div class="item"><span class="when">9:30am</span><span class="what">Steeper ridge work begins. Slow down. Eat a gel. Watch the goats.</span></div>
+    <div class="item"><span class="when">10:30am</span><span class="what">Summit! Sandwich, photos, hugs. Sign the register. Don't linger more than 30 minutes.</span></div>
+    <div class="item"><span class="when">11:00am</span><span class="what">Begin descent. Trekking poles deployed. Eat regularly.</span></div>
+    <div class="item"><span class="when">12:30pm</span><span class="what">Below treeline. The hazard window is essentially closed.</span></div>
+    <div class="item"><span class="when">2:00pm</span><span class="what">Back at the car. Change socks. Big drink. Drive to camp, break it down.</span></div>
+    <div class="item"><span class="when">3:30pm</span><span class="what">Return to the Keystone condo. Hot showers. Long, slow drink of water. Celebratory burger and beer at the Goat in Keystone, or drive into Breck for Downstairs at Eric's. Earn it.</span></div>
+    <div class="item"><span class="when">6:30pm</span><span class="what">Drop visitor at DEN for a 9:00pm+ flight, or stay one more night at the condo and fly Monday morning (recommended — you'll sleep hard).</span></div>
+  </div>
+
+  <div class="callout nice" style="margin-top: 24px;">
+    <span class="label">If you summit, save the dates for trip #2.</span>
+    <p>Once you've done one — Grays + Torreys is the natural follow-up, and Mt. Elbert is waiting for trip #3.</p>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Built May 18, 2026.</strong> Trail conditions, road status, and reservation systems change constantly — verify the day before any hike.</p>
+  <p>Key sources: <a href="https://www.14ers.com/">14ers.com</a> · <a href="https://www.14ers.org/">Colorado Fourteeners Initiative</a> · <a href="https://www.rei.com/learn/expert-advice/ten-essentials.html">REI Co-op Expert Advice</a> · <a href="https://opensnow.com/">OpenSnow</a> · <a href="https://www.cdc.gov/yellow-book/hcp/environmental-hazards-risks/high-altitude-travel-and-altitude-illness.html">CDC Yellow Book</a> · <a href="https://www.fs.usda.gov/r02/arp">USFS Arapaho &amp; Roosevelt NF</a> · <a href="https://www.recreation.gov/timed-entry/10087438">Mt. Blue Sky reservations</a> · <a href="https://hikequandary.com/">Hike Quandary</a> · <a href="https://www.summitcountyco.gov/services/community_development/open_space_trails/quandary_peak___mccullough_gulch/faqs.php">Summit County Quandary FAQ</a> · <a href="https://thenextsummit.org/">The Next Summit</a></p>
+  <p>Not a substitute for current local trail reports, your doctor, or your own judgment in the mountains.</p>
+</footer>
+
+<script>
+  document.querySelectorAll('.nav a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href').slice(1);
+      var el = document.getElementById(id);
+      if(!el) return;
+      e.preventDefault();
+      var navH = document.querySelector('.nav').offsetHeight + 8;
+      var y = el.getBoundingClientRect().top + window.pageYOffset - navH;
+      window.scrollTo({top: y, behavior: 'smooth'});
+    });
+  });
+</script>
+
+</body>
+</html>

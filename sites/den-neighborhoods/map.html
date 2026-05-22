@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neighborhood Map — Denver Neighborhoods Guide</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <style>
+    #map-container {
+      width: 100%;
+      height: 620px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin: 24px 0 32px;
+    }
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+    .map-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 28px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--dark);
+    }
+    .legend-swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      flex-shrink: 0;
+      opacity: 0.85;
+    }
+    .map-intro {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+      font-size: 0.93rem;
+      line-height: 1.65;
+      color: var(--dark);
+    }
+    .map-intro p { margin: 0 0 10px; }
+    .map-intro p:last-child { margin: 0; }
+    .neighborhood-list-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin: 32px 0 24px;
+    }
+    .nhood-card-small {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 14px 16px;
+      text-decoration: none;
+      color: var(--dark);
+      display: block;
+      transition: box-shadow 0.15s;
+    }
+    .nhood-card-small:hover {
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      text-decoration: none;
+    }
+    .nhood-card-small .nhood-name { font-weight: 600; font-size: 0.95rem; margin-bottom: 4px; }
+    .nhood-card-small .nhood-meta { font-size: 0.78rem; color: var(--mid); }
+    .color-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+<script src="nav.js"></script>
+
+<div class="hero" style="background: linear-gradient(160deg, #1a3a5c 0%, #2a5a8c 60%, #c8a96e 100%);">
+  <div class="hero-overlay"></div>
+  <div class="hero-text">
+    <div class="hero-label">Interactive Map · All 10 Neighborhoods</div>
+    <h1 class="hero-title">Denver Neighborhoods Map</h1>
+    <div class="hero-subtitle">See how each neighborhood sits in relation to downtown, to each other, and to Denver's parks and amenities</div>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <div class="map-intro">
+    <p>This map shows all ten neighborhoods in this guide as colored zones overlaid on Denver's street grid. Click any neighborhood to jump to its detail page. Hover over a zone to see the neighborhood name, median price, and walk score.</p>
+    <p>The scale of Denver may surprise you — the city is physically large but the neighborhoods in this guide cluster in a fairly tight band around the city center. Downtown Denver is the reference point at center. The neighborhoods span roughly 10 miles north-to-south and 8 miles east-to-west, but most are within a 10–20 minute drive of each other.</p>
+  </div>
+
+  <div id="map-container">
+    <div id="map"></div>
+  </div>
+
+  <div class="map-legend" id="legend"></div>
+
+  <h2>All Neighborhoods at a Glance</h2>
+  <div class="neighborhood-list-grid" id="nhood-grid"></div>
+
+  <div class="source-note">
+    Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors. Neighborhood boundaries are approximate and intended for orientation only — exact neighborhood edges vary by source.
+  </div>
+
+</div>
+
+<footer>
+  Denver Neighborhoods Research Report · May 2026 · <a href="index.html" style="color:rgba(255,255,255,0.5)">← Back to Overview</a>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+// ─── Neighborhood data ───────────────────────────────────────────────────────
+var neighborhoods = [
+  {
+    id: 'wash-park',
+    name: 'Washington Park',
+    href: 'wash-park.html',
+    price: '$900K–$1.52M',
+    walk: 78,
+    fit: 'Top Pick',
+    color: '#1a5c3e',
+    center: [39.7001, -104.9630],
+    // Approx polygon: Wash Park West + East combined
+    poly: [
+      [39.7130, -104.9720],
+      [39.7130, -104.9570],
+      [39.6880, -104.9570],
+      [39.6880, -104.9720],
+    ]
+  },
+  {
+    id: 'platt-park',
+    name: 'Platt Park',
+    href: 'platt-park.html',
+    price: '~$965K',
+    walk: 85,
+    fit: 'Top Pick',
+    color: '#2c5f2e',
+    center: [39.6850, -104.9776],
+    poly: [
+      [39.6920, -104.9850],
+      [39.6920, -104.9700],
+      [39.6770, -104.9700],
+      [39.6770, -104.9850],
+    ]
+  },
+  {
+    id: 'highland-lohi',
+    name: 'Highland / LoHi',
+    href: 'highland-lohi.html',
+    price: '$750K–$985K',
+    walk: 94,
+    fit: 'Great',
+    color: '#8b4513',
+    center: [39.7620, -105.0100],
+    poly: [
+      [39.7720, -105.0230],
+      [39.7720, -104.9960],
+      [39.7520, -104.9960],
+      [39.7520, -105.0230],
+    ]
+  },
+  {
+    id: 'berkeley',
+    name: 'Berkeley',
+    href: 'berkeley.html',
+    price: '~$861K',
+    walk: 82,
+    fit: 'Great',
+    color: '#2d5016',
+    center: [39.7750, -105.0380],
+    poly: [
+      [39.7870, -105.0520],
+      [39.7870, -105.0230],
+      [39.7630, -105.0230],
+      [39.7630, -105.0520],
+    ]
+  },
+  {
+    id: 'sunnyside',
+    name: 'Sunnyside',
+    href: 'sunnyside.html',
+    price: '~$800K',
+    walk: 88,
+    fit: 'Good',
+    color: '#5a7a2a',
+    center: [39.7720, -105.0000],
+    poly: [
+      [39.7810, -105.0130],
+      [39.7810, -104.9870],
+      [39.7620, -104.9870],
+      [39.7620, -105.0130],
+    ]
+  },
+  {
+    id: 'congress-park',
+    name: 'Congress Park',
+    href: 'congress-park.html',
+    price: '~$875K',
+    walk: 80,
+    fit: 'Top Pick',
+    color: '#1a4a2c',
+    center: [39.7300, -104.9510],
+    poly: [
+      [39.7400, -104.9610],
+      [39.7400, -104.9400],
+      [39.7190, -104.9400],
+      [39.7190, -104.9610],
+    ]
+  },
+  {
+    id: 'sloans-lake',
+    name: "Sloan's Lake",
+    href: 'sloans-lake.html',
+    price: '~$860K',
+    walk: 76,
+    fit: 'Good',
+    color: '#1a3a8c',
+    center: [39.7430, -105.0430],
+    poly: [
+      [39.7580, -105.0560],
+      [39.7580, -105.0260],
+      [39.7280, -105.0260],
+      [39.7280, -105.0560],
+    ]
+  },
+  {
+    id: 'baker',
+    name: 'Baker',
+    href: 'baker.html',
+    price: '~$673K',
+    walk: 85,
+    fit: 'Good',
+    color: '#7a3a1a',
+    center: [39.7200, -104.9990],
+    poly: [
+      [39.7310, -105.0080],
+      [39.7310, -104.9880],
+      [39.7090, -104.9880],
+      [39.7090, -105.0080],
+    ]
+  },
+  {
+    id: 'south-park-hill',
+    name: 'South Park Hill',
+    href: 'south-park-hill.html',
+    price: '~$975K',
+    walk: 57,
+    fit: 'Depends',
+    color: '#1e5a1e',
+    center: [39.7420, -104.9330],
+    poly: [
+      [39.7530, -104.9440],
+      [39.7530, -104.9180],
+      [39.7320, -104.9180],
+      [39.7320, -104.9440],
+    ]
+  },
+  {
+    id: 'bonnie-brae',
+    name: 'Bonnie Brae',
+    href: 'bonnie-brae.html',
+    price: '$1.2M–$1.5M',
+    walk: 65,
+    fit: 'Quieter',
+    color: '#4a2a6a',
+    center: [39.7065, -104.9590],
+    // Bonnie Brae is small with curving streets — compact polygon
+    poly: [
+      [39.7130, -104.9670],
+      [39.7130, -104.9520],
+      [39.7000, -104.9520],
+      [39.7000, -104.9670],
+    ]
+  }
+];
+
+// ─── Map init ─────────────────────────────────────────────────────────────────
+var map = L.map('map', {
+  center: [39.7392, -104.9848],
+  zoom: 12,
+  zoomControl: true
+});
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors',
+  maxZoom: 18
+}).addTo(map);
+
+// Downtown Denver marker for reference
+var dtIcon = L.divIcon({
+  className: '',
+  html: '<div style="background:#c8a96e;color:#fff;font-size:11px;font-weight:700;padding:4px 8px;border-radius:3px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,0.4);">Downtown Denver</div>',
+  iconAnchor: [55, 14]
+});
+L.marker([39.7392, -104.9848], { icon: dtIcon }).addTo(map);
+
+// ─── Polygons & markers ───────────────────────────────────────────────────────
+neighborhoods.forEach(function(n) {
+  // Polygon
+  var poly = L.polygon(n.poly, {
+    color: n.color,
+    fillColor: n.color,
+    fillOpacity: 0.28,
+    weight: 2,
+    opacity: 0.8
+  }).addTo(map);
+
+  var tooltipContent = '<strong>' + n.name + '</strong><br>' +
+    'Median: ' + n.price + '<br>' +
+    'Walk Score: ' + n.walk + '<br>' +
+    '<em>' + n.fit + '</em>';
+
+  poly.bindTooltip(tooltipContent, { sticky: true, opacity: 0.95 });
+  poly.on('click', function() { window.location.href = n.href; });
+  poly.on('mouseover', function() {
+    poly.setStyle({ fillOpacity: 0.5, weight: 3 });
+  });
+  poly.on('mouseout', function() {
+    poly.setStyle({ fillOpacity: 0.28, weight: 2 });
+  });
+
+  // Label marker
+  var labelIcon = L.divIcon({
+    className: '',
+    html: '<div style="background:' + n.color + ';color:#fff;font-size:10.5px;font-weight:600;padding:3px 7px;border-radius:3px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,0.35);cursor:pointer;">' + n.name + '</div>',
+    iconAnchor: [0, 10]
+  });
+  L.marker(n.center, { icon: labelIcon })
+    .addTo(map)
+    .on('click', function() { window.location.href = n.href; });
+});
+
+// ─── Legend ───────────────────────────────────────────────────────────────────
+var legendEl = document.getElementById('legend');
+neighborhoods.forEach(function(n) {
+  var item = document.createElement('div');
+  item.className = 'legend-item';
+  item.innerHTML = '<div class="legend-swatch" style="background:' + n.color + '"></div>' +
+    '<a href="' + n.href + '" style="color:inherit;text-decoration:none;">' + n.name + '</a>';
+  legendEl.appendChild(item);
+});
+
+// ─── Card grid ────────────────────────────────────────────────────────────────
+var gridEl = document.getElementById('nhood-grid');
+neighborhoods.forEach(function(n) {
+  var card = document.createElement('a');
+  card.href = n.href;
+  card.className = 'nhood-card-small';
+  card.innerHTML =
+    '<div class="nhood-name"><span class="color-dot" style="background:' + n.color + '"></span>' + n.name + '</div>' +
+    '<div class="nhood-meta">' + n.price + ' &nbsp;·&nbsp; Walk ' + n.walk + ' &nbsp;·&nbsp; ' + n.fit + '</div>';
+  gridEl.appendChild(card);
+});
+</script>
+
+</body>
+</html>

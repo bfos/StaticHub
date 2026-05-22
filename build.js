@@ -3,7 +3,7 @@
 /*
  * StaticHub build script.
  *
- * Scans the repository root for subfolders that look like standalone mini-sites
+ * Scans the sites/ directory for subfolders that look like standalone mini-sites
  * (a folder containing an index.html) and generates a polished root index.html
  * "hub" page listing each one as a card.
  *
@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = __dirname;
+const SITES_DIR = path.join(ROOT, 'sites');
 const OUTPUT_FILE = path.join(ROOT, 'index.html');
 
 /** Escape a string for safe interpolation into HTML text/attributes. */
@@ -26,11 +27,11 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
-/** Decide whether a top-level entry should be considered a site folder. */
+/** Decide whether an entry inside sites/ should be considered a site folder. */
 function isSiteFolder(dirent) {
   if (!dirent.isDirectory()) return false;
   const name = dirent.name;
-  if (name.startsWith('.') || name.startsWith('_')) return false; // .git, .github, _template, ...
+  if (name.startsWith('.') || name.startsWith('_')) return false; // _template, drafts, dotfiles, ...
   if (name === 'node_modules') return false;
   return true;
 }
@@ -54,16 +55,17 @@ function readMetadata(folderName, folderPath) {
   }
 }
 
-/** Collect every site folder containing an index.html. */
+/** Collect every site folder under sites/ that contains an index.html. */
 function collectSites() {
-  const entries = fs.readdirSync(ROOT, { withFileTypes: true });
+  if (!fs.existsSync(SITES_DIR)) return [];
+  const entries = fs.readdirSync(SITES_DIR, { withFileTypes: true });
   const sites = [];
 
   for (const dirent of entries) {
     if (!isSiteFolder(dirent)) continue;
 
     const folderName = dirent.name;
-    const folderPath = path.join(ROOT, folderName);
+    const folderPath = path.join(SITES_DIR, folderName);
     if (!fs.existsSync(path.join(folderPath, 'index.html'))) continue;
 
     const meta = readMetadata(folderName, folderPath);
@@ -78,7 +80,7 @@ function collectSites() {
 function renderCard(site) {
   const title = escapeHtml(site.title);
   const description = escapeHtml(site.description);
-  const href = `./${encodeURIComponent(site.folder)}/`;
+  const href = `./sites/${encodeURIComponent(site.folder)}/`;
 
   return `      <article class="card">
         <h2 class="card__title">${title}</h2>
@@ -92,7 +94,7 @@ function renderBody(sites) {
   if (sites.length === 0) {
     return `      <div class="empty">
         <h2 class="empty__title">No sites yet</h2>
-        <p class="empty__text">Copy the <code>_template/</code> folder to a new folder, edit its <code>site.json</code>, and push to <code>main</code>. Your first card will appear here.</p>
+        <p class="empty__text">Copy <code>sites/_template/</code> to a new folder under <code>sites/</code>, edit its <code>site.json</code>, and push to <code>main</code>. Your first card will appear here.</p>
       </div>`;
   }
   return `      <section class="grid">
