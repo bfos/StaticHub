@@ -1,0 +1,9 @@
+{
+  "name": "statichub",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal static-site hub built with GitHub Actions + Pages.",
+  "scripts": {
+    "build": "node build.js"
+  }
+}

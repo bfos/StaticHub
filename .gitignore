@@ -1,0 +1,5 @@
+# Dependencies (none required, but keep the tree clean if any are ever added)
+node_modules/
+
+# NOTE: the generated root index.html is intentionally NOT ignored —
+# it is built by the workflow and deployed to GitHub Pages.
