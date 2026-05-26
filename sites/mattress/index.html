@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mattress Buyer's Guide 2026 — Queen, Back/Joint Pain Focus</title>
+  <style>
+    :root {
+      --bg: #f8f7f4;
+      --surface: #ffffff;
+      --border: #e2ddd8;
+      --text: #2c2826;
+      --muted: #7a7067;
+      --accent: #3d7a5e;
+      --accent-light: #edf5f1;
+      --warn: #c47a2b;
+      --warn-light: #fdf3e6;
+      --danger: #b84040;
+      --danger-light: #fdf0f0;
+      --good: #3d7a5e;
+      --ok: #c47a2b;
+      --poor: #b84040;
+      --label-w: 140px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: Georgia, 'Times New Roman', serif; line-height: 1.7; font-size: 16px; }
+    a { color: var(--accent); }
+
+    /* Layout */
+    .page { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+    header { border-bottom: 3px solid var(--accent); padding-bottom: 24px; margin-bottom: 36px; }
+    header h1 { font-size: 2rem; color: var(--text); margin-bottom: 6px; }
+    header p { color: var(--muted); font-family: system-ui, sans-serif; font-size: 0.95rem; }
+    .badge { display: inline-block; background: var(--accent-light); color: var(--accent); font-family: system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 4px; padding: 2px 8px; margin-left: 8px; vertical-align: middle; }
+
+    /* Section headings */
+    h2 { font-size: 1.5rem; margin: 48px 0 16px; border-left: 4px solid var(--accent); padding-left: 12px; }
+    h3 { font-size: 1.15rem; margin: 24px 0 8px; color: var(--text); }
+
+    /* Summary box */
+    .summary-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 28px 32px; margin-bottom: 16px; }
+    .summary-box p { margin-bottom: 12px; }
+    .summary-box p:last-child { margin-bottom: 0; }
+
+    /* Callout boxes */
+    .callout { border-radius: 8px; padding: 16px 20px; margin: 20px 0; font-family: system-ui, sans-serif; font-size: 0.92rem; }
+    .callout.tip { background: var(--accent-light); border-left: 4px solid var(--accent); }
+    .callout.warn { background: var(--warn-light); border-left: 4px solid var(--warn); }
+    .callout strong { font-weight: 700; }
+
+    /* Score pills */
+    .pill { display: inline-block; border-radius: 12px; padding: 2px 10px; font-family: system-ui, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+    .pill.good { background: #d4ede4; color: #215c42; }
+    .pill.ok { background: #fce9ca; color: #8a5200; }
+    .pill.poor { background: #fad4d4; color: #7a2020; }
+    .pill.mixed { background: #e8e4f8; color: #3d2e80; }
+
+    /* Comparison Table */
+    .table-wrap { overflow-x: auto; margin: 8px 0 32px; border-radius: 10px; border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-family: system-ui, sans-serif; font-size: 0.85rem; background: var(--surface); }
+    thead { background: var(--accent); color: #fff; }
+    thead th { padding: 12px 10px; text-align: left; font-weight: 600; white-space: nowrap; }
+    tbody tr { border-top: 1px solid var(--border); }
+    tbody tr:hover { background: var(--bg); }
+    tbody td { padding: 10px 10px; vertical-align: middle; }
+    td.brand { font-weight: 700; white-space: nowrap; }
+    td.price { white-space: nowrap; }
+
+    /* Brand cards */
+    .brand-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin: 32px 0; overflow: hidden; }
+    .brand-card-header { background: var(--accent); color: #fff; padding: 18px 24px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+    .brand-card-header h3 { color: #fff; font-size: 1.2rem; margin: 0; }
+    .brand-card-header .sub { font-family: system-ui, sans-serif; font-size: 0.82rem; opacity: 0.85; }
+    .brand-card-body { padding: 24px; }
+    .brand-card-body p { margin-bottom: 10px; font-size: 0.97rem; }
+    .brand-card-body p:last-child { margin-bottom: 0; }
+
+    /* Attribute grid */
+    .attr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin: 20px 0; }
+    .attr { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+    .attr .label { font-family: system-ui, sans-serif; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 4px; }
+    .attr .value { font-size: 0.9rem; font-family: system-ui, sans-serif; font-weight: 600; }
+
+    /* Pros/cons */
+    .pc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    @media (max-width: 600px) { .pc-grid { grid-template-columns: 1fr; } }
+    .pros, .cons { border-radius: 8px; padding: 14px 16px; }
+    .pros { background: #edf5f1; border: 1px solid #b8dfcc; }
+    .cons { background: #fdf0f0; border: 1px solid #f0c4c4; }
+    .pros h4 { color: #215c42; font-family: system-ui, sans-serif; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    .cons h4 { color: #7a2020; font-family: system-ui, sans-serif; font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+    ul.bullet { padding-left: 18px; font-family: system-ui, sans-serif; font-size: 0.88rem; }
+    ul.bullet li { margin-bottom: 5px; }
+
+    /* Our Take */
+    .our-take { background: var(--accent-light); border: 1px solid #b0d8c4; border-radius: 8px; padding: 14px 18px; margin-top: 16px; font-family: system-ui, sans-serif; font-size: 0.91rem; }
+    .our-take strong { color: var(--accent); }
+
+    /* TOC */
+    .toc { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin-bottom: 36px; }
+    .toc h3 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-family: system-ui, sans-serif; margin-bottom: 12px; }
+    .toc ol { padding-left: 20px; font-family: system-ui, sans-serif; font-size: 0.88rem; }
+    .toc ol li { margin-bottom: 4px; }
+
+    /* Footer */
+    footer { font-family: system-ui, sans-serif; font-size: 0.8rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 20px; margin-top: 60px; }
+
+    /* Rank highlight */
+    .our-pick { background: var(--accent); color: #fff; font-weight: 700; border-radius: 4px; padding: 1px 7px; font-family: system-ui, sans-serif; font-size: 0.78rem; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>Mattress Buyer's Guide 2026</h1>
+    <p>Queen size &bull; Back &amp; joint pain focus &bull; Sustainability &amp; ethics considered &bull; Researched May 2026</p>
+  </header>
+
+  <nav class="toc">
+    <h3>Contents</h3>
+    <ol>
+      <li><a href="#summary">Executive Summary</a></li>
+      <li><a href="#howwethink">How to Think About This</a></li>
+      <li><a href="#table">Quick Comparison Table</a></li>
+      <li><a href="#brands">Brand-by-Brand Breakdown</a>
+        — <a href="#winkbed">WinkBed</a>
+        · <a href="#saatva">Saatva</a>
+        · <a href="#avocado">Avocado</a>
+        · <a href="#helix">Helix</a>
+        · <a href="#purple">Purple</a>
+        · <a href="#casper">Casper</a>
+        · <a href="#tuft">Tuft &amp; Needle</a>
+        · <a href="#nectar">Nectar</a>
+        · <a href="#allswell">Allswell</a>
+        · <a href="#hastens">Hästens</a>
+      </li>
+      <li><a href="#extras">Brands Worth Knowing About</a></li>
+      <li><a href="#buying">Buying Tips &amp; What to Ignore</a></li>
+    </ol>
+  </nav>
+
+  <!-- =================== EXECUTIVE SUMMARY =================== -->
+  <section id="summary">
+    <h2>Executive Summary</h2>
+    <div class="summary-box">
+      <p>You're coming from coil springs, which means you already know what real support feels like. Most of the "bed-in-a-box" brands leaned hard into all-foam construction for the first decade, and many reviewers found those wore out faster and felt hotter than a good hybrid. The good news: the industry has largely corrected course. Most top brands now offer hybrids (foam comfort layers over individually pocketed coils), which deliver the familiar support of an innerspring with better motion isolation and pressure relief.</p>
+
+      <p>For back and joint pain relief, the consensus across independent testing labs in 2026 is clear: <strong>zoned support systems</strong> (where the mattress is firmer under the lumbar region and softer at the hips and shoulders) outperform uniform-firmness beds for spinal alignment. Hybrid construction also tends to last 8–12+ years versus 6–7 for all-foam.</p>
+
+      <p>For your situation — one easy sleeper, one partner who is picky but can't articulate a preference — the brands with <strong>generous trial periods (100+ nights) and good return policies</strong> are especially important. You need to sleep on it at home for a few weeks to know. A split-firmness queen (Helix offers this) is worth considering if it turns out your partner wants something different from you.</p>
+
+      <p><strong>Top recommendations given your priorities:</strong></p>
+      <ul class="bullet" style="margin: 12px 0 12px 0;">
+        <li><strong>Best overall for your profile:</strong> <a href="#winkbed">WinkBed Luxury Firm</a> — top 1% in independent lab testing, lifetime warranty, zoned coils, strong for back pain.</li>
+        <li><strong>Best for ethics + sustainability + quality:</strong> <a href="#avocado">Avocado Green</a> — Certified B Corp, GOTS/GOLS organic certifications, 25-year warranty, owns its supply chain.</li>
+        <li><strong>Best if one of you has unclear preferences:</strong> <a href="#helix">Helix</a> — quiz-driven personalization, split-firmness option, wide model range.</li>
+        <li><strong>Best traditional luxury (if budget allows):</strong> <a href="#saatva">Saatva Classic</a> — coil-on-coil construction, white-glove delivery, lifetime warranty, made in USA.</li>
+        <li><strong>Skip:</strong> <a href="#hastens">Hästens</a> unless you truly want heirloom craftsmanship regardless of price — quality is real, but no clinical evidence of better sleep outcomes than a well-made $2,500 mattress.</li>
+      </ul>
+    </div>
+
+    <div class="callout tip">
+      <strong>On your partner not knowing firm vs. soft:</strong> That's actually very common. What most people are really responding to is <em>pressure relief</em> (does it dig into my hips and shoulders?) and <em>support</em> (does my back ache in the morning?). The best solution: pick a brand with 100+ night trials, commit to sleeping on it for at least 30 nights (the body takes time to adapt), and pay attention to how you feel in the morning — not how the mattress feels when you first lie down.
+    </div>
+  </section>
+
+  <!-- =================== HOW TO THINK =================== -->
+  <section id="howwethink">
+    <h2>How to Think About This</h2>
+    <div class="summary-box">
+      <h3>Mattress types you'll encounter</h3>
+      <p><strong>Innerspring (traditional):</strong> What you've slept on. Steel coil support core, minimal foam. Bouncy, breathable, durable. The main downside: less motion isolation and pressure relief vs. modern hybrids.</p>
+      <p><strong>All-foam:</strong> No coils. Memory foam or polyfoam layers. Excellent motion isolation and contouring, but tends to sleep warm, and durability is typically 6–7 years. Most "bed-in-a-box" originals were all-foam.</p>
+      <p><strong>Hybrid:</strong> Individually pocketed coil support core + foam (or latex) comfort layers. Best of both worlds: the support and airflow of coils with the pressure relief of foam. Now the dominant format for quality-focused brands.</p>
+      <p><strong>Latex:</strong> Rubber-based comfort layer, either natural (from rubber tree sap, what Avocado uses) or synthetic. Natural latex is bouncy, durable (15–25 years), breathable, and the most sustainable option. Slightly firmer and more responsive than memory foam.</p>
+
+      <h3>Certifications that actually matter</h3>
+      <p><strong>CertiPUR-US:</strong> Baseline certification for foam — confirms it's free from heavy metals, formaldehyde, and certain flame retardants. Most reputable brands have this. It's a floor, not a ceiling.</p>
+      <p><strong>GOTS (Global Organic Textile Standard):</strong> Covers cotton and wool — confirms organic farming and responsible processing. Meaningful.</p>
+      <p><strong>GOLS (Global Organic Latex Standard):</strong> For natural latex — confirms it's genuinely derived from organic rubber plantations. Very meaningful if you care about materials.</p>
+      <p><strong>GREENGUARD Gold:</strong> Confirms low chemical emissions into indoor air. Good for indoor air quality concerns.</p>
+      <p><strong>B Corporation:</strong> Certified by B Lab — company meets high standards for social and environmental performance, transparency, and accountability. Only Avocado holds this among the brands listed.</p>
+
+      <h3>On warranties</h3>
+      <p>Lifetime warranties sound impressive, but read the fine print: most only cover "sagging greater than 1 inch" and require you to prove it with photos. A 10-year warranty with clear terms is sometimes more useful. What matters most is whether the company has a reputation for actually honoring claims — WinkBed and Saatva both do.</p>
+
+      <h3>On trial periods</h3>
+      <p>100 nights (Casper, Helix, WinkBed, Saatva) is a reasonable minimum. Nectar's 365-night trial is genuinely exceptional. Avocado offers 365 nights on some models. Avoid any brand that won't let you return after at least 60 nights.</p>
+    </div>
+  </section>
+
+  <!-- =================== COMPARISON TABLE =================== -->
+  <section id="table">
+    <h2>Quick Comparison Table</h2>
+    <p style="color: var(--muted); font-family: system-ui, sans-serif; font-size: 0.88rem; margin-bottom: 12px;">Queen prices are approximate MSRP; sales are frequent. Ratings are synthesized from independent lab testing and expert reviews as of May 2026.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Brand / Model</th>
+            <th>Type</th>
+            <th>Queen Price</th>
+            <th>Back Pain</th>
+            <th>Durability</th>
+            <th>Cooling</th>
+            <th>Ethics / Eco</th>
+            <th>Trial</th>
+            <th>Warranty</th>
+            <th>Made In</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="brand">WinkBed <span class="our-pick">Top Pick</span></td>
+            <td>Hybrid</td>
+            <td class="price">~$1,800</td>
+            <td><span class="pill good">Excellent</span></td>
+            <td><span class="pill good">Excellent</span></td>
+            <td><span class="pill good">Good</span></td>
+            <td><span class="pill ok">Moderate</span></td>
+            <td>120 nights</td>
+            <td>Lifetime</td>
+            <td>USA</td>
+          </tr>
+          <tr>
+            <td class="brand">Saatva Classic</td>
+            <td>Hybrid (coil-on-coil)</td>
+            <td class="price">~$2,000</td>
+            <td><span class="pill good">Excellent</span></td>
+            <td><span class="pill good">Excellent</span></td>
+            <td><span class="pill good">Good</span></td>
+            <td><span class="pill ok">Moderate</span></td>
+            <td>365 nights</td>
+            <td>Lifetime</td>
+            <td>USA</td>
+          </tr>
+          <tr>
+            <td class="brand">Avocado Green <span class="our-pick">Eco Pick</span></td>
+            <td>Hybrid (latex)</td>
+            <td class="price">~$1,699</td>
+            <td><span class="pill good">Very Good</span></td>
+            <td><span class="pill good">Excellent</span></td>
+            <td><span class="pill good">Good</span></td>
+            <td><span class="pill good">Excellent</span></td>
+            <td>365 nights</td>
+            <td>25-year</td>
+            <td>USA (CA)</td>
+          </tr>
+          <tr>
+            <td class="brand">Helix (Midnight Luxe)</td>
+            <td>Hybrid</td>
+            <td class="price">~$2,200</td>
+            <td><span class="pill good">Very Good</span></td>
+            <td><span class="pill ok">Good</span></td>
+            <td><span class="pill ok">Moderate</span></td>
+            <td><span class="pill ok">Moderate</span></td>
+            <td>100 nights</td>
+            <td>15-year</td>
+            <td>USA</td>
+          </tr>
+          <tr>
+            <td class="brand">Purple (RestorePlus)</td>
+            <td>Hybrid (GelFlex Grid)</td>
+            <td class="price">~$2,200</td>
+            <td><span class="pill ok">Good</span></td>
+            <td><span class="pill good">Good</span></td>
+            <td><span class="pill good">Excellent</span></td>
+            <td><span class="pill ok">Moderate</span></td>
+            <td>100 nights</td>
+            <td>10-year</td>
+            <td>USA (UT)</td>
+          </tr>
+          <tr>
+            <td class="brand">Casper One / Wave Hybrid</td>
+            <td>Foam / Hybrid</td>
+            <td class="price">~$1,095–$2,795</td>
+            <td><span class="pill ok">Good</span></td>
+            <td><span class="pill ok">Good</span></td>
+            <td><span class="pill ok">Moderate</span></td>
+            <td><span class="pill poor">Limited</span></td>
+            <td>100 nights</td>
+            <td>10-year</td>
+            <td>USA / Mixed</td>
+          </tr>
+          <tr>
+            <td class="brand">Tuft &amp; Needle Original</td>
+            <td>All-foam</td>
+            <td class="price">~$700</td>
+            <td><span class="pill ok">Moderate</span></td>
+            <td><span class="pill ok">Moderate</span></td>
+            <td><span class="pill ok">Good</span></td>
+            <td><span class="pill ok">Moderate</span></td>
+            <td>100 nights</td>
+            <td>10-year</td>
+            <td>USA</td>
+          </tr>
+          <tr>
+            <td class="brand">Nectar Classic / Premier</td>
+            <td>All-foam / Hybrid</td>
+            <td class="price">~$700–$1,299</td>
+            <td><span class="pill ok">Good</span></td>
+            <td><span class="pill ok">Moderate</span></td>
+            <td><span class="pill poor">Fair</span></td>
+            <td><span class="pill poor">Limited</span></td>
+            <td>365 nights</td>
+            <td>Lifetime</td>
+            <td>China</td>
+          </tr>
+          <tr>
+            <td class="brand">Allswell</td>
+            <td>Hybrid</td>
+            <td class="price">~$350–$500</td>
+            <td><span class="pill poor">Fair</span></td>
+            <td><span class="pill ok">Moderate</span></td>
+            <td><span class="pill ok">Moderate</span></td>
+            <td><span class="pill poor">Poor</span></td>
+            <td>100 nights</td>
+            <td>10-year</td>
+            <td>USA (AZ)</td>
+          </tr>
+          <tr>
+            <td class="brand">Hästens (entry models)</td>
+            <td>Innerspring (natural materials)</td>
+            <td class="price">$10,000–$100,000+</td>
+            <td><span class="pill ok">Good</span></td>
+            <td><span class="pill good">Excellent</span></td>
+            <td><span class="pill good">Excellent</span></td>
+            <td><span class="pill good">Good</span></td>
+            <td>60 nights</td>
+            <td>25-year</td>
+            <td>Sweden</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout warn">
+      <strong>On "Lifetime" warranties:</strong> Saatva, WinkBed, and Nectar all offer lifetime warranties, but the terms differ. Saatva's and WinkBed's are the most consistently praised for actually being honored. Nectar's lifetime warranty has been flagged by some reviewers as harder to use in practice.
+    </div>
+  </section>
+
+  <!-- =================== BRAND CARDS =================== -->
+  <section id="brands">
+    <h2>Brand-by-Brand Breakdown</h2>
+
+    <!-- WINKBED -->
+    <div class="brand-card" id="winkbed">
+      <div class="brand-card-header">
+        <h3>WinkBed <span class="our-pick">Top Pick</span></h3>
+        <span class="sub">Luxury Hybrid · ~$1,800 Queen · winkbeds.com</span>
+      </div>
+      <div class="brand-card-body">
+        <p>WinkBed is made by WinkBeds, a small direct-to-consumer company that has quietly built one of the strongest reputations in independent testing. The Luxury Firm model scored a 9.79 out of 10 in NapLab's data-driven testing — the highest score the lab had ever recorded for a hybrid as of 2026. With around 9,200 reviews and a 4.8/5 average, it's not just a lab result: real-world owners back it up.</p>
+        <p>The construction is a multi-zone pocketed coil system with a Euro-pillow top. The zoned coils provide firmer support under the lumbar region and softer give at the shoulders — exactly what you want for back pain. The coil system is made with tempered steel for durability, and the Euro-pillow top gives it a luxurious feel without sacrificing support.</p>
+        <p>WinkBed comes in four firmness options: Softer, Luxury Firm, Firmer, and Plus (for heavier sleepers). The Luxury Firm is the most popular and suits the widest range of sleepers. If your partner can't articulate a preference, this is a strong starting point.</p>
+        <div class="attr-grid">
+          <div class="attr"><div class="label">Construction</div><div class="value">Pocketed coil hybrid, Euro-pillow top</div></div>
+          <div class="attr"><div class="label">Firmness Options</div><div class="value">4 (Softer to Plus)</div></div>
+          <div class="attr"><div class="label">Trial</div><div class="value">120 nights</div></div>
+          <div class="attr"><div class="label">Warranty</div><div class="value">Lifetime</div></div>
+          <div class="attr"><div class="label">Back Pain Rating</div><div class="value"><span class="pill good">Excellent</span></div></div>
+          <div class="attr"><div class="label">Durability</div><div class="value"><span class="pill good">Excellent</span></div></div>
+          <div class="attr"><div class="label">Made In</div><div class="value">USA</div></div>
+          <div class="attr"><div class="label">Certifications</div><div class="value">CertiPUR-US, OEKO-TEX</div></div>
+        </div>
+        <div class="pc-grid">
+          <div class="pros">
+            <h4>Strengths</h4>
+            <ul class="bullet">
+              <li>Top 1% in independent lab performance testing</li>
+              <li>Excellent zoned lumbar support — great for back pain</li>
+              <li>Genuine lifetime warranty with a track record of being honored</li>
+              <li>Four firmness options let you choose with confidence</li>
+              <li>Strong edge support — easy to get in and out of bed</li>
+              <li>120-night trial — enough time to really know</li>
+              <li>Made in the USA by a small, customer-focused company</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Weaknesses</h4>
+            <ul class="bullet">
+              <li>No split-firmness option for couples with different needs</li>
+              <li>Modest sustainability disclosures — not a certified organic brand</li>
+              <li>Less name recognition; fewer retail showrooms to test it in person</li>
+              <li>Ships compressed; some assembly required for the Euro-pillow setup</li>
+            </ul>
+          </div>
+        </div>
+        <div class="our-take"><strong>Our take:</strong> WinkBed is the single strongest recommendation for your situation. It combines the best independent test scores with real-world satisfaction, a genuine lifetime warranty, and zoned support that directly addresses back and joint pain. The only meaningful downside is it's not an organic mattress. If sustainability is paramount, look at Avocado instead — but on pure sleep quality and durability, WinkBed is hard to beat.</div>
+      </div>
+    </div>
+
+    <!-- SAATVA -->
+    <div class="brand-card" id="saatva">
+      <div class="brand-card-header">
+        <h3>Saatva Classic</h3>
+        <span class="sub">Luxury Coil-on-Coil Hybrid · ~$1,995–$2,495 Queen · saatva.com</span>
+      </div>
+      <div class="brand-card-body">
+        <p>Saatva is the closest thing to a traditional luxury hotel mattress in the online direct-to-consumer space. Their Classic uses a true coil-on-coil construction: a base layer of offset coils (884 in the queen) plus a second layer of individually wrapped micro-coils (416 in the queen) on top. This is the same architecture you'd find in high-end department-store mattresses, but without the showroom markup.</p>
+        <p>After eight years of simulated use in third-party lab testing, the Saatva earned a perfect 5/5 durability rating — the kind of result that backs up their lifetime warranty. The mattress edges barely sag with repeated use, another durability signal. Saatva also offers white-glove delivery and setup (including old mattress removal), which no other brand in this list matches at this price point.</p>
+        <p>One note: Saatva uses eco-friendly materials and is made in one of 19 US factories, but doesn't hold as many third-party certifications as Avocado. Their organic wool and natural latex are certified, but overall the sustainability story is less comprehensive than B-Corp companies.</p>
+        <div class="attr-grid">
+          <div class="attr"><div class="label">Construction</div><div class="value">Coil-on-coil (offset + pocketed)</div></div>
+          <div class="attr"><div class="label">Firmness Options</div><div class="value">3 (Plush Soft, Luxury Firm, Firm)</div></div>
+          <div class="attr"><div class="label">Trial</div><div class="value">365 nights</div></div>
+          <div class="attr"><div class="label">Warranty</div><div class="value">Lifetime</div></div>
+          <div class="attr"><div class="label">Back Pain Rating</div><div class="value"><span class="pill good">Excellent</span></div></div>
+          <div class="attr"><div class="label">Durability</div><div class="value"><span class="pill good">Excellent (5/5 lab)</span></div></div>
+          <div class="attr"><div class="label">Made In</div><div class="value">USA (19 US factories)</div></div>
+          <div class="attr"><div class="label">Delivery</div><div class="value">White-glove (included)</div></div>
+        </div>
+        <div class="pc-grid">
+          <div class="pros">
+            <h4>Strengths</h4>
+            <ul class="bullet">
+              <li>Coil-on-coil construction is familiar and exceptionally durable</li>
+              <li>Best-in-class white-glove delivery and old mattress removal</li>
+              <li>Perfect 5/5 durability in independent lab testing</li>
+              <li>Year-long trial period removes all the guesswork</li>
+              <li>Three firmness options to suit different preferences</li>
+              <li>Excellent lumbar support built into the Luxury Firm model</li>
+              <li>Lifetime warranty with solid track record</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Weaknesses</h4>
+            <ul class="bullet">
+              <li>Not as strong on sustainability certifications as Avocado</li>
+              <li>Heavier and harder to move than compressed mattresses</li>
+              <li>No split-firmness option</li>
+              <li>Slightly warmer than latex hybrids due to foam comfort layer</li>
+            </ul>
+          </div>
+        </div>
+        <div class="our-take"><strong>Our take:</strong> Saatva is the most "traditional luxury" option in this list that doesn't cost a fortune. If you loved your coil springs and want an upgrade that feels familiar but higher quality — with the convenience of online ordering plus real white-glove service — Saatva is an excellent choice. The 365-night trial is generous enough that you can take your time deciding. A close second to WinkBed overall, and arguably better for those who want recognizable construction.</div>
+      </div>
+    </div>
+
+    <!-- AVOCADO -->
+    <div class="brand-card" id="avocado">
+      <div class="brand-card-header">
+        <h3>Avocado Green Mattress <span class="our-pick">Eco Pick</span></h3>
+        <span class="sub">Organic Latex Hybrid · ~$1,699 Queen (no pillowtop) · avocadogreenmattress.com</span>
+      </div>
+      <div class="brand-card-body">
+        <p>Avocado is the gold standard for mattress sustainability, and it's not close. They are a Certified B Corporation (and a "Best for World" winner within that program), Climate Neutral Certified, and members of 1% for the Planet, donating 1% of all revenue to environmental nonprofits. Their entire mattress — not just certain components — is GOTS-certified for organic cotton and wool, and GOLS-certified for organic latex. They also own their own supply chain, from the rubber farms in India to the California assembly facility. This is genuinely unusual and meaningful.</p>
+        <p>The mattress itself is a latex hybrid: a pocketed coil base with up to three inches of organic Dunlop latex on top. Latex is naturally bouncy (more responsive than memory foam), breathable, and extremely durable — Avocado backs theirs with a 25-year warranty, one of the longest in the industry. Natural latex doesn't develop the sags and impressions that memory foam is prone to.</p>
+        <p>For back pain, Avocado's zoned coil system (seven ergonomic zones) provides differentiated support across the body. The firmer Dunlop latex also means you're less likely to sink too deep, which is often the cause of morning back pain.</p>
+        <div class="attr-grid">
+          <div class="attr"><div class="label">Construction</div><div class="value">Organic latex + pocketed coils</div></div>
+          <div class="attr"><div class="label">Certifications</div><div class="value">GOTS, GOLS, GREENGUARD Gold, B Corp, Climate Neutral</div></div>
+          <div class="attr"><div class="label">Trial</div><div class="value">365 nights</div></div>
+          <div class="attr"><div class="label">Warranty</div><div class="value">25-year (best in class)</div></div>
+          <div class="attr"><div class="label">Back Pain Rating</div><div class="value"><span class="pill good">Very Good</span></div></div>
+          <div class="attr"><div class="label">Durability</div><div class="value"><span class="pill good">Excellent (latex lasts 15–25 yrs)</span></div></div>
+          <div class="attr"><div class="label">Made In</div><div class="value">USA (California)</div></div>
+          <div class="attr"><div class="label">Feel</div><div class="value">Responsive / bouncy (not slow-sink)</div></div>
+        </div>
+        <div class="pc-grid">
+          <div class="pros">
+            <h4>Strengths</h4>
+            <ul class="bullet">
+              <li>The most comprehensively certified organic mattress available</li>
+              <li>B Corporation with owned supply chain — not just marketing claims</li>
+              <li>25-year warranty backed by genuinely durable materials</li>
+              <li>Natural latex is cooler and more responsive than foam</li>
+              <li>365-night trial period</li>
+              <li>Zoned coil system for back and joint support</li>
+              <li>No off-gassing concerns — GREENGUARD Gold certified</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Weaknesses</h4>
+            <ul class="bullet">
+              <li>Latex feel is distinctive — bouncy rather than slow-contouring; some find it less "plush"</li>
+              <li>Heavy (100–120 lbs for queen) — hard to move or rotate</li>
+              <li>Pillow-top version adds ~$400, which you'll probably want</li>
+              <li>No split-firmness option</li>
+              <li>Latex can be warm for very hot sleepers (though better than foam)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="our-take"><strong>Our take:</strong> If sustainability and corporate ethics are near the top of your priorities, Avocado is the clear choice — and unlike many "green" brands, their certifications are real and independently verified. The mattress also genuinely performs well. The main caveat is the latex feel: if you've only ever slept on innerspring or foam, it will take adjustment. Go with the pillowtop version for added softness, and commit to the full trial period.</div>
+      </div>
+    </div>
+
+    <!-- HELIX -->
+    <div class="brand-card" id="helix">
+      <div class="brand-card-header">
+        <h3>Helix Sleep</h3>
+        <span class="sub">Customizable Hybrid · ~$1,000–$2,500 Queen · helixsleep.com</span>
+      </div>
+      <div class="brand-card-body">
+        <p>Helix's differentiating feature is customization. They offer 11 distinct mattress models across three price tiers (Standard, Luxe, Elite), each tuned for a specific sleep profile. Their online quiz asks about sleep position, body weight, firmness preference, and whether you sleep hot or cold — and recommends a model based on your answers. More importantly for couples, Helix offers a "split" queen or king where each side is a different model. If your partner is picky but can't articulate why, this is the most risk-managed approach: you each take the quiz independently, and the mattress delivers genuinely different feels on each side.</p>
+        <p>For back pain specifically, the Helix Midnight Luxe is consistently praised for its zoned lumbar support and pressure relief. The "Luxe" tier adds a pillow-top layer and enhanced lumbar zone. All Helix beds use pocketed coils over a foam base.</p>
+        <p>Helix uses sustainably sourced materials including organic cotton, ethical wool, and sustainably farmed latex on some models, though they don't hold B Corp status and their certifications are more selective than Avocado's.</p>
+        <div class="attr-grid">
+          <div class="attr"><div class="label">Construction</div><div class="value">Pocketed coil hybrid (11 models)</div></div>
+          <div class="attr"><div class="label">Best for Couples</div><div class="value">Split-firmness queen available</div></div>
+          <div class="attr"><div class="label">Trial</div><div class="value">100 nights</div></div>
+          <div class="attr"><div class="label">Warranty</div><div class="value">15-year</div></div>
+          <div class="attr"><div class="label">Back Pain</div><div class="value"><span class="pill good">Very Good (Midnight Luxe)</span></div></div>
+          <div class="attr"><div class="label">Made In</div><div class="value">USA</div></div>
+        </div>
+        <div class="pc-grid">
+          <div class="pros">
+            <h4>Strengths</h4>
+            <ul class="bullet">
+              <li>Split-firmness option is a genuine differentiator for couples</li>
+              <li>Wide model range means a good fit for nearly every sleep style</li>
+              <li>Quiz-based recommendation reduces guesswork</li>
+              <li>Midnight Luxe is consistently top-rated for back pain relief</li>
+              <li>Good motion isolation for couples</li>
+              <li>Made in the USA</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Weaknesses</h4>
+            <ul class="bullet">
+              <li>15-year warranty is shorter than Saatva, WinkBed, or Avocado</li>
+              <li>Can be expensive once you add Luxe tier and split options</li>
+              <li>Sustainability story less robust than Avocado</li>
+              <li>Confusing model lineup — easy to pick the wrong one</li>
+            </ul>
+          </div>
+        </div>
+        <div class="our-take"><strong>Our take:</strong> Helix is the right answer if the uncertainty around your partner's preferences is your biggest concern. The split-queen option means you don't have to guess and compromise — each side can be genuinely what each person wants. Go straight to the Midnight Luxe or Twilight for back pain relief. The quiz is helpful, but the Midnight Luxe is the safest bet for someone who sleeps on their back or side with joint concerns.</div>
+      </div>
+    </div>
+
+    <!-- PURPLE -->
+    <div class="brand-card" id="purple">
+      <div class="brand-card-header">
+        <h3>Purple</h3>
+        <span class="sub">GelFlex Grid Hybrid · ~$1,200–$3,000 Queen · purple.com</span>
+      </div>
+      <div class="brand-card-body">
+        <p>Purple is the most technologically distinct mattress in this list. Instead of foam or latex, their comfort layer is a proprietary hyper-elastic gel polymer grid — a lattice of open cells that collapse under pressure points (like hips and shoulders) while staying rigid at lighter areas (like the lower back). The result is simultaneous pressure relief and support, plus over 1,800 air channels for cooling. Purple's cooling performance is the best in this category.</p>
+        <p>The feel is unlike anything else you've slept on — not foam-slow, not latex-bouncy. It's often described as "floating" or "suspended." This is a polarizing quality: people either love it or find it feels odd. Purple updated the GelFlex Grid formulation in 2025 with a slightly denser polymer mix for improved durability, addressing an earlier critique.</p>
+        <p>Purple offers several tiers: the all-foam Purple Mattress (entry), and several hybrid Restore models that pair the grid with pocketed coils for better support and edge performance. For back pain with joint concerns, the Restore Plus or Premier is worth the extra cost over the entry model.</p>
+        <div class="attr-grid">
+          <div class="attr"><div class="label">Comfort Layer</div><div class="value">Hyper-elastic GelFlex Grid (proprietary)</div></div>
+          <div class="attr"><div class="label">Best Feature</div><div class="value">Cooling (best in class)</div></div>
+          <div class="attr"><div class="label">Trial</div><div class="value">100 nights</div></div>
+          <div class="attr"><div class="label">Warranty</div><div class="value">10-year</div></div>
+          <div class="attr"><div class="label">Cooling</div><div class="value"><span class="pill good">Excellent (perfect score)</span></div></div>
+          <div class="attr"><div class="label">Made In</div><div class="value">USA (Utah)</div></div>
+        </div>
+        <div class="pc-grid">
+          <div class="pros">
+            <h4>Strengths</h4>
+            <ul class="bullet">
+              <li>Best-in-class cooling — the grid is inherently breathable</li>
+              <li>Unique simultaneous pressure relief + support that foam can't match</li>
+              <li>Good for hot sleepers and those with pressure point pain</li>
+              <li>Proprietary grid is resistant to compression over time</li>
+              <li>Made in USA</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Weaknesses</h4>
+            <ul class="bullet">
+              <li>The feel is genuinely unusual — you really need to try it or commit to the trial</li>
+              <li>10-year warranty is shorter than top competitors</li>
+              <li>Sustainability story is limited — limited certifications, no B Corp</li>
+              <li>Entry-level all-foam Purple is not recommended — go straight to a hybrid</li>
+              <li>Higher-end Restore models are expensive for what you get vs. WinkBed or Saatva</li>
+            </ul>
+          </div>
+        </div>
+        <div class="our-take"><strong>Our take:</strong> Purple is the most interesting mattress in the lineup, and if you sleep very hot or have specific pressure-point pain in the hips or shoulders, it might be worth the trial. But given that neither of you knows what your partner wants, the unusual feel adds risk. Our suggestion: consider Purple only if you or your partner have specifically struggled with sleeping too hot, or if you want to try something genuinely novel. Otherwise, WinkBed or Saatva are safer bets for back pain relief and long-term satisfaction.</div>
+      </div>
+    </div>
+
+    <!-- CASPER -->
+    <div class="brand-card" id="casper">
+      <div class="brand-card-header">
+        <h3>Casper</h3>
+        <span class="sub">All-foam &amp; Hybrid · ~$1,095–$3,295 Queen · casper.com</span>
+      </div>
+      <div class="brand-card-body">
+        <p>Casper is the original mattress-in-a-box brand and deserves credit for proving the model works. The company has evolved considerably — their current lineup spans from the budget Element to the flagship Wave Hybrid Snow, a temperature-regulating hybrid with their most sophisticated zoned support system.</p>
+        <p>For your needs, skip the all-foam entry-level options. The Wave Hybrid is Casper's strongest performer: a zoned pocketed-coil hybrid with foam comfort layers and a Snow cooling treatment. Independent testing rates it well for back and side sleepers, with the zoned system keeping the lumbar region firmer than the hips and shoulders.</p>
+        <p>Casper's sustainability and ethics profile is the weakest of the premium brands: limited third-party certifications, a history of significant corporate layoffs, and manufacturing that's partially overseas. They're not a bad company, but they're more focused on product than purpose compared to Avocado or even Saatva.</p>
+        <div class="attr-grid">
+          <div class="attr"><div class="label">Best Model</div><div class="value">Wave Hybrid (for back pain)</div></div>
+          <div class="attr"><div class="label">Trial</div><div class="value">100 nights</div></div>
+          <div class="attr"><div class="label">Warranty</div><div class="value">10-year</div></div>
+          <div class="attr"><div class="label">Ethics/Eco</div><div class="value"><span class="pill poor">Limited</span></div></div>
+          <div class="attr"><div class="label">Made In</div><div class="value">USA / Mixed (varies by model)</div></div>
+        </div>
+        <div class="pc-grid">
+          <div class="pros">
+            <h4>Strengths</h4>
+            <ul class="bullet">
+              <li>Well-established brand with consistent quality across models</li>
+              <li>Wave Hybrid's zoned support is genuinely effective for back pain</li>
+              <li>Good motion isolation — partner movement is minimized</li>
+              <li>Wide availability — easier to try in store than smaller brands</li>
+              <li>Snow cooling treatment on premium models</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Weaknesses</h4>
+            <ul class="bullet">
+              <li>Limited sustainability certifications — no B Corp, no GOTS</li>
+              <li>History of significant corporate layoffs raises employee care concerns</li>
+              <li>10-year warranty is standard, not outstanding</li>
+              <li>You pay a brand premium — WinkBed or Saatva deliver more mattress per dollar</li>
+              <li>Lower-end models (Element, One) are not recommended for back pain</li>
+            </ul>
+          </div>
+        </div>
+        <div class="our-take"><strong>Our take:</strong> Casper is solid — not bad by any measure — but also not the best value or the most ethical choice in this list. Given your priorities (quality that lasts, ethical company), it falls toward the middle of the pack. If you specifically want a brand you can try in a physical showroom, Casper's retail presence makes that easier. Otherwise, WinkBed or Saatva deliver better performance at a similar price without the brand premium.</div>
+      </div>
+    </div>
+
+    <!-- TUFT & NEEDLE -->
+    <div class="brand-card" id="tuft">
+      <div class="brand-card-header">
+        <h3>Tuft &amp; Needle</h3>
+        <span class="sub">All-foam / Hybrid · ~$700–$1,500 Queen · tuftandneedle.com</span>
+      </div>
+      <div class="brand-card-body">
+        <p>Tuft &amp; Needle was founded in 2012 by two engineers who were frustrated with mattress industry opacity and overpricing. The Original is their flagship — a no-frills, well-made all-foam mattress using their proprietary T&amp;N Adaptive foam, which is more responsive and breathable than traditional memory foam. It's the honest, straightforward option at an honest price.</p>
+        <p>The Original has been consistently rated as excellent value for the money. However, "value" is doing a lot of work here: it's a good mattress for the price, but durability questions surface around the 3–4 year mark for some owners. For someone who wants a mattress that lasts 10+ years, the Tuft &amp; Needle Mint or the Hybrid model (which uses pocketed coils) are significantly better bets than the Original.</p>
+        <p>For back pain specifically, T&amp;N performs moderately — better than no support, but the medium-firm all-foam construction doesn't have the zoned support architecture of WinkBed or Saatva. Heavier back sleepers (230+ lbs) should look elsewhere. Tuft &amp; Needle is owned by Serta Simmons, one of the largest traditional mattress companies, which adds distribution and stability, though it also means it's a corporate subsidiary now rather than an independent brand.</p>
+        <div class="attr-grid">
+          <div class="attr"><div class="label">Best Model</div><div class="value">Mint or Hybrid (over Original)</div></div>
+          <div class="attr"><div class="label">Trial</div><div class="value">100 nights</div></div>
+          <div class="attr"><div class="label">Warranty</div><div class="value">10-year</div></div>
+          <div class="attr"><div class="label">Back Pain</div><div class="value"><span class="pill ok">Moderate</span></div></div>
+          <div class="attr"><div class="label">Price</div><div class="value">Best value in this tier</div></div>
+          <div class="attr"><div class="label">Made In</div><div class="value">USA</div></div>
+        </div>
+        <div class="pc-grid">
+          <div class="pros">
+            <h4>Strengths</h4>
+            <ul class="bullet">
+              <li>Excellent value — good quality at a fair price</li>
+              <li>T&amp;N Adaptive foam sleeps cooler than traditional memory foam</li>
+              <li>Simple, clean design without unnecessary complexity</li>
+              <li>Good for side and back sleepers under 230 lbs</li>
+              <li>Made in the USA</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Weaknesses</h4>
+            <ul class="bullet">
+              <li>Durability questions arise around 3–4 years for some owners</li>
+              <li>No zoned support — not ideal for significant back pain</li>
+              <li>All-foam Original not recommended for heavier sleepers</li>
+              <li>Owned by Serta Simmons — no longer an independent brand</li>
+              <li>Limited sustainability certifications</li>
+            </ul>
+          </div>
+        </div>
+        <div class="our-take"><strong>Our take:</strong> Your friends who have Tuft &amp; Needle and like it are probably lighter sleepers on their sides or backs. It's a good mattress for what it is. But given your emphasis on durability ("quality that lasts") and back pain concerns, we'd push you up to the Hybrid model at minimum, or redirect you to WinkBed or Saatva for the long term. T&amp;N is the right recommendation for a guest room or someone on a tighter budget.</div>
+      </div>
+    </div>
+
+    <!-- NECTAR -->
+    <div class="brand-card" id="nectar">
+      <div class="brand-card-header">
+        <h3>Nectar</h3>
+        <span class="sub">All-foam &amp; Hybrid · ~$700–$1,299 Queen · nectarsleep.com</span>
+      </div>
+      <div class="brand-card-body">
+        <p>Nectar is the budget-to-mid-range competitor to Casper and Tuft &amp; Needle, and its most compelling feature is the 365-night trial — a full year to decide, which is the most generous in the industry. Their "forever warranty" (lifetime) sounds impressive, though some reviewers report it's harder to use in practice than WinkBed's or Saatva's.</p>
+        <p>The classic Nectar is an all-foam memory foam mattress with a gel infusion for cooling. Memory foam conforms slowly and deeply, which many people find comfortable but others find "stuck" or warm. The Nectar Premier adds a hybrid option with pocketed coils, significantly improving durability and back support.</p>
+        <p>In 2026, sleep experts rank the Nectar Premier as one of the better options for hip pain, shoulder pain, and back pain in the mid-range segment. However, the classic all-foam version is likely to show wear within 5–7 years — not impressive if you're buying for the long term. Nectar is manufactured in China, which matters if "made in USA" or supply chain transparency is important to you.</p>
+        <div class="attr-grid">
+          <div class="attr"><div class="label">Best Model</div><div class="value">Premier or Premier Hybrid</div></div>
+          <div class="attr"><div class="label">Trial</div><div class="value">365 nights (best in class)</div></div>
+          <div class="attr"><div class="label">Warranty</div><div class="value">Lifetime (read fine print)</div></div>
+          <div class="attr"><div class="label">Back Pain</div><div class="value"><span class="pill ok">Good (Premier Hybrid)</span></div></div>
+          <div class="attr"><div class="label">Made In</div><div class="value">China</div></div>
+          <div class="attr"><div class="label">Cooling</div><div class="value"><span class="pill poor">Fair (all-foam traps heat)</span></div></div>
+        </div>
+        <div class="pc-grid">
+          <div class="pros">
+            <h4>Strengths</h4>
+            <ul class="bullet">
+              <li>365-night trial — most generous in the industry</li>
+              <li>Premier Hybrid is a solid mid-range performer for back pain</li>
+              <li>Memory foam delivers excellent motion isolation</li>
+              <li>Affordable price point relative to performance</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Weaknesses</h4>
+            <ul class="bullet">
+              <li>Memory foam traps heat — not ideal if you sleep warm</li>
+              <li>Lifetime warranty reported as harder to use in practice</li>
+              <li>Classic all-foam version may show wear by year 5–6</li>
+              <li>Made in China — limited supply chain transparency</li>
+              <li>No meaningful sustainability certifications</li>
+            </ul>
+          </div>
+        </div>
+        <div class="our-take"><strong>Our take:</strong> Nectar's 365-night trial is genuinely valuable and hard to match. But given your priorities — quality, longevity, and ethical/sustainable sourcing — Nectar comes up short on all three compared to the top tier. The Hybrid is meaningfully better than the foam version. If the trial period is the most important thing and budget is tight, Nectar Premier Hybrid is a reasonable choice. But if you're willing to spend up, you'll get more longevity and better ethics from WinkBed, Saatva, or Avocado.</div>
+      </div>
+    </div>
+
+    <!-- ALLSWELL -->
+    <div class="brand-card" id="allswell">
+      <div class="brand-card-header">
+        <h3>Allswell</h3>
+        <span class="sub">Budget Hybrid · ~$350–$500 Queen · allswellhome.com (Walmart)</span>
+      </div>
+      <div class="brand-card-body">
+        <p>Allswell is Walmart's premium mattress brand, launched in 2018 and manufactured in Arizona by Brooklyn Bedding (one of the more respected domestic mattress makers). The construction is a gel memory foam + pocketed coil hybrid — more than you'd expect for the price. A queen runs $350–$500, making it legitimately the budget option in this list.</p>
+        <p>At this price point, it is genuinely good. For someone who needs a guest room mattress, a starter mattress, or wants to spend as little as possible to get something adequate — Allswell works. The 100-night trial and 10-year warranty are standard and respected.</p>
+        <p>For your primary mattress with back pain concerns and a desire for a product that lasts — Allswell is not the right choice. The foam layers will compress faster than premium alternatives, and the coil gauge is lighter than you'd find in WinkBed or Saatva. Walmart's ethics and sustainability practices are also the least aligned with your stated values.</p>
+        <div class="attr-grid">
+          <div class="attr"><div class="label">Construction</div><div class="value">Gel foam + pocketed coils</div></div>
+          <div class="attr"><div class="label">Trial</div><div class="value">100 nights</div></div>
+          <div class="attr"><div class="label">Warranty</div><div class="value">10-year</div></div>
+          <div class="attr"><div class="label">Made In</div><div class="value">USA (Arizona)</div></div>
+          <div class="attr"><div class="label">Back Pain</div><div class="value"><span class="pill poor">Fair</span></div></div>
+        </div>
+        <div class="pc-grid">
+          <div class="pros">
+            <h4>Strengths</h4>
+            <ul class="bullet">
+              <li>Outstanding value — hybrid construction under $500</li>
+              <li>Made in the USA (Brooklyn Bedding partnership)</li>
+              <li>Adequate for lighter sleepers without significant pain concerns</li>
+              <li>Good starter or guest mattress</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Weaknesses</h4>
+            <ul class="bullet">
+              <li>Not recommended for primary use with back pain</li>
+              <li>Durability limited compared to premium options</li>
+              <li>Walmart ethics/sustainability profile is the weakest in this list</li>
+              <li>Lighter coil gauge and foam density than premium competitors</li>
+            </ul>
+          </div>
+        </div>
+        <div class="our-take"><strong>Our take:</strong> Allswell is not right for your primary bed given your priorities. It's an honest, decent budget mattress — genuinely better than most at this price. But you said you don't want to buy cheap and replace it; Allswell is more likely to need replacement in 5 years than to last a decade. Keep it in mind if you ever need a guest room bed.</div>
+      </div>
+    </div>
+
+    <!-- HASTENS -->
+    <div class="brand-card" id="hastens">
+      <div class="brand-card-header">
+        <h3>Hästens</h3>
+        <span class="sub">Luxury Natural Innerspring · ~$10,000–$100,000+ Queen · hastens.com</span>
+      </div>
+      <div class="brand-card-body">
+        <p>Hästens is a 170-year-old Swedish company, fifth-generation family-owned, that makes every mattress by hand in Köping, Sweden. The materials are genuinely exceptional: horse hair, natural cotton, wool, and flax — all natural, all sourced with care. The craftsmanship is real and measurable. This is not marketing; if you pay $35,000 for a Hästens, you are getting a genuinely extraordinary object.</p>
+        <p>The company takes pride in employee practices and fair wages — this is a company that has been doing things the right way for a long time, not because it's trendy but because it's part of their identity.</p>
+        <p>The honest assessment: there is no clinical evidence that a $35,000 Hästens produces better sleep outcomes, better recovery, or better health than a well-made $2,500 mattress. Expert reviewers consistently note that beyond a certain quality threshold, you're paying for longevity, exclusivity, and the experience of owning an extraordinary object. Customer reviews are polarized — some call it life-changing; others find the horse hair uncomfortable for everyday use.</p>
+        <p>Hästens mattresses are expected to last 25–50+ years with proper care. If amortized over 40 years, a $35,000 mattress costs about $875/year — not absurd by luxury goods standards, but still far above any other option here on an absolute basis.</p>
+        <div class="attr-grid">
+          <div class="attr"><div class="label">Construction</div><div class="value">Handmade natural materials (horsehair, wool, cotton)</div></div>
+          <div class="attr"><div class="label">Trial</div><div class="value">60 nights</div></div>
+          <div class="attr"><div class="label">Warranty</div><div class="value">25-year</div></div>
+          <div class="attr"><div class="label">Made In</div><div class="value">Sweden (all beds)</div></div>
+          <div class="attr"><div class="label">Ethics</div><div class="value"><span class="pill good">Excellent (heritage company)</span></div></div>
+          <div class="attr"><div class="label">Price</div><div class="value">Entry ~$10,000, flagship ~$100,000+</div></div>
+        </div>
+        <div class="pc-grid">
+          <div class="pros">
+            <h4>Strengths</h4>
+            <ul class="bullet">
+              <li>Genuine craftsmanship — every mattress handmade in Sweden</li>
+              <li>Natural, non-toxic materials throughout</li>
+              <li>Excellent company ethics and employee practices (170-year track record)</li>
+              <li>Expected lifespan of 25–50 years with proper care</li>
+              <li>Unique experience and status as an heirloom object</li>
+            </ul>
+          </div>
+          <div class="cons">
+            <h4>Weaknesses</h4>
+            <ul class="bullet">
+              <li>Extreme cost with no clinically proven sleep advantage over premium alternatives</li>
+              <li>Horse hair toppers polarizing — some find them uncomfortable</li>
+              <li>60-night trial is the shortest in this list</li>
+              <li>Requires specific care and maintenance</li>
+              <li>Must be purchased at a showroom — no online ordering</li>
+            </ul>
+          </div>
+        </div>
+        <div class="our-take"><strong>Our take:</strong> Hästens is genuinely extraordinary — and genuinely hard to justify on value grounds unless budget is truly no object. Their company ethics are excellent, materials are real, and the craftsmanship is unmatched. But you specifically said you don't want to pay just for brand and marketing. Hästens is partly that — you are paying for a unique experience and a legacy brand. A WinkBed or Avocado will give you 95% of the sleep quality for 5–10% of the price. Consider Hästens only if you want to own something you'll pass down, or if you've genuinely exhausted every other option and still can't sleep well.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== BRANDS WORTH KNOWING =================== -->
+  <section id="extras">
+    <h2>Other Brands Worth Knowing About</h2>
+    <div class="summary-box">
+      <h3>Birch by Helix</h3>
+      <p>Birch is Helix's organic mattress brand — natural latex hybrid with GOTS-certified organic cotton and wool, and OEKO-TEX certified. Think of it as Avocado's closest competitor at a slightly lower price point (~$1,499 queen). 100-night trial, 25-year warranty. If you like the idea of Avocado but want to compare, Birch is worth a look. Made in USA.</p>
+
+      <h3>Nolah Natural</h3>
+      <p>A Certified B Corporation (like Avocado) using natural Talalay latex, organic wool, and cotton. Talalay latex is slightly softer and more uniform than Dunlop. Good for pressure point relief. ~$1,699 queen, 120-night trial, lifetime warranty. A strong organic alternative that gets less attention than Avocado but deserves consideration.</p>
+
+      <h3>Tempur-Pedic</h3>
+      <p>The original memory foam mattress brand, now a premium legacy company (owned by Sealy). TEMPUR material is proprietary and genuinely different from standard memory foam — more dense, slower to recover, excellent pressure relief. Durability is strong. The ProAdapt and LuxeAdapt are their best models for back pain. Downsides: expensive ($2,500–$5,000 queen), sleeps warm, and their sustainability story is limited. Worth trying in store given widespread availability.</p>
+
+      <h3>Saatva Rx</h3>
+      <p>Saatva's medical-grade mattress, specifically designed for people with chronic back pain, herniated discs, or sciatica. Uses a unique "micro coil layer" over the pocketed coils for additional conforming support. ~$3,295 queen. If back pain is serious and ongoing, this is worth the premium over the Classic.</p>
+
+      <h3>Brooklyn Bedding Signature Hybrid</h3>
+      <p>Brooklyn Bedding is the factory behind Allswell, but their own brand is notably better. The Signature Hybrid is a well-reviewed direct competitor to Helix and WinkBed at a slightly lower price point (~$1,300 queen). Three firmness options, strong durability, made in USA (Phoenix, AZ). Worth considering if you want to save some money without sacrificing much quality.</p>
+    </div>
+  </section>
+
+  <!-- =================== BUYING TIPS =================== -->
+  <section id="buying">
+    <h2>Buying Tips &amp; What to Ignore</h2>
+    <div class="summary-box">
+      <h3>Trial periods are your most important feature</h3>
+      <p>The single most important thing you can do is buy from a brand with a 100+ night trial and actually commit to sleeping on it for 30+ nights before deciding. Your body takes time to adjust to a new mattress. If you return within the first week because it "feels weird," you've learned nothing. Sleep on it for a full month, then evaluate how your back and joints feel in the morning.</p>
+
+      <h3>Firmness is less important than support</h3>
+      <p>People fixate on "firm vs. soft," but what actually matters is whether the mattress keeps your spine in neutral alignment in your normal sleep position. A medium mattress can be more supportive for some people than a "firm" mattress, depending on body weight and sleep position. If you can, try both options from whichever brand you choose.</p>
+
+      <h3>What to ignore</h3>
+      <p>Ignore "exclusive" foam names (CoolSleep Pro, AirFlex, TempCloud) — these are marketing terms for variants of polyfoam or memory foam. Ignore thread counts for covers. Ignore celebrity endorsements. Ignore "clinically proven" claims unless they cite peer-reviewed research (almost none do). Ignore "MSRP" prices — nearly all these brands run perpetual "sales" at 20–30% off; that is the real price.</p>
+
+      <h3>On pricing and "sales"</h3>
+      <p>Nearly every brand in this list runs perpetual promotions (Memorial Day, Labor Day, Presidents' Day, Black Friday, "limited time offers" that are neither limited nor time-sensitive). The best strategy: identify your top 2–3 picks and set a price alert. You'll almost certainly catch a sale within 30–60 days. Do not feel urgency.</p>
+
+      <h3>For your specific situation (one easy sleeper, one picky but unspecified)</h3>
+      <p>Option A: Buy a WinkBed Luxury Firm or Saatva Luxury Firm and commit to the trial. These hit the widest range of sleepers. Option B: Take the Helix quiz separately and get a split queen — the split option adds about $100–150 and removes the guesswork entirely. Option C: If sustainability is paramount, get the Avocado Green with pillowtop. The latex feel is different from what you're used to, but give it 30 nights.</p>
+
+      <h3>Don't forget the foundation</h3>
+      <p>All the brands above work best on a solid platform or slatted bed frame with slats no more than 3 inches apart. Most of them will void the warranty if used on an old box spring or a frame that sags. If your current foundation is old, budget for a new one.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Research compiled May 2026. Prices are approximate MSRP and subject to change. Trial periods and warranty terms are subject to each brand's current policies — always verify before purchasing. Independent testing sources include Sleep Foundation, Mattress Clarity, NapLab, Sleep Doctor, Tom's Guide, Consumer Reports, and Mattress Nerd.</p>
+  </footer>
+
+</div>
+</body>
+</html>
