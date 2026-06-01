@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cannon Beach Bachelor Weekend · Oct 2–5</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  :root{
+    --sand:#f4ece0; --ink:#2b2622; --rock:#3a4a54; --sea:#2e6e7e;
+    --sun:#c9742e; --moss:#5f7a4a; --wine:#7a3245; --line:#d8cdbb; --card:#fffdf9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    color:var(--ink);background:var(--sand);line-height:1.6;}
+  header{background:linear-gradient(135deg,#3a4a54,#2e6e7e);color:#fff;padding:46px 24px 40px;text-align:center;}
+  header h1{margin:0 0 6px;font-size:2.2rem;letter-spacing:.5px;}
+  header p{margin:4px 0;opacity:.92;}
+  .tag{display:inline-block;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);
+    padding:3px 11px;border-radius:20px;font-size:.78rem;margin:5px 4px 0;}
+  nav{position:sticky;top:0;z-index:1000;background:var(--card);border-bottom:1px solid var(--line);
+    display:flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:9px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+  nav a{color:var(--rock);text-decoration:none;font-size:.85rem;font-weight:600;padding:6px 12px;border-radius:8px;}
+  nav a:hover{background:var(--sand);color:var(--sea);}
+  main{max-width:980px;margin:0 auto;padding:28px 20px 70px;}
+  section{margin:38px 0;}
+  h2{font-size:1.55rem;border-bottom:3px solid var(--sun);display:inline-block;padding-bottom:4px;margin-bottom:6px;}
+  .lead{color:#6a625a;margin-top:0;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:14px 0;
+    box-shadow:0 1px 4px rgba(0,0,0,.04);}
+  .card h3{margin:0 0 4px;font-size:1.15rem;}
+  .card .meta{font-size:.82rem;color:#8a8073;margin-bottom:8px;}
+  .pill{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:20px;color:#fff;margin-right:6px;vertical-align:middle;}
+  .p-food{background:var(--sun)} .p-wine{background:var(--wine)} .p-out{background:var(--moss)}
+  .p-art{background:#5b6f8c} .p-night{background:var(--rock)} .p-trip{background:#9a6b2f}
+  .gf{color:var(--moss);font-weight:700;}
+  .res{color:var(--wine);font-weight:700;}
+  .price{font-weight:700;color:var(--ink);}
+  #map{height:560px;border-radius:14px;border:1px solid var(--line);box-shadow:0 1px 6px rgba(0,0,0,.08);}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0;font-size:.85rem;}
+  .legend span{display:inline-flex;align-items:center;gap:5px;}
+  .legend i{font-size:1.1rem;}
+  .pin{font-size:22px;line-height:22px;text-align:center;filter:drop-shadow(0 1px 1px rgba(0,0,0,.4));}
+  .callout{background:#fff6ec;border-left:4px solid var(--sun);padding:12px 16px;border-radius:0 10px 10px 0;margin:14px 0;font-size:.92rem;}
+  .day{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:12px 0;}
+  .day h3{margin:0 0 8px;color:var(--sea);}
+  .day ul{margin:0;padding-left:18px;}
+  footer{text-align:center;font-size:.8rem;color:#8a8073;padding:24px;}
+  a.ext{color:var(--sea);}
+  table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:8px;}
+  th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);}
+  th{color:var(--rock);}
+</style>
+</head>
+<body>
+<header>
+  <h1>Cannon Beach Bachelor Weekend</h1>
+  <p><strong>October 2 – 5, 2026</strong> · 7 friends · 2 cars · staying in Arch Cape · flying into PDX</p>
+  <p style="font-size:.9rem;opacity:.85;">Chill by default, a little party when it counts · wine + great food · gluten-free hero · books, design &amp; art</p>
+  <div>
+    <span class="tag">🍷 Wine</span><span class="tag">🍽 Food</span><span class="tag">🥾 Outdoors</span>
+    <span class="tag">📚 Books &amp; Art</span><span class="tag">🍺 Nightlife</span><span class="tag">🌾 GF-friendly</span>
+  </div>
+</header>
+
+<nav>
+  <a href="#map">Map</a>
+  <a href="#archcape">Arch Cape</a>
+  <a href="#food">Food</a>
+  <a href="#coffee">Coffee</a>
+  <a href="#wine">Wine</a>
+  <a href="#outdoors">Outdoors</a>
+  <a href="#art">Books &amp; Art</a>
+  <a href="#night">Nightlife</a>
+  <a href="#offbeat">Off-the-wall</a>
+  <a href="#events">Events</a>
+  <a href="#itinerary">Sample Plan</a>
+</nav>
+
+<main>
+
+<section id="map">
+  <h2>The Map</h2>
+  <p class="lead">Every recommendation below, pinned by category. Click any pin for the quick details.</p>
+  <div class="legend">
+    <span><i>🍽</i> Food</span>
+    <span><i>☕</i> Coffee</span>
+    <span><i>🍷</i> Wine</span>
+    <span><i>🥾</i> Outdoors / Hike</span>
+    <span><i>📚</i> Books &amp; Art</span>
+    <span><i>🍺</i> Nightlife / Brewery</span>
+    <span><i>⭐</i> Off-the-wall</span>
+  </div>
+  <div id="map"></div>
+  <p style="font-size:.8rem;color:#8a8073;">Tip: Willamette Valley wine country sits ~90 min inland (southwest of Portland) — zoom out to see it relative to the coast.</p>
+</section>
+
+<section id="archcape">
+  <h2>Right Around Arch Cape</h2>
+  <p class="lead">Reality check: Arch Cape is a quiet residential pocket — no restaurants, just one vintage store on Hwy 101. You'll drive for food and nightlife (Cannon Beach ~5–8 min north, Manzanita ~12 min south). But what's <em>walkable</em> from the house is the best part: a wild, uncrowded beach and a hidden gem just up the sand.</p>
+
+  <div class="card">
+    <h3><span class="pill p-out">WALKABLE</span>Arch Cape beach</h3>
+    <div class="meta">right out the door · at low tide</div>
+    <p>The normally stony beach reveals packed sand at low tide — miles of quiet walking, beachcombing, and agate hunting with almost no crowds. The perfect coffee-in-hand morning stroll or sunset wander.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-out">⭐ NEARLY WALKABLE</span>Hug Point State Recreation Site</h3>
+    <div class="meta">~1 mile north of Arch Cape · low tide only</div>
+    <p>A standout and barely a mile up the beach: a cove with a <strong>waterfall that drops right onto the sand</strong>, sea caves, tide pools, and a historic wagon road carved into the headland (cross only at low tide). Genuinely magical and far less trafficked than Haystack Rock. Walk the beach there at low tide or make the 2-minute drive.</p>
+    <p><span class="price">Free.</span> Check the tide chart — the point is impassable at high tide.</p>
+  </div>
+</section>
+
+<section id="food">
+  <h2>Food &amp; Gluten-Free</h2>
+  <p class="lead">Cannon Beach punches well above its size on food. The bachelor is celiac-safe at several of these — flagged below.</p>
+
+  <div class="card">
+    <h3><span class="pill p-food">FOOD</span>Newmans at 988 <span class="gf">· GF on request</span></h3>
+    <div class="meta">988 S Hemlock St · French-Italian fine dining · the special-occasion dinner</div>
+    <p>Intimate 10-table house — the town's standout splurge. Choose à la carte or the <strong>Chef's 4-course prix fixe with wine pairings</strong>. Perfect for the one "nice dinner" of the trip. They'll accommodate gluten-free with notice.</p>
+    <p><span class="price">~$50–70 entrées; prix fixe ~$85–110 + pairings.</span> <span class="res">Reservations essential</span> — only 24–30 seats; book weeks ahead and note GF + party of 7. (503) 436-1151.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-food">FOOD</span>The Wayfarer Restaurant &amp; Lounge <span class="gf">· GF menu</span></h3>
+    <div class="meta">1190 Pacific Dr · seasonal NW seafood · Haystack Rock views</div>
+    <p>Local-and-visitor favorite with the best ocean view in town — Dungeness crab, razor clams, chanterelles, grilled steaks. Great for a relaxed group dinner where the bachelor has real choices. The lounge is a solid lower-key option too.</p>
+    <p><span class="price">Entrées ~$28–55.</span> <span class="res">Reservations recommended</span> for 7, especially a window table at sunset.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-food">FOOD</span>Driftwood Restaurant &amp; Lounge <span class="gf">· GF-aware</span></h3>
+    <div class="meta">179 N Hemlock St · classic steak &amp; seafood · long-running local institution</div>
+    <p>A Cannon Beach fixture for decades — old-school, friendly, full of locals. Reliable steaks and seafood, lively lounge. Good "first night, ease in" dinner.</p>
+    <p><span class="price">Entrées ~$25–48.</span> Reservations a good idea for a group.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-food">FOOD</span>Pizza A'fetta</h3>
+    <div class="meta">231 N Hemlock St · wood-fired pizza &amp; salads · casual</div>
+    <p>Beloved two-floor pizzeria, generous portions, fresh ingredients. Great casual group lunch/dinner. (Note: not a dedicated GF kitchen — pair with another spot for the bachelor.)</p>
+    <p><span class="price">Pies ~$20–32.</span> Walk-in friendly; can wait at peak times.</p>
+  </div>
+
+  <div class="callout">🌾 <strong>For the bachelor:</strong> Newmans (with notice), The Wayfarer (GF menu), and Pelican Brewing (dedicated fryer, rice-flour fried items — see Nightlife) are the safest celiac bets. Suzy's Scoops is the locals' pick for careful GF ice cream / cross-contamination protocols.</div>
+</section>
+
+<section id="coffee">
+  <h2>Cozy Coffee Shops</h2>
+  <p class="lead">You care about vibe and seating over a perfect pour — and never a chain. These are the independent, curl-up-with-a-book spots, enough to hit a new one every morning. They're spread across Cannon Beach, Manzanita (south), and Seaside/Gearhart (north) — so pick by which direction you're headed that day. (Note: Sleepy Monk's storefront was reported closed to the public, though it still "looks open" online — call ahead if you want to try it.)</p>
+
+  <div class="card">
+    <h3><span class="pill" style="background:#6b4f2a">☕</span>Bald Eagle Coffee House ⭐ <span class="gf">· best vibe</span></h3>
+    <div class="meta">1064 S Hemlock St, Cannon Beach · independent, 30+ years</div>
+    <p>Exactly your kind of place. Family-owned for decades, walls full of <strong>eclectic photographs, musical instruments, and books</strong>, big sunny windows, and a co-located arts association so there's original art to browse while you sip. Lounge chairs and tables, homemade soups/pastries, dog-friendly garden patio. The most "settle in and stay a while" room in town. (Honest note: they pour Starbucks-brand beans — but it's a genuine independent shop, not a chain outlet, and the atmosphere is the draw.)</p>
+    <p><span class="price">$4–9.</span> Walk-in; good seating for a group.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill" style="background:#6b4f2a">☕</span>Insomnia Coffee Co — Cannon Beach</h3>
+    <div class="meta">one block from the beach · cozy roastery</div>
+    <p>Warm, lots of natural light, and a <strong>fireplace</strong> you can curl up next to with a book on a gray October morning — very on-brand for the bachelor. Signature Aztec Mocha, pastries, free Wi-Fi, dog-friendly. One caveat: seating is limited, so a group of 7 may want to split up or grab to-go and walk the beach.</p>
+    <p><span class="price">$4–8.</span> Walk-in.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill" style="background:#6b4f2a">☕</span>Manzanita Coffee (Manzanita)</h3>
+    <div class="meta">Laneda Ave, Manzanita · ~12 min south of Arch Cape</div>
+    <p>Steps from the beach on Manzanita's walkable main street, this little independent captures the laid-back North Coast soul — consistently excellent espresso and great scones. Worth folding into a Manzanita / Cape Falcon day. Pair with the gift shops and grocery along Laneda.</p>
+    <p><span class="price">$4–7.</span> Walk-in.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill" style="background:#6b4f2a">☕</span>Controversial Coffee (Seaside) ⭐</h3>
+    <div class="meta">downtown Seaside · ~20 min north · queer-owned</div>
+    <p>Full of personality and a genuine local favorite — a queer-owned shop with a creative seasonal menu and handcrafted drinks (and it pours Sleepy Monk beans, so you get that roast either way). A great, welcoming fit for your mixed crew and an easy stop on a Seaside or Astoria day.</p>
+    <p><span class="price">$4–8.</span> Walk-in.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill" style="background:#6b4f2a">☕</span>Seaside Coffee Roasters (Seaside)</h3>
+    <div class="meta">5 N Holladay Dr, Seaside · ~20 min north · in-house roaster</div>
+    <p>A relaxed, living-room atmosphere — homey decor that feels like a home away from home, brewing their own Seaside Coffee Roasting beans. Comfortable seating and exactly the cozy vibe you're after.</p>
+    <p><span class="price">$4–7.</span> Walk-in.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill" style="background:#6b4f2a">☕</span>Burly &amp; the Bean (Seaside)</h3>
+    <div class="meta">Seaside · independent roastery · hands-on roast option</div>
+    <p>Independent roaster that grew from a drive-through into a proper shop. The fun twist: they offer a ~45-minute hands-on roasting experience that ends with a tasting of your own roast plus a bag to take home — a memorable group activity, not just a cup.</p>
+    <p><span class="price">Coffee $4–7; roast experience higher — <span class="res">reserve ahead.</span></span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill" style="background:#6b4f2a">☕</span>Brew 22 Coffee (Gearhart)</h3>
+    <div class="meta">downtown Gearhart, behind King Tide bakery · ~25 min north</div>
+    <p>A tucked-away hidden gem in tiny, charming Gearhart — strong, bold, full-flavored drinks some call the best in the area. Grab a pastry from the King Tide bakery in front and you've got a perfect low-key morning.</p>
+    <p><span class="price">$4–7.</span> Walk-in.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill" style="background:#6b4f2a">☕</span>Coffee Girl (Astoria)</h3>
+    <div class="meta">Pier 39, Astoria · ~35 min north · over the river</div>
+    <p>If you do the Astoria day, this is the coffee stop — a beloved café built out on a historic cannery pier, with windows right over the Columbia River and ships drifting past. The view is the whole vibe. Pairs with the Astoria riverwalk and Column.</p>
+    <p><span class="price">$4–7.</span> Walk-in.</p>
+  </div>
+</section>
+
+<section id="wine">
+  <h2>Wine — My Recommendation</h2>
+  <p class="lead">You said "either, you recommend." Here's the honest read: serious Oregon wine (Pinot country) is in the <strong>Willamette Valley, ~90 min inland</strong>. The coast has charming tasting rooms but no real vineyards. Do <em>both</em>, on different days.</p>
+
+  <div class="card">
+    <h3><span class="pill p-trip">DAY TRIP</span>Willamette Valley private wine tour <span class="res">★ recommended</span></h3>
+    <div class="meta">Dundee/Newberg area · ~90 min from coast (or do it on the PDX travel day)</div>
+    <p>This is the move for a group that loves wine. Hire a private driver/van so all 7 can drink — Pinot Noir is the signature grape, plus excellent Chardonnay and sparkling. Smartest logistics: <strong>do it the day you fly in or fly out</strong>, since the valley is between PDX and the coast — you're driving past it anyway.</p>
+    <table>
+      <tr><th>Cost component</th><th>Typical</th></tr>
+      <tr><td>Private guide/van (whole group)</td><td>~$90/hr, or ~$160/person for 4+ on full-day tiered pricing</td></tr>
+      <tr><td>Tasting fees</td><td>$25–45 per winery, per person</td></tr>
+      <tr><td>Lunch</td><td>not included — many wineries have food or stop in Dundee</td></tr>
+    </table>
+    <p><span class="res">Book the driver 4–6 weeks out</span> and reserve tastings (most wineries now require it). Operators like Drive Me To Drink, Pinot Car, and Wildwood Tours run private full-day trips.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-wine">WINE</span>The Wine Shack &amp; Puffin Tasting Room</h3>
+    <div class="meta">124 N Hemlock St, Cannon Beach · open daily from noon</div>
+    <p>Town institution since 1977, best NW wine selection on the coast. The Puffin tasting room pours flights of their own label plus wine/beer/cider by the glass. Easy, walkable, no car needed — great late-afternoon hangout.</p>
+    <p><span class="price">Flights ~$15–25.</span> Walk-in; reserve only for a seated group of 7.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-wine">WINE</span>The Winery at Manzanita</h3>
+    <div class="meta">387 Laneda Ave, Manzanita · ~20 min south</div>
+    <p>Cozy coastal wine bar + tasting room pairing wine with food, in laid-back Manzanita. Nice combine with the Oswald West / Cape Falcon hike, which is right between Cannon Beach and Manzanita.</p>
+    <p><span class="price">Tastings ~$15–20.</span> Walk-in friendly.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-wine">WINE</span>Vineside Wine Bar (Astoria)</h3>
+    <div class="meta">Astoria · ~35 min north</div>
+    <p>Cozy local wine bar — NW standouts alongside French/Italian classics. Worth it if you do an Astoria day (see Off-the-wall).</p>
+    <p><span class="price">By the glass / flights.</span> Walk-in.</p>
+  </div>
+</section>
+
+<section id="outdoors">
+  <h2>Outdoors</h2>
+  <p class="lead">October on this coast is moody and gorgeous — bring layers and rain shells. All of these are short, scenic, and group-friendly.</p>
+
+  <div class="card">
+    <h3><span class="pill p-out">HIKE</span>Ecola State Park — Clatsop Loop / Indian Beach</h3>
+    <div class="meta">~10 min north of town · the iconic view</div>
+    <p>The postcard of the Oregon coast: cliff-top viewpoints over Tillamook Head, rainforest, and the lighthouse offshore. Clatsop Loop is ~2.5 mi round trip. Crescent Beach trail (also ~2.5 mi) drops to a secluded beach that stays empty even in peak season.</p>
+    <p><span class="price">$5 per vehicle day-use.</span> No reservation.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-out">HIKE</span>Cape Falcon — Oswald West State Park</h3>
+    <div class="meta">~15 min south · best old-growth + ocean combo</div>
+    <p>2.3 mi each way through old-growth Sitka spruce to a dramatic headland with views over Smuggler's Cove and Short Sand Beach. The locals' pick for "real" forest. Pair with Short Sand Beach (½-mi walk, year-round surfers) and the Manzanita winery afterward.</p>
+    <p><span class="price">Free.</span> Lot fills midday on nice days — go earlier.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-out">EXPERIENCE</span>Haystack Rock private tide-pool tour ⭐</h3>
+    <div class="meta">on the beach in town · low-tide only · Mar–Oct</div>
+    <p>Genuinely special and right in your wheelhouse: the Haystack Rock Awareness Program runs <strong>private guided tours for groups of 1–7</strong> — exactly your size. Wade into the marine garden, meet sea stars, anemones, and puffins/cormorants overhead while a naturalist explains the ecosystem and protection history.</p>
+    <p><span class="price">$35/person · 90 min</span> (discount for 7+). <span class="res">Book ahead</span> and they'll match it to the low-tide window. Check the Oct 2–5 tide chart when booking.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-out">EXPERIENCE</span>Surf lessons — Indian Beach or Short Sands</h3>
+    <div class="meta">Cannon Beach Surf Lessons &amp; Rentals · 1.5–2 hr</div>
+    <p>A fun, bonding "we actually did the thing" morning. Private group lessons available; full wetsuits make October totally doable. Taught at Indian Beach (Ecola) or Short Sands (Oswald West).</p>
+    <p><span class="price">~$75–125/person</span> depending on group size. <span class="res">Reserve in advance.</span></p>
+  </div>
+</section>
+
+<section id="art">
+  <h2>Books, Art &amp; Design</h2>
+  <p class="lead">Tailored for the bachelor — Cannon Beach is officially one of America's "100 Best Art Towns," and the whole village is a study in good coastal design.</p>
+
+  <div class="card">
+    <h3><span class="pill p-art">BOOKS</span>Jupiter's Rare &amp; Used Books ⭐</h3>
+    <div class="meta">244 N Spruce St · across from Downtown City Park</div>
+    <p>The bachelor will love this one. A small, unpretentious, deeply literary used/rare bookshop where owner Watt Childress holds court and talks books with you. Reasonable prices, real treasures. Easily an hour of happy browsing.</p>
+    <p><span class="price">Free to browse.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-art">BOOKS</span>Cannon Beach Book Company</h3>
+    <div class="meta">130 N Hemlock St · the classic browser's bookstore</div>
+    <p>Hand-picked literary fiction, strong regional/Pacific NW section, deep mystery shelves. A great "buy the groom a beautiful book" stop.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-art">ART</span>Hemlock Street galleries + live glassblowing</h3>
+    <div class="meta">downtown · self-guided gallery stroll</div>
+    <p>The downtown core is dense with galleries, public art, flower-filled courtyards, and coastal-modern architecture. You can catch live glassblowing and wander a dozen galleries in an afternoon. Architecture/design lovers should just walk Hemlock slowly.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-trip">FOOD+ART</span>Flavors of Cannon Beach guided walk</h3>
+    <div class="meta">~3.5 hr · downtown</div>
+    <p>Guided walking tour blending galleries, shops, and tastings at the town's best restaurants — a tidy way to combine the food and art interests in one outing. <span class="res">Reserve ahead.</span></p>
+  </div>
+</section>
+
+<section id="night">
+  <h2>Nightlife &amp; Brews</h2>
+  <p class="lead">Cannon Beach reportedly has more breweries per capita than any city in Oregon — perfect for the "party a little" energy without going big-city loud.</p>
+
+  <div class="card">
+    <h3><span class="pill p-night">BREWERY</span>Pelican Brewing — Cannon Beach <span class="gf">· great for GF</span></h3>
+    <div class="meta">1371 S Hemlock St · award-winning beer, oceanfront</div>
+    <p>The anchor hangout: award-winning craft beer, open kitchen, pizza oven, big indoor space for 7. <strong>Notably celiac-friendly</strong> — dedicated fryer and rice-flour fried items (GF onion rings, dirty fries, wings), plus some GF drink options. Easy group dinner-into-drinks.</p>
+    <p><span class="price">Pints ~$7; food $15–25.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-night">BREWERY</span>Public Coast Brewing</h3>
+    <div class="meta">264 E 3rd St · Live Music Mondays</div>
+    <p>Renovated taproom, open Thu–Mon 12–8, with live music on Mondays. Relaxed spot for the group.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-night">PUB</span>Bill's Tavern &amp; Brewhouse</h3>
+    <div class="meta">188 N Hemlock St · the local watering hole</div>
+    <p>Classic, no-frills brewpub and the most "townie bar" of the three — good late-night anchor downtown.</p>
+  </div>
+</section>
+
+<section id="offbeat">
+  <h2>Off-the-Wall &amp; Local Connection</h2>
+  <p class="lead">The stuff that makes the trip <em>yours</em>, not a top-10 list.</p>
+
+  <div class="card">
+    <h3><span class="pill p-trip">⭐ UNIQUE</span>Guided wild mushroom foraging hike</h3>
+    <div class="meta">Fort Stevens / North Coast · Sept–Nov (your dates land in season!)</div>
+    <p>October is prime fungi season. Ranger-led mushroom ID hikes (~1 mi) run Sept–Nov — learn foraging rules and identification in the coastal forest. The North Coast Food Trail also connects foraging experiences across Astoria–Seaside–Cannon Beach. A memorable, very-Oregon group morning.</p>
+    <p><span class="res">Check the Fort Stevens / Travel Astoria calendar for Oct dates and reserve.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-trip">⭐ UNIQUE</span>Razor clamming near Astoria/Warrenton</h3>
+    <div class="meta">Fort Clatsop to Seaside flats · ~30–45 min</div>
+    <p>The 18 miles of flat beaches up here are some of the best clamming in the state — and the closed season (Jul 15–Sep 30) <strong>reopens Oct 1</strong>, so your dates are perfect. Grab cheap licenses + clam guns, dig at low tide, and you've got a story (and dinner).</p>
+    <p><span class="price">Shellfish license ~$10–12; clam gun rental cheap.</span></p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-trip">⭐ DAY TRIP</span>Astoria afternoon</h3>
+    <div class="meta">~35 min north · river town with character</div>
+    <p>Historic riverfront town (yes, <em>The Goonies</em>): Vineside wine bar, brewpubs, the Astoria Column, riverwalk, and great old architecture. A fun half-day with built-in food/wine stops.</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-trip">⭐ HELI</span>Helicopter wine tour (Willamette)</h3>
+    <div class="meta">splurge alternative to the van</div>
+    <p>If the group wants a real "bachelor party" flourish: helicopter wine tours run ~$399/group covering 3 wineries with lunch and tasting fees included. Over-the-top in the best way.</p>
+  </div>
+</section>
+
+<section id="events">
+  <h2>Events Around Oct 2–5, 2026</h2>
+  <div class="card">
+    <h3>Savor Cannon Beach — Wine &amp; Culinary Festival</h3>
+    <p>The town's signature food-and-wine festival happens across <strong>October</strong> — multiple days of NW wine tastings, culinary events, and a wine walk. Sources show it running mid-to-late October in recent years, so it <strong>may start just after your dates</strong>. <span class="res">Verify the exact 2026 schedule at savorcannonbeach.com</span> — if it overlaps even a day, grab wine-walk tickets; it's tailor-made for your group.</p>
+  </div>
+  <div class="card">
+    <h3>Other timing notes</h3>
+    <p>The <strong>Cannon Beach Cottage Tour</strong> (homes, design, wine) is Sept 11–13 — just before you. <strong>Stormy Weather Arts Festival</strong> is Nov 6–8 — just after. Check the town's weekly events calendar closer to the date for live music and pop-ups during your stay.</p>
+  </div>
+</section>
+
+<section id="itinerary">
+  <h2>A Loose Plan (Adjust Freely)</h2>
+  <div class="day">
+    <h3>Fri Oct 2 — Arrive</h3>
+    <ul>
+      <li>Land PDX. <strong>Option A (recommended):</strong> private wine van straight into Willamette Valley for 2–3 wineries + lunch, then drive to the coast.</li>
+      <li><strong>Option B:</strong> drive straight to Cannon Beach, settle in, easy first dinner at Driftwood, drinks at Bill's.</li>
+    </ul>
+  </div>
+  <div class="day">
+    <h3>Sat Oct 3 — Beach &amp; town</h3>
+    <ul>
+      <li>Coffee at Bald Eagle (cozy, books &amp; art) → Ecola State Park (Clatsop Loop).</li>
+      <li>Afternoon: Haystack Rock private tide-pool tour (time to the low tide) or surf lesson.</li>
+      <li>Browse Jupiter's Books + Hemlock galleries; Wine Shack / Puffin flight.</li>
+      <li>Dinner: <strong>Newmans at 988</strong> (book early) → Pelican Brewing for drinks.</li>
+    </ul>
+  </div>
+  <div class="day">
+    <h3>Sun Oct 4 — Adventure day</h3>
+    <ul>
+      <li>Cape Falcon hike (Oswald West) + Short Sand Beach → Winery at Manzanita.</li>
+      <li><em>or</em> razor clamming / mushroom foraging up north + Astoria afternoon (Vineside, distilleries).</li>
+      <li>Dinner at The Wayfarer (sunset window table) → Pilot House cocktails / Public Coast.</li>
+    </ul>
+  </div>
+  <div class="day">
+    <h3>Mon Oct 5 — Out</h3>
+    <ul>
+      <li>Slow morning, last beach walk, coffee.</li>
+      <li>Drive back to PDX — squeeze in a Willamette winery on the way if you didn't on day 1.</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Built for Brian's crew · Oct 2–5, 2026 · prices &amp; hours shift seasonally — confirm reservations directly. 🌊
+</footer>
+
+<script>
+  var map = L.map('map').setView([45.888, -123.96], 11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18, attribution: '© OpenStreetMap'
+  }).addTo(map);
+
+  function icon(emoji){
+    return L.divIcon({className:'', html:'<div class="pin">'+emoji+'</div>', iconSize:[26,26], iconAnchor:[13,13], popupAnchor:[0,-12]});
+  }
+
+  var places = [
+    ["🍽","Newmans at 988","Fine dining · GF on request · book weeks ahead",45.8872,-123.9608],
+    ["🍽","The Wayfarer","Seafood + Haystack views · GF menu · reserve",45.8869,-123.9650],
+    ["🍽","Driftwood Restaurant","Classic steak/seafood · local institution",45.8930,-123.9613],
+    ["🍽","Pizza A'fetta","Wood-fired pizza · casual group spot",45.8935,-123.9612],
+    ["☕","Bald Eagle Coffee House","Cozy · books, art & instruments · best vibe",45.8878,-123.9618],
+    ["☕","Insomnia Coffee Co","Fireplace · curl up with a book · limited seats",45.8915,-123.9612],
+    ["☕","Manzanita Coffee","Independent · beachside Laneda Ave",45.7128,-123.9335],
+    ["☕","Controversial Coffee","Seaside · queer-owned · Sleepy Monk beans",45.9925,-123.9215],
+    ["☕","Seaside Coffee Roasters","Seaside · living-room vibe · own roast",45.9935,-123.9210],
+    ["☕","Burly & the Bean","Seaside · roastery · hands-on roast experience",45.9890,-123.9180],
+    ["☕","Brew 22 Coffee","Gearhart · hidden gem behind King Tide",46.0240,-123.9110],
+    ["☕","Coffee Girl","Astoria · café on a river pier · big views",46.1900,-123.8195],
+    ["🍷","The Wine Shack / Puffin","Tasting room · flights · walkable",45.8928,-123.9613],
+    ["🍷","Winery at Manzanita","Coastal wine bar · ~20 min south",45.7131,-123.9342],
+    ["🍷","Vineside Wine Bar","Astoria · NW + Euro wines",46.1879,-123.8270],
+    ["🍷","Willamette Valley (wine country)","Private tour · Pinot country · ~90 min inland",45.2790,-123.0070],
+    ["🥾","Ecola State Park","Clatsop Loop / Indian Beach · iconic views",45.9270,-123.9760],
+    ["🥾","Cape Falcon (Oswald West)","Old-growth + headland · ~15 min south",45.7610,-123.9590],
+    ["🥾","Haystack Rock tide pools","Private naturalist tour · low tide",45.8845,-123.9685],
+    ["🥾","Short Sand Beach","Surf lessons · year-round break",45.7585,-123.9605],
+    ["🥾","Arch Cape beach","Your home base · quiet low-tide walking",45.8030,-123.9560],
+    ["⭐","Hug Point","Beach waterfall + sea caves · ~1 mi from Arch Cape",45.8160,-123.9610],
+    ["📚","Jupiter's Rare & Used Books","Literary gem · the bachelor's stop",45.8938,-123.9602],
+    ["📚","Cannon Beach Book Company","Browser's bookstore · strong NW section",45.8929,-123.9613],
+    ["🍺","Pelican Brewing","Award beer · very GF-friendly · oceanfront",45.8855,-123.9620],
+    ["🍺","Public Coast Brewing","Live Music Mondays",45.8925,-123.9588],
+    ["🍺","Bill's Tavern & Brewhouse","Classic local brewpub",45.8932,-123.9613],
+    ["⭐","Astoria","River town · Goonies · wine bar & brewpubs",46.1879,-123.8313],
+    ["⭐","Razor clamming (Warrenton flats)","Season reopens Oct 1 · low tide dig",46.1500,-123.9300],
+    ["⭐","Fort Stevens — foraging hikes","Ranger mushroom ID hikes · Sept–Nov",46.2010,-123.9560]
+  ];
+
+  places.forEach(function(p){
+    var m = L.marker([p[3], p[4]],{icon:icon(p[0])}).addTo(map);
+    m.bindPopup('<strong>'+p[1]+'</strong><br>'+p[2]);
+  });
+</script>
+</body>
+</html>
