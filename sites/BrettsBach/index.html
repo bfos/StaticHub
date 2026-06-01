@@ -51,6 +51,38 @@
   table{width:100%;border-collapse:collapse;font-size:.88rem;margin-top:8px;}
   th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);}
   th{color:var(--rock);}
+  /* like / dismiss controls */
+  .actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .btn{border:none;cursor:pointer;font-size:.8rem;font-weight:700;padding:7px 15px;border-radius:9px;transition:.15s;}
+  .btn-like{background:#eef3ec;color:#3f5733;border:1px solid #bcd0ad;}
+  .btn-like:hover{background:#dfe9d8;}
+  .btn-like.on{background:var(--moss);color:#fff;border-color:var(--moss);}
+  .btn-no{background:#f4ece6;color:#8a6a5a;border:1px solid #dbc6b8;}
+  .btn-no:hover{background:#ece0d6;}
+  .btn-restore{background:#e7eef2;color:var(--sea);border:1px solid #bcd3dd;}
+  .card.liked{border-color:var(--moss);box-shadow:0 0 0 2px rgba(95,122,74,.25);}
+  #dismissed{margin-top:30px;}
+  #dismissed details{background:#efe7da;border:1px dashed #c3b59c;border-radius:12px;padding:6px 14px;}
+  #dismissed summary{cursor:pointer;font-weight:700;color:#7a6f5d;padding:8px 0;}
+  #dismissed .card{opacity:.85;}
+  /* floating share bar */
+  #sharebar{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:2500;
+    background:var(--rock);color:#fff;border-radius:30px;box-shadow:0 6px 20px rgba(0,0,0,.25);
+    display:flex;align-items:center;gap:12px;padding:10px 14px 10px 20px;font-size:.9rem;}
+  #sharebar button{background:var(--sun);color:#fff;border:none;border-radius:22px;padding:9px 18px;font-weight:700;cursor:pointer;}
+  #sharebar button:hover{filter:brightness(1.07);}
+  #likecount{font-weight:700;}
+  /* modal */
+  #overlay{position:fixed;inset:0;background:rgba(20,18,16,.55);display:none;align-items:center;justify-content:center;z-index:3000;padding:18px;}
+  #modal{background:#fff;max-width:700px;width:100%;border-radius:16px;padding:24px;max-height:84vh;overflow:auto;box-shadow:0 12px 40px rgba(0,0,0,.3);}
+  #modal h3{margin:0 0 6px;}
+  #modal p{font-size:.9rem;color:#6a625a;margin-top:0;}
+  #promptbox{width:100%;height:320px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem;
+    border:1px solid var(--line);border-radius:10px;padding:12px;resize:vertical;background:#fbf8f3;color:var(--ink);}
+  .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;}
+  .modal-actions button{border:none;cursor:pointer;font-weight:700;padding:9px 18px;border-radius:9px;}
+  #copybtn{background:var(--moss);color:#fff;}
+  #closebtn{background:#ece4d8;color:var(--ink);}
 </style>
 </head>
 <body>
@@ -414,7 +446,32 @@
   </div>
 </section>
 
+<section id="dismissed">
+  <details>
+    <summary>🗑 Dismissed (<span id="dismisscount">0</span>) — click to expand</summary>
+    <p style="font-size:.85rem;color:#8a8073;">Stuff you've passed on. Hit "Restore" to bring any back.</p>
+    <div id="dismissed-list"></div>
+  </details>
+</section>
+
 </main>
+
+<div id="sharebar">
+  <span><span id="likecount">0</span> liked</span>
+  <button id="genbtn">Build share prompt →</button>
+</div>
+
+<div id="overlay">
+  <div id="modal">
+    <h3>Share-list prompt</h3>
+    <p>Copy this and paste it to another agent — it'll turn your liked picks into a clean, categorized list formatted for your shared Apple Note (not an itinerary).</p>
+    <textarea id="promptbox" readonly></textarea>
+    <div class="modal-actions">
+      <button id="closebtn">Close</button>
+      <button id="copybtn">Copy to clipboard</button>
+    </div>
+  </div>
+</div>
 
 <footer>
   Built for Brian's crew · Oct 2–5, 2026 · prices &amp; hours shift seasonally — confirm reservations directly. 🌊
@@ -467,6 +524,180 @@
     var m = L.marker([p[3], p[4]],{icon:icon(p[0])}).addTo(map);
     m.bindPopup('<strong>'+p[1]+'</strong><br>'+p[2]);
   });
+</script>
+
+<script>
+(function(){
+  var CATS = {
+    archcape:"Right Around Arch Cape",
+    food:"Food & Dining",
+    coffee:"Coffee Shops",
+    wine:"Wine",
+    outdoors:"Outdoors & Hikes",
+    art:"Books, Art & Design",
+    night:"Nightlife & Breweries",
+    offbeat:"Unique Experiences"
+  };
+  var STORE = "cbBachPicks";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(STORE)) || {}; } catch(e){ state = {}; }
+  function save(){ try{ localStorage.setItem(STORE, JSON.stringify(state)); }catch(e){} }
+
+  var dismissedList = document.getElementById('dismissed-list');
+  var ordered = []; // all processed cards in page order
+
+  function titleOf(card){
+    var h = card.querySelector('h3').cloneNode(true);
+    h.querySelectorAll('.pill,.gf').forEach(function(e){e.remove();});
+    return h.textContent.replace(/⭐/g,'').replace(/·.*$/,'').replace(/\s+/g,' ').trim();
+  }
+  function descOf(card){
+    var m = card.querySelector('.meta');
+    return m ? m.textContent.replace(/\s+/g,' ').trim() : '';
+  }
+
+  Object.keys(CATS).forEach(function(secId){
+    var sec = document.getElementById(secId);
+    if(!sec) return;
+    var cards = sec.querySelectorAll('.card');
+    cards.forEach(function(card, i){
+      card.dataset.home = secId;
+      card.dataset.pos = i;
+      card.dataset.cat = CATS[secId];
+      card.dataset.title = titleOf(card);
+      card.dataset.desc = descOf(card);
+      ordered.push(card);
+
+      var act = document.createElement('div');
+      act.className = 'actions';
+      var like = document.createElement('button');
+      like.className = 'btn btn-like'; like.textContent = '♥ I like this';
+      var no = document.createElement('button');
+      no.className = 'btn btn-no'; no.textContent = '✕ No thanks';
+      act.appendChild(like); act.appendChild(no);
+      card.appendChild(act);
+
+      var key = card.dataset.title;
+      like.addEventListener('click', function(){
+        if(state[key] === 'like'){ delete state[key]; }
+        else { state[key] = 'like'; }
+        applyCard(card); save(); refresh();
+      });
+      no.addEventListener('click', function(){
+        state[key] = 'no'; applyCard(card); save(); refresh();
+      });
+    });
+  });
+
+  function reinsert(card){
+    var sec = document.getElementById(card.dataset.home);
+    var pos = parseInt(card.dataset.pos, 10);
+    var sibs = Array.prototype.filter.call(sec.querySelectorAll('.card'), function(c){return c!==card;});
+    var before = null;
+    for(var i=0;i<sibs.length;i++){ if(parseInt(sibs[i].dataset.pos,10) > pos){ before = sibs[i]; break; } }
+    if(before){ sec.insertBefore(card, before); }
+    else {
+      // append after last card in section
+      var last = sibs.length ? sibs[sibs.length-1] : null;
+      if(last && last.nextSibling){ sec.insertBefore(card, last.nextSibling); }
+      else { sec.appendChild(card); }
+    }
+  }
+
+  function applyCard(card){
+    var key = card.dataset.title;
+    var st = state[key];
+    var act = card.querySelector('.actions');
+    card.classList.remove('liked');
+    if(st === 'no'){
+      // build a restore-only action row
+      act.innerHTML = '';
+      var r = document.createElement('button');
+      r.className = 'btn btn-restore'; r.textContent = '↩ Restore';
+      r.addEventListener('click', function(){ delete state[key]; rebuildActions(card); applyCard(card); reinsert(card); save(); refresh(); });
+      act.appendChild(r);
+      dismissedList.appendChild(card);
+    } else {
+      if(card.parentNode === dismissedList){ rebuildActions(card); reinsert(card); }
+      var btns = card.querySelectorAll('.btn-like');
+      if(st === 'like'){ card.classList.add('liked'); }
+      var lk = card.querySelector('.btn-like');
+      if(lk){ lk.classList.toggle('on', st === 'like'); lk.textContent = st==='like' ? '♥ Liked' : '♥ I like this'; }
+    }
+  }
+
+  function rebuildActions(card){
+    var act = card.querySelector('.actions');
+    act.innerHTML = '';
+    var key = card.dataset.title;
+    var like = document.createElement('button');
+    like.className = 'btn btn-like'; like.textContent = '♥ I like this';
+    var no = document.createElement('button');
+    no.className = 'btn btn-no'; no.textContent = '✕ No thanks';
+    like.addEventListener('click', function(){
+      if(state[key]==='like'){ delete state[key]; } else { state[key]='like'; }
+      applyCard(card); save(); refresh();
+    });
+    no.addEventListener('click', function(){ state[key]='no'; applyCard(card); save(); refresh(); });
+    act.appendChild(like); act.appendChild(no);
+  }
+
+  function refresh(){
+    var liked = 0, dismissed = 0;
+    ordered.forEach(function(c){
+      var st = state[c.dataset.title];
+      if(st==='like') liked++;
+      if(st==='no') dismissed++;
+    });
+    document.getElementById('likecount').textContent = liked;
+    document.getElementById('dismisscount').textContent = dismissed;
+  }
+
+  // apply saved state on load
+  ordered.forEach(applyCard);
+  refresh();
+
+  // ---- share prompt ----
+  function buildPrompt(){
+    var byCat = {}, order = [];
+    ordered.forEach(function(c){
+      if(state[c.dataset.title] !== 'like') return;
+      var cat = c.dataset.cat;
+      if(!byCat[cat]){ byCat[cat] = []; order.push(cat); }
+      byCat[cat].push('- ' + c.dataset.title + ' — ' + c.dataset.desc);
+    });
+    var intro =
+"I'm sharing recommendations with friends for a bachelor weekend on the Oregon Coast. We're staying in Arch Cape (just south of Cannon Beach), October 2-5. Below is a categorized list of the places and activities we've shortlisted.\n\n" +
+"Please turn this into a clean, friendly, easy-to-skim CATEGORIZED LIST of recommendations that I can paste into a shared Apple Note for the group. Important:\n" +
+"- It should be a categorized list of recommendations, NOT an itinerary or day-by-day schedule.\n" +
+"- Keep the same categories shown below, with a clear header for each.\n" +
+"- Under each category, list each place with its name first, then a short one-line description (you can lightly rewrite my notes to read nicely).\n" +
+"- Format as plain text that pastes cleanly into Apple Notes: simple text headers and dash/bullet lines. No markdown tables, no code blocks, no special syntax.\n" +
+"- Don't invent or add anything that isn't in my list below.\n\n" +
+"Here are our picks:\n\n";
+    if(order.length === 0){
+      return "(You haven't liked anything yet. Tap ‘♥ I like this’ on the cards you want, then build the prompt again.)";
+    }
+    var body = order.map(function(cat){ return cat.toUpperCase() + "\n" + byCat[cat].join("\n"); }).join("\n\n");
+    return intro + body;
+  }
+
+  var overlay = document.getElementById('overlay');
+  var box = document.getElementById('promptbox');
+  document.getElementById('genbtn').addEventListener('click', function(){
+    box.value = buildPrompt();
+    overlay.style.display = 'flex';
+  });
+  document.getElementById('closebtn').addEventListener('click', function(){ overlay.style.display='none'; });
+  overlay.addEventListener('click', function(e){ if(e.target===overlay) overlay.style.display='none'; });
+  document.getElementById('copybtn').addEventListener('click', function(){
+    box.select();
+    var btn = this;
+    function done(){ btn.textContent='Copied!'; setTimeout(function(){btn.textContent='Copy to clipboard';},1500); }
+    if(navigator.clipboard){ navigator.clipboard.writeText(box.value).then(done, function(){ document.execCommand('copy'); done(); }); }
+    else { document.execCommand('copy'); done(); }
+  });
+})();
 </script>
 </body>
 </html>
