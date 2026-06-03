@@ -106,17 +106,6 @@
   <div class="listhead" id="listhead">Showing all locations</div>
   <div class="grid" id="grid"></div>
 
-  <div class="paste">
-    <h2>My final picks</h2>
-    <p>Paste your shortlist here (e.g. the “Copy list” output from the guide). It saves in your browser on this device, so it'll still be here when you come back.</p>
-    <textarea id="notes" placeholder="Paste your selections here…"></textarea>
-    <div class="paste-actions">
-      <button class="save" id="saveNotes">Save</button>
-      <button id="clearNotes">Clear</button>
-      <span class="saved" id="savedMsg"></span>
-    </div>
-  </div>
-
   <footer>
     Coordinates are approximate (good enough to find each spot); confirm exact addresses in Google Maps before you drive. Drive times reference Guerneville.
   </footer>
@@ -165,14 +154,18 @@
   ];
 
   // ---- MAP ----
-  var map=L.map('map',{scrollWheelZoom:false}).setView([38.47,-122.97],11);
+  var map=L.map('map',{scrollWheelZoom:true}).setView([38.47,-122.97],11);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
     maxZoom:18, attribution:'© OpenStreetMap'
   }).addTo(map);
 
-  function makeIcon(color,mark){
-    return L.divIcon({className:'',html:'<div class="pin" style="background:'+color+'">'+(mark||'')+'</div>',
-      iconSize:[26,26],iconAnchor:[13,13],popupAnchor:[0,-13]});
+  function makeIcon(color,mark,hi){
+    var sz=hi?38:26;
+    var ring=hi?'box-shadow:0 0 0 4px rgba(255,255,255,.6),0 0 0 7px '+color+',0 3px 8px rgba(0,0,0,.5);'
+                :'box-shadow:0 1px 4px rgba(0,0,0,.4);';
+    return L.divIcon({className:'',
+      html:'<div class="pin" style="background:'+color+';width:'+sz+'px;height:'+sz+'px;'+ring+'">'+(mark||'')+'</div>',
+      iconSize:[sz,sz],iconAnchor:[sz/2,sz/2],popupAnchor:[0,-sz/2]});
   }
   function popupHtml(d){
     return '<b>'+d.name+'</b><span class="pm">'+d.m+'</span>'+
@@ -194,15 +187,25 @@
     DATA.forEach(function(d){
       var show=(cat==='all'||d.cat===cat);
       if(!show) return;
+      var color=CATCOLORS[d.cat];
       // marker
-      var mk=L.marker([d.lat,d.lng],{icon:makeIcon(CATCOLORS[d.cat],'')}).bindPopup(popupHtml(d));
+      var mk=L.marker([d.lat,d.lng],{icon:makeIcon(color,'')}).bindPopup(popupHtml(d));
       markerLayer.addLayer(mk); pts.push([d.lat,d.lng]);
       // card
       var el=document.createElement('div');
-      el.className='item'; el.style.borderLeftColor=CATCOLORS[d.cat];
+      el.className='item'; el.style.borderLeftColor=color;
       el.innerHTML='<h3><a target="_blank" rel="noopener" href="'+g(d.q)+'">'+d.name+'</a></h3>'+
-        '<p class="m"><span class="tagdot" style="background:'+CATCOLORS[d.cat]+'"></span>'+d.m+'</p>';
+        '<p class="m"><span class="tagdot" style="background:'+color+'"></span>'+d.m+'</p>';
       grid.appendChild(el);
+      // hover the card -> highlight the matching pin
+      (function(marker,c){
+        el.addEventListener('mouseenter',function(){
+          marker.setIcon(makeIcon(c,'',true)); marker.setZIndexOffset(1000); marker.openPopup();
+        });
+        el.addEventListener('mouseleave',function(){
+          marker.setIcon(makeIcon(c,'',false)); marker.setZIndexOffset(0); marker.closePopup();
+        });
+      })(mk,color);
     });
     document.getElementById('listhead').textContent =
       (cat==='all'?'Showing all locations':'Showing: '+CATLABEL[cat])+' · '+grid.children.length+' place'+(grid.children.length===1?'':'s');
@@ -220,18 +223,6 @@
 
   render('all');
   setTimeout(function(){map.invalidateSize();},200);
-
-  // ---- NOTES (persist) ----
-  var ta=document.getElementById('notes'), msg=document.getElementById('savedMsg');
-  try{ var saved=localStorage.getItem('rr_selections'); if(saved){ta.value=saved;} }catch(e){}
-  document.getElementById('saveNotes').onclick=function(){
-    try{ localStorage.setItem('rr_selections',ta.value); msg.textContent='Saved ✓';
-      setTimeout(function(){msg.textContent='';},1500);}catch(e){ msg.textContent='Could not save (private mode?)'; }
-  };
-  document.getElementById('clearNotes').onclick=function(){
-    ta.value=''; try{localStorage.removeItem('rr_selections');}catch(e){} msg.textContent='Cleared';
-    setTimeout(function(){msg.textContent='';},1200);
-  };
 })();
 </script>
 </body>
