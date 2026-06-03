@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Map &amp; Selections — Russian River Weekend</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+  :root{
+    --bg:#f7f3ec; --ink:#2b2620; --muted:#6f675c; --line:#e3dccf;
+    --card:#fffdf8; --accent:#7a8450; --accent2:#a64b2a; --link:#2f5d86;
+    --food:#a64b2a; --coffee:#7a5230; --wine:#7a3b55; --outdoors:#4d6327; --towns:#2f5d86;
+    --home:#b8893b; --wed:#9a3b2f;
+    --shadow:0 1px 3px rgba(0,0,0,.06),0 6px 18px rgba(0,0,0,.05);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 "Iowan Old Style",Georgia,"Times New Roman",serif;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px 120px;}
+  header.top{padding:30px 0 14px;border-bottom:2px solid var(--line);margin-bottom:14px;}
+  .back{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:13.5px;font-weight:600;
+    color:var(--link);text-decoration:none}
+  .back:hover{text-decoration:underline}
+  h1{font-size:30px;margin:8px 0 4px;}
+  .sub{color:var(--muted);font-size:15px;margin:0;}
+
+  .filters{display:flex;flex-wrap:wrap;gap:9px;margin:18px 0 14px;
+    font-family:-apple-system,Segoe UI,Roboto,sans-serif;}
+  .chip{cursor:pointer;border:1px solid var(--line);background:#fffefb;border-radius:22px;
+    padding:9px 16px;font-size:14px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px;
+    transition:.15s;}
+  .chip .dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .chip:hover{background:#f3eee3}
+  .chip.active{color:#fff;border-color:transparent}
+  .chip.active .dot{background:#fff !important}
+  .chip[data-cat="all"].active{background:#5b6240}
+  .chip[data-cat="food"].active{background:var(--food)}
+  .chip[data-cat="coffee"].active{background:var(--coffee)}
+  .chip[data-cat="wine"].active{background:var(--wine)}
+  .chip[data-cat="outdoors"].active{background:var(--outdoors)}
+  .chip[data-cat="towns"].active{background:var(--towns)}
+
+  #map{height:480px;width:100%;border-radius:14px;border:1px solid var(--line);
+    box-shadow:var(--shadow);z-index:0;}
+  .maphint{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:12.5px;color:var(--muted);
+    margin:8px 2px 0;}
+
+  /* map marker */
+  .pin{width:26px;height:26px;border-radius:50%;border:2.5px solid #fff;
+    box-shadow:0 1px 4px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;
+    color:#fff;font:700 12px/1 -apple-system,Segoe UI,Roboto,sans-serif;}
+  .leaflet-popup-content{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:13.5px;margin:10px 12px}
+  .leaflet-popup-content b{font-size:14.5px}
+  .leaflet-popup-content .pm{color:var(--muted);display:block;margin:3px 0 6px}
+  .leaflet-popup-content a{color:var(--link);font-weight:600;text-decoration:none}
+
+  .listhead{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:13px;color:var(--muted);
+    margin:26px 0 8px;text-transform:uppercase;letter-spacing:.06em;}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media(max-width:760px){.grid{grid-template-columns:1fr}}
+  .item{background:var(--card);border:1px solid var(--line);border-left-width:5px;border-radius:12px;
+    padding:13px 15px;box-shadow:var(--shadow);}
+  .item h3{margin:0 0 3px;font-size:17px}
+  .item h3 a{color:var(--ink);text-decoration:none;border-bottom:1px dotted #c9b89a}
+  .item h3 a:hover{color:var(--link);border-bottom-color:var(--link)}
+  .item h3 a::after{content:" ↗";font-size:11px;color:var(--link);vertical-align:super}
+  .item .m{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:12px;color:var(--muted);margin:0 0 5px}
+  .item .b{font-size:13.5px;margin:0}
+  .tagdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+
+  .paste{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;
+    margin-top:30px;box-shadow:var(--shadow)}
+  .paste h2{margin:0 0 6px;font-size:20px}
+  .paste p{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:13.5px;color:var(--muted);margin:0 0 12px}
+  textarea{width:100%;min-height:200px;border:1px solid var(--line);border-radius:10px;padding:14px;
+    font:14px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;background:#fffefb;color:var(--ink);resize:vertical}
+  .paste-actions{display:flex;gap:8px;margin-top:10px}
+  .paste-actions button{font:600 13px/1 -apple-system,Segoe UI,Roboto,sans-serif;cursor:pointer;
+    border-radius:9px;padding:9px 16px;border:1px solid var(--line);background:#fff;color:var(--ink)}
+  .paste-actions .save{background:var(--accent);color:#fff;border-color:transparent}
+  .saved{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:12.5px;color:var(--outdoors);margin-left:6px}
+  footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
+    font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:12.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="back" href="guerneville-weekend-guide.html">← Back to the full guide</a>
+    <h1>Map &amp; Selections</h1>
+    <p class="sub">Filter by category, see everything pinned on the map, and tap a name or pin to open it in Google Maps. Reference pins for your hotel 🏠 and the wedding 💍 always show.</p>
+  </header>
+
+  <div class="filters" id="filters">
+    <button class="chip active" data-cat="all"><span class="dot" style="background:#5b6240"></span>All</button>
+    <button class="chip" data-cat="food"><span class="dot" style="background:var(--food)"></span>Food &amp; Drink</button>
+    <button class="chip" data-cat="coffee"><span class="dot" style="background:var(--coffee)"></span>Coffee</button>
+    <button class="chip" data-cat="wine"><span class="dot" style="background:var(--wine)"></span>Wine</button>
+    <button class="chip" data-cat="outdoors"><span class="dot" style="background:var(--outdoors)"></span>Hikes &amp; Outdoors</button>
+    <button class="chip" data-cat="towns"><span class="dot" style="background:var(--towns)"></span>Towns &amp; Shopping</button>
+  </div>
+
+  <div id="map"></div>
+  <p class="maphint">Map data © OpenStreetMap. Pins are color-coded by category (see filters above). Click a pin for details and a Google Maps link.</p>
+
+  <div class="listhead" id="listhead">Showing all locations</div>
+  <div class="grid" id="grid"></div>
+
+  <div class="paste">
+    <h2>My final picks</h2>
+    <p>Paste your shortlist here (e.g. the “Copy list” output from the guide). It saves in your browser on this device, so it'll still be here when you come back.</p>
+    <textarea id="notes" placeholder="Paste your selections here…"></textarea>
+    <div class="paste-actions">
+      <button class="save" id="saveNotes">Save</button>
+      <button id="clearNotes">Clear</button>
+      <span class="saved" id="savedMsg"></span>
+    </div>
+  </div>
+
+  <footer>
+    Coordinates are approximate (good enough to find each spot); confirm exact addresses in Google Maps before you drive. Drive times reference Guerneville.
+  </footer>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  // ---- DATA ----
+  var CATCOLORS={food:'#a64b2a',coffee:'#7a5230',wine:'#7a3b55',outdoors:'#4d6327',towns:'#2f5d86',home:'#b8893b',wed:'#9a3b2f'};
+  var CATLABEL={food:'Food & Drink',coffee:'Coffee',wine:'Wine',outdoors:'Hikes & Outdoors',towns:'Towns & Shopping'};
+  function g(q){return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);}
+
+  var REF=[
+    {name:'The Surrey Resort (you’re staying here)',cat:'home',mark:'🏠',lat:38.5016,lng:-123.0033,m:'Guerneville · home base',q:'The Surrey Resort Guerneville CA'},
+    {name:'Cazadero (the wedding)',cat:'wed',mark:'💍',lat:38.5358,lng:-123.0797,m:'~20 min NW of Guerneville',q:'Cazadero CA'}
+  ];
+
+  var DATA=[
+    // FOOD & DRINK
+    {name:'Khom Loi',cat:'food',lat:38.4135,lng:-122.8243,m:'Thai · Sebastopol · zone ② · lunch Fri–Sun',q:'Khom Loi 7385 Healdsburg Ave Sebastopol CA'},
+    {name:'Bravas Bar de Tapas',cat:'food',lat:38.6118,lng:-122.8690,m:'Spanish tapas · Healdsburg · zone ③ · open 11:30am',q:'Bravas Bar de Tapas 420 Center St Healdsburg CA'},
+    {name:'Canneti Roadhouse Italiana',cat:'food',lat:38.4727,lng:-122.8903,m:'Tuscan · Forestville · zone ② · lunch/brunch Fri–Sun',q:'Canneti Roadhouse Italiana 6675 Front St Forestville CA'},
+    {name:'Handline',cat:'food',lat:38.3890,lng:-122.8255,m:'Coastal CA / tacos · Sebastopol · zone ② · open 11am',q:'Handline 935 Gravenstein Hwy S Sebastopol CA'},
+    {name:'Guerneville Taco Truck',cat:'food',lat:38.5016,lng:-123.0080,m:'Mexican food truck · Guerneville · zone ① · cash only',q:'Guerneville Taco Truck 16632 Main St Guerneville CA'},
+    {name:'El Barrio',cat:'food',lat:38.5018,lng:-122.9995,m:'Mezcal bar + taco window · Guerneville · zone ①',q:'El Barrio 16230 Main St Guerneville CA'},
+    // COFFEE
+    {name:'Retrograde Coffee Roasters',cat:'coffee',lat:38.4020,lng:-122.8245,m:'House-made flavor syrups · Sebastopol · zone ② · ★ 4.7',q:'Retrograde Coffee Roasters Sebastopol CA'},
+    {name:'Sunshine Coffee Roasters',cat:'coffee',lat:38.4727,lng:-122.8900,m:'Organic / horchata lattes · Forestville · zone ② · ★ ~4.7',q:'Sunshine Coffee Roasters 6656 Front St Forestville CA'},
+    {name:'Coffee Bazaar',cat:'coffee',lat:38.5040,lng:-123.0005,m:'Cozy local + patio · Guerneville · zone ①',q:'Coffee Bazaar 14045 Armstrong Woods Rd Guerneville CA'},
+    // WINE
+    {name:'Iron Horse Vineyards',cat:'wine',lat:38.4585,lng:-122.8975,m:'Outdoor sparkling tasting + views · Green Valley · zone ② · reserve',q:'Iron Horse Vineyards 9786 Ross Station Rd Sebastopol CA'},
+    {name:'Korbel Champagne Cellars',cat:'wine',lat:38.5096,lng:-122.9430,m:'Free tour + gardens · Guerneville · zone ① · ~5 min',q:'Korbel Champagne Cellars 13250 River Rd Guerneville CA'},
+    {name:'Gary Farrell Vineyards & Winery',cat:'wine',lat:38.5560,lng:-122.9040,m:'Hilltop views · Westside Rd · zone ③ · $15 tasting',q:'Gary Farrell Winery 10701 Westside Rd Healdsburg CA'},
+    {name:'MacRostie Winery',cat:'wine',lat:38.5850,lng:-122.8920,m:'Glass estate + terraces · Westside Rd · zone ③ · reserve',q:'MacRostie Winery 4605 Westside Rd Healdsburg CA'},
+    // OUTDOORS
+    {name:'Armstrong Redwoods State Natural Reserve',cat:'outdoors',lat:38.5370,lng:-123.0045,m:'Ancient redwoods, flat loop · Guerneville · zone ① · ~5 min',q:'Armstrong Redwoods State Natural Reserve Guerneville CA'},
+    {name:'Burke’s Canoe Trips',cat:'outdoors',lat:38.4865,lng:-122.9180,m:'10-mi river float · Forestville · zone ② · summer',q:'Burke’s Canoe Trips 8600 River Rd Forestville CA'},
+    {name:'Bodega Head Loop',cat:'outdoors',lat:38.3038,lng:-123.0686,m:'Headland loop, ocean views · Bodega Bay · zone ④ · ~40 min',q:'Bodega Head Bodega Bay CA'},
+    {name:'Kortum Trail & Goat Rock',cat:'outdoors',lat:38.4419,lng:-123.1267,m:'Blufftop trail + beach · Jenner · zone ④ · ~35 min',q:'Goat Rock Beach Jenner CA'},
+    // TOWNS
+    {name:'Healdsburg Plaza',cat:'towns',lat:38.6103,lng:-122.8694,m:'Most walkable downtown · zone ③ · ~35 min',q:'Healdsburg Plaza Healdsburg CA'},
+    {name:'Occidental',cat:'towns',lat:38.4066,lng:-122.9486,m:'Tiny redwood village · zone ⑤ · ~20 min',q:'Occidental CA'},
+    {name:'Duncans Mills',cat:'towns',lat:38.4549,lng:-123.0560,m:'Historic river village · zone ④ · ~15 min',q:'Duncans Mills CA'},
+    {name:'Sebastopol & The Barlow',cat:'towns',lat:38.4007,lng:-122.8215,m:'Maker district + quirky art · zone ② · ~25 min',q:'The Barlow Sebastopol CA'}
+  ];
+
+  // ---- MAP ----
+  var map=L.map('map',{scrollWheelZoom:false}).setView([38.47,-122.97],11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    maxZoom:18, attribution:'© OpenStreetMap'
+  }).addTo(map);
+
+  function makeIcon(color,mark){
+    return L.divIcon({className:'',html:'<div class="pin" style="background:'+color+'">'+(mark||'')+'</div>',
+      iconSize:[26,26],iconAnchor:[13,13],popupAnchor:[0,-13]});
+  }
+  function popupHtml(d){
+    return '<b>'+d.name+'</b><span class="pm">'+d.m+'</span>'+
+      '<a target="_blank" rel="noopener" href="'+g(d.q)+'">📍 Open in Google Maps ↗</a>';
+  }
+
+  // reference markers (always shown)
+  REF.forEach(function(d){
+    L.marker([d.lat,d.lng],{icon:makeIcon(CATCOLORS[d.cat],d.mark)}).addTo(map).bindPopup(popupHtml(d));
+  });
+
+  var markerLayer=L.layerGroup().addTo(map);
+
+  function render(cat){
+    markerLayer.clearLayers();
+    var pts=[];
+    REF.forEach(function(d){pts.push([d.lat,d.lng]);});
+    var grid=document.getElementById('grid'); grid.innerHTML='';
+    DATA.forEach(function(d){
+      var show=(cat==='all'||d.cat===cat);
+      if(!show) return;
+      // marker
+      var mk=L.marker([d.lat,d.lng],{icon:makeIcon(CATCOLORS[d.cat],'')}).bindPopup(popupHtml(d));
+      markerLayer.addLayer(mk); pts.push([d.lat,d.lng]);
+      // card
+      var el=document.createElement('div');
+      el.className='item'; el.style.borderLeftColor=CATCOLORS[d.cat];
+      el.innerHTML='<h3><a target="_blank" rel="noopener" href="'+g(d.q)+'">'+d.name+'</a></h3>'+
+        '<p class="m"><span class="tagdot" style="background:'+CATCOLORS[d.cat]+'"></span>'+d.m+'</p>';
+      grid.appendChild(el);
+    });
+    document.getElementById('listhead').textContent =
+      (cat==='all'?'Showing all locations':'Showing: '+CATLABEL[cat])+' · '+grid.children.length+' place'+(grid.children.length===1?'':'s');
+    if(pts.length){ map.fitBounds(pts,{padding:[40,40],maxZoom:12}); }
+  }
+
+  // filter buttons
+  document.querySelectorAll('.chip').forEach(function(btn){
+    btn.onclick=function(){
+      document.querySelectorAll('.chip').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      render(btn.getAttribute('data-cat'));
+    };
+  });
+
+  render('all');
+  setTimeout(function(){map.invalidateSize();},200);
+
+  // ---- NOTES (persist) ----
+  var ta=document.getElementById('notes'), msg=document.getElementById('savedMsg');
+  try{ var saved=localStorage.getItem('rr_selections'); if(saved){ta.value=saved;} }catch(e){}
+  document.getElementById('saveNotes').onclick=function(){
+    try{ localStorage.setItem('rr_selections',ta.value); msg.textContent='Saved ✓';
+      setTimeout(function(){msg.textContent='';},1500);}catch(e){ msg.textContent='Could not save (private mode?)'; }
+  };
+  document.getElementById('clearNotes').onclick=function(){
+    ta.value=''; try{localStorage.removeItem('rr_selections');}catch(e){} msg.textContent='Cleared';
+    setTimeout(function(){msg.textContent='';},1200);
+  };
+})();
+</script>
+</body>
+</html>
