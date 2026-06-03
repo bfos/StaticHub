@@ -59,14 +59,22 @@
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   @media(max-width:760px){.grid{grid-template-columns:1fr}}
   .item{background:var(--card);border:1px solid var(--line);border-left-width:5px;border-radius:12px;
-    padding:13px 15px;box-shadow:var(--shadow);}
+    padding:13px 15px;box-shadow:var(--shadow);cursor:pointer;transition:background .15s;align-self:start;}
+  .item:hover{background:#fffaf0}
   .item h3{margin:0 0 3px;font-size:17px}
-  .item h3 a{color:var(--ink);text-decoration:none;border-bottom:1px dotted #c9b89a}
+  .item h3 a{color:var(--ink);text-decoration:none;border-bottom:1px dotted #c9b89a;cursor:pointer}
   .item h3 a:hover{color:var(--link);border-bottom-color:var(--link)}
   .item h3 a::after{content:" ↗";font-size:11px;color:var(--link);vertical-align:super}
   .item .m{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:12px;color:var(--muted);margin:0 0 5px}
-  .item .b{font-size:13.5px;margin:0}
   .tagdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+  .item .more{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:12px;font-weight:600;
+    color:var(--link);user-select:none}
+  .item .full{display:none;margin-top:9px;padding-top:9px;border-top:1px solid var(--line)}
+  .item.open .full{display:block}
+  .item .full p{font-size:14px;line-height:1.55;margin:0 0 8px}
+  .item .full p:last-child{margin-bottom:0}
+  .item .full .know{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:12.5px;color:var(--muted);
+    border-left:3px solid var(--line);padding-left:10px}
 
   .paste{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;
     margin-top:30px;box-shadow:var(--shadow)}
@@ -86,7 +94,7 @@
 <body>
 <div class="wrap">
   <header class="top">
-    <a class="back" href="guerneville-weekend-guide.html">← Back to the full guide</a>
+    <a class="back" href="index.html">← Back to the full guide</a>
     <h1>Map &amp; Selections</h1>
     <p class="sub">Filter by category, see everything pinned on the map, and tap a name or pin to open it in Google Maps. Reference pins for your hotel 🏠 and the wedding 💍 always show.</p>
   </header>
@@ -126,31 +134,52 @@
 
   var DATA=[
     // FOOD & DRINK
-    {name:'Khom Loi',cat:'food',lat:38.4135,lng:-122.8243,m:'Thai · Sebastopol · zone ② · lunch Fri–Sun',q:'Khom Loi 7385 Healdsburg Ave Sebastopol CA'},
-    {name:'Bravas Bar de Tapas',cat:'food',lat:38.6118,lng:-122.8690,m:'Spanish tapas · Healdsburg · zone ③ · open 11:30am',q:'Bravas Bar de Tapas 420 Center St Healdsburg CA'},
-    {name:'Canneti Roadhouse Italiana',cat:'food',lat:38.4727,lng:-122.8903,m:'Tuscan · Forestville · zone ② · lunch/brunch Fri–Sun',q:'Canneti Roadhouse Italiana 6675 Front St Forestville CA'},
-    {name:'Handline',cat:'food',lat:38.3890,lng:-122.8255,m:'Coastal CA / tacos · Sebastopol · zone ② · open 11am',q:'Handline 935 Gravenstein Hwy S Sebastopol CA'},
-    {name:'Guerneville Taco Truck',cat:'food',lat:38.5016,lng:-123.0080,m:'Mexican food truck · Guerneville · zone ① · cash only',q:'Guerneville Taco Truck 16632 Main St Guerneville CA'},
-    {name:'El Barrio',cat:'food',lat:38.5018,lng:-122.9995,m:'Mezcal bar + taco window · Guerneville · zone ①',q:'El Barrio 16230 Main St Guerneville CA'},
+    {name:'Khom Loi',cat:'food',lat:38.4135,lng:-122.8243,m:'Thai · Sebastopol · zone ② · lunch Fri–Sun',q:'Khom Loi 7385 Healdsburg Ave Sebastopol CA',
+      full:`<p>The chefs traveled extensively through Thailand and brought a taste of Chiang Mai to Sonoma. It's a Bib Gourmand pick (great food, good value), and the space itself is a draw — a pretty pond and bamboo lanterns. Lunch service Fri/Sat/Sun from noon makes it perfect for a free afternoon, exactly your international-plus-outdoors sweet spot.</p><p class="know">Lunch Fri–Sun 12–9pm (happy hour 3–5); dinner Wed–Sun. Reserve via Resy. Closed Mon &amp; Tue.</p>`},
+    {name:'Bravas Bar de Tapas',cat:'food',lat:38.6118,lng:-122.8690,m:'Spanish tapas · Healdsburg · zone ③ · open 11:30am',q:'Bravas Bar de Tapas 420 Center St Healdsburg CA',
+      full:`<p>From James Beard finalists Mark &amp; Terri Stark, ranked among the top 20 tapas spots in the U.S. The reason to go is the big back garden: a heated, partly-covered patio strung with lights and an outdoor bar — relaxed and festive for grazing on jamón, gildas and patatas bravas over sherry or vermouth. Opens 11:30am, so it's a natural lazy lunch.</p><p class="know">Reserve online (OpenTable); bar seating is first-come. Ideal Saturday-light lunch on the way back from Healdsburg.</p>`},
+    {name:'Canneti Roadhouse Italiana',cat:'food',lat:38.4727,lng:-122.8903,m:'Tuscan · Forestville · zone ② · lunch/brunch Fri–Sun',q:'Canneti Roadhouse Italiana 6675 Front St Forestville CA',
+      full:`<p>Chef Francesco Torre cooks modern Tuscan with everything made in-house — bread, cured meats, even the mozzarella and fresh pasta. Beyond the plate, a warm, tree-lit patio with a fire pit. Lunch Fri/Sat 11:30–3 and a Sunday brunch make it the closest-to-home daytime option.</p><p class="know">Lunch last seating ~2:30pm. Call (707) 887-2232 to book — they turn away walk-ins on busy days.</p>`},
+    {name:'Handline',cat:'food',lat:38.3890,lng:-122.8255,m:'Coastal CA / tacos · Sebastopol · zone ② · open 11am',q:'Handline 935 Gravenstein Hwy S Sebastopol CA',
+      full:`<p>A modern, airy take on the old roadside drive-in — California-coastal cooking with handmade-tortilla Baja tacos, ceviche, fresh oysters and a fisherman's stew, served on a breezy back patio. Opens 11am every day; quick and low-key when you don't want a sit-down production. A great fast-but-good lunch.</p><p class="know">Order at the counter. Easy stop paired with Sebastopol/The Barlow.</p>`},
+    {name:'Guerneville Taco Truck',cat:'food',lat:38.5016,lng:-123.0080,m:'Mexican food truck · Guerneville · zone ① · cash only',q:'Guerneville Taco Truck 16632 Main St Guerneville CA',
+      full:`<p>Run by the Vazquez brothers for 30+ years, parked most days in the Safeway lot on Main St. Locals rave about the carne asada and pollo tacos, housemade flour tortillas, and the California burrito (steak + fries). Generous, fast, dirt-cheap, eat-outside good — the kind of food-truck stop that ends up a trip highlight.</p><p class="know">Cash only. Perfect quick lunch before an afternoon on the river or the road.</p>`},
+    {name:'El Barrio',cat:'food',lat:38.5018,lng:-122.9995,m:'Mezcal bar + taco window · Guerneville · zone ①',q:'El Barrio 16230 Main St Guerneville CA',
+      full:`<p>A funky-swanky bar specializing in mezcal, tequila and bourbon with inspired craft cocktails and outstanding margaritas. For your daytime schedule, the walk-up Taco Window (Wed–Fri 11:30–2) and the Sunday "Brunchito" (11–3) are the realistic plays — plus an easy Thursday-evening drink since it's right on Main St.</p><p class="know">Lounge opens 4pm weekdays; closed Mon &amp; Tue. No driving required from the hotel.</p>`},
     // COFFEE
-    {name:'Retrograde Coffee Roasters',cat:'coffee',lat:38.4020,lng:-122.8245,m:'House-made flavor syrups · Sebastopol · zone ② · ★ 4.7',q:'Retrograde Coffee Roasters Sebastopol CA'},
-    {name:'Sunshine Coffee Roasters',cat:'coffee',lat:38.4727,lng:-122.8900,m:'Organic / horchata lattes · Forestville · zone ② · ★ ~4.7',q:'Sunshine Coffee Roasters 6656 Front St Forestville CA'},
-    {name:'Coffee Bazaar',cat:'coffee',lat:38.5040,lng:-123.0005,m:'Cozy local + patio · Guerneville · zone ①',q:'Coffee Bazaar 14045 Armstrong Woods Rd Guerneville CA'},
+    {name:'Retrograde Coffee Roasters',cat:'coffee',lat:38.4020,lng:-122.8245,m:'House-made flavor syrups · Sebastopol · zone ② · ★ 4.7',q:'Retrograde Coffee Roasters Sebastopol CA',
+      full:`<p>A beloved local roaster on Main St. where they hand-make all their syrups and add-ins — seasonal cardamom lattes, rose, even charcoal-and-beet — so you get real, interesting flavors rather than "just the beans." Warm, welcoming, regulars-greeted-like-family energy, with indoor and outdoor seating. Best match for "relaxing vibe + flavors."</p><p class="know">Drinks run a bit pricey, but the flavor program is the point. Tasty breakfast sandwiches too.</p>`},
+    {name:'Sunshine Coffee Roasters',cat:'coffee',lat:38.4727,lng:-122.8900,m:'Organic / horchata lattes · Forestville · zone ② · ★ ~4.7',q:'Sunshine Coffee Roasters 6656 Front St Forestville CA',
+      full:`<p>Small-batch organic roaster going since 2004, with a friendly, easygoing counter and a signature horchata latte regulars swear by. The Forestville spot is the closest "good flavored latte + relax outside" option to Guerneville, and it's dog-friendly if that matters.</p><p class="know">Two locations (Front St., Forestville and Hwy 116, Sebastopol). Grab one en route to the coast or wineries.</p>`},
+    {name:'Coffee Bazaar',cat:'coffee',lat:38.5040,lng:-123.0005,m:'Cozy local + patio · Guerneville · zone ①',q:'Coffee Bazaar 14045 Armstrong Woods Rd Guerneville CA',
+      full:`<p>The quintessential Guerneville hangout — hometown, unhurried, full of locals — with a relaxing side patio and a deep bench of regulars. It's on Armstrong Woods Rd, literally on the way to the redwoods, so it's the natural morning stop before a walk among the giants. Lattes get steady praise; flavor menu is solid if not as inventive as Retrograde.</p><p class="know">Closest of the three to your hotel; easiest grab-and-go before a hike.</p>`},
     // WINE
-    {name:'Iron Horse Vineyards',cat:'wine',lat:38.4585,lng:-122.8975,m:'Outdoor sparkling tasting + views · Green Valley · zone ② · reserve',q:'Iron Horse Vineyards 9786 Ross Station Rd Sebastopol CA'},
-    {name:'Korbel Champagne Cellars',cat:'wine',lat:38.5096,lng:-122.9430,m:'Free tour + gardens · Guerneville · zone ① · ~5 min',q:'Korbel Champagne Cellars 13250 River Rd Guerneville CA'},
-    {name:'Gary Farrell Vineyards & Winery',cat:'wine',lat:38.5560,lng:-122.9040,m:'Hilltop views · Westside Rd · zone ③ · $15 tasting',q:'Gary Farrell Winery 10701 Westside Rd Healdsburg CA'},
-    {name:'MacRostie Winery',cat:'wine',lat:38.5850,lng:-122.8920,m:'Glass estate + terraces · Westside Rd · zone ③ · reserve',q:'MacRostie Winery 4605 Westside Rd Healdsburg CA'},
+    {name:'Iron Horse Vineyards',cat:'wine',lat:38.4585,lng:-122.8975,m:'Outdoor sparkling tasting + views · Green Valley · zone ② · reserve',q:'Iron Horse Vineyards 9786 Ross Station Rd Sebastopol CA',
+      full:`<p>The most scenic, least pretentious tasting around: the "tasting room" is literally outdoors on a hilltop, estate vineyards spilling away beneath you with sweeping Sonoma views. They make iconic sparkling wines (poured at the White House since 1985) plus estate Chardonnay and Pinot. You can also reserve a picnic table and BYO food.</p><p class="know">Hourly slots 10am–4pm Thu–Sun. Book ~2 weeks ahead for weekends; max 6 guests. Standout sunny-morning activity.</p>`},
+    {name:'Korbel Champagne Cellars',cat:'wine',lat:38.5096,lng:-122.9430,m:'Free tour + gardens · Guerneville · zone ① · ~5 min',q:'Korbel Champagne Cellars 13250 River Rd Guerneville CA',
+      full:`<p>Right down River Road and refreshingly unpretentious. The free, hour-long history-and-cellar tour ends with a glass of bubbly, and the flower gardens are genuinely beautiful in late spring/early summer. There's a deli for lunch among the redwoods and blooms — a relaxed, low-commitment outing that's almost in your backyard.</p><p class="know">Garden tours Tue–Sun at 1pm &amp; 3pm. Great easy Sunday-on-the-way-out stop.</p>`},
+    {name:'Gary Farrell Vineyards & Winery',cat:'wine',lat:38.5560,lng:-122.9040,m:'Hilltop views · Westside Rd · zone ③ · $15 tasting',q:'Gary Farrell Winery 10701 Westside Rd Healdsburg CA',
+      full:`<p>Perched on a hillside off scenic Westside Road, with some of the best valley views you'll get from a tasting patio and serious Pinot Noir and Chardonnay. The drive itself — winding past river and vineyards — is half the pleasure. Pair with MacRostie just down the road for an easy two-stop afternoon.</p><p class="know">$15 fee waived with a $100 purchase. Reserve ahead for patio seating.</p>`},
+    {name:'MacRostie Winery',cat:'wine',lat:38.5850,lng:-122.8920,m:'Glass estate + terraces · Westside Rd · zone ③ · reserve',q:'MacRostie Winery 4605 Westside Rd Healdsburg CA',
+      full:`<p>A sleek glass-and-wood estate with a fountain courtyard and three expansive terraces looking over the vines — built for slowing down. Strong Pinot and Chardonnay program, seated tastings, and it sells out frequently, which tells you how reliably good the experience is.</p><p class="know">Reserve in advance; pairs naturally with Gary Farrell on the same Westside Road loop.</p>`},
     // OUTDOORS
-    {name:'Armstrong Redwoods State Natural Reserve',cat:'outdoors',lat:38.5370,lng:-123.0045,m:'Ancient redwoods, flat loop · Guerneville · zone ① · ~5 min',q:'Armstrong Redwoods State Natural Reserve Guerneville CA'},
-    {name:'Burke’s Canoe Trips',cat:'outdoors',lat:38.4865,lng:-122.9180,m:'10-mi river float · Forestville · zone ② · summer',q:'Burke’s Canoe Trips 8600 River Rd Forestville CA'},
-    {name:'Bodega Head Loop',cat:'outdoors',lat:38.3038,lng:-123.0686,m:'Headland loop, ocean views · Bodega Bay · zone ④ · ~40 min',q:'Bodega Head Bodega Bay CA'},
-    {name:'Kortum Trail & Goat Rock',cat:'outdoors',lat:38.4419,lng:-123.1267,m:'Blufftop trail + beach · Jenner · zone ④ · ~35 min',q:'Goat Rock Beach Jenner CA'},
+    {name:'Armstrong Redwoods State Natural Reserve',cat:'outdoors',lat:38.5370,lng:-123.0045,m:'Ancient redwoods, flat loop · Guerneville · zone ① · ~5 min',q:'Armstrong Redwoods State Natural Reserve Guerneville CA',
+      full:`<p>Old-growth coast redwoods right at your doorstep. The Pioneer Nature Trail (~1 mi) and Grove Loop (1.2 mi, ~25 min) are flat, shaded and family-easy, winding past the 1,400-year-old Colonel Armstrong Tree. Cool, quiet, and genuinely awe-inducing — the perfect low-effort, high-payoff walk, and short enough to slot in before Saturday's wedding prep.</p><p class="know">Open 8am–sunset. Park free by walking/biking in, or $10/vehicle. Bring a light layer — chilly under the canopy.</p>`},
+    {name:'Burke’s Canoe Trips',cat:'outdoors',lat:38.4865,lng:-122.9180,m:'10-mi river float · Forestville · zone ② · summer',q:'Burke’s Canoe Trips 8600 River Rd Forestville CA',
+      full:`<p>The classic Russian River experience: a leisurely 10-mile paddle past rock beaches, towering redwoods and clear green water, with otters, herons and turtles along the way. Low-effort flatwater — most people stop to picnic and swim, taking 4–5 hours — and Burke's shuttles you back to your car at the end. No experience needed (just swim ability).</p><p class="know">A Friday-sized commitment; not a Saturday-before-wedding activity. Summer season only; reserve ahead on busy weekends.</p>`},
+    {name:'Bodega Head Loop',cat:'outdoors',lat:38.3038,lng:-123.0686,m:'Headland loop, ocean views · Bodega Bay · zone ④ · ~40 min',q:'Bodega Head Bodega Bay CA',
+      full:`<p>A short, easy loop around dramatic headlands with the best whale-watching vantage in Sonoma County and big open-ocean views the whole way. Pairs perfectly with a coast drive and a stop for oysters or chowder in Bodega Bay.</p><p class="know">Windy and cooler at the coast — bring a jacket. Best as a Friday outing. (Note: June is past the main gray-whale season, so treat any sighting as a bonus.)</p>`},
+    {name:'Kortum Trail & Goat Rock',cat:'outdoors',lat:38.4419,lng:-123.1267,m:'Blufftop trail + beach · Jenner · zone ④ · ~35 min',q:'Goat Rock Beach Jenner CA',
+      full:`<p>A flat blufftop path above sandy coves and sea stacks — walk as much or as little as you like (the full Shell-to-Blind Beach stretch is ~4 mi round trip). Just south, Goat Rock Beach sits at the mouth of the Russian River and has a resident harbor-seal colony. Spectacular, and easy.</p><p class="know">For the most effortless version, the paved Vista Trail loop near Jenner (¾ mi) gives big views with zero strain. No dogs on Goat Rock Beach (seals).</p>`},
     // TOWNS
-    {name:'Healdsburg Plaza',cat:'towns',lat:38.6103,lng:-122.8694,m:'Most walkable downtown · zone ③ · ~35 min',q:'Healdsburg Plaza Healdsburg CA'},
-    {name:'Occidental',cat:'towns',lat:38.4066,lng:-122.9486,m:'Tiny redwood village · zone ⑤ · ~20 min',q:'Occidental CA'},
-    {name:'Duncans Mills',cat:'towns',lat:38.4549,lng:-123.0560,m:'Historic river village · zone ④ · ~15 min',q:'Duncans Mills CA'},
-    {name:'Sebastopol & The Barlow',cat:'towns',lat:38.4007,lng:-122.8215,m:'Maker district + quirky art · zone ② · ~25 min',q:'The Barlow Sebastopol CA'}
+    {name:'Healdsburg Plaza',cat:'towns',lat:38.6103,lng:-122.8694,m:'Most walkable downtown · zone ③ · ~35 min',q:'Healdsburg Plaza Healdsburg CA',
+      full:`<p>The region's prettiest walkable downtown — a tree-shaded plaza ringed by independent boutiques, galleries, tasting rooms and some of Wine Country's best cafés and restaurants (Bravas is here). Easy to spend a relaxed half-day: coffee, browse, lunch on a patio, repeat.</p><p class="know">Best paired with a Westside Road winery stop or a Bravas lunch.</p>`},
+    {name:'Occidental',cat:'towns',lat:38.4066,lng:-122.9486,m:'Tiny redwood village · zone ⑤ · ~20 min',q:'Occidental CA',
+      full:`<p>A storybook two-block village tucked in the redwoods, reached via the lovely Bohemian Highway. A few craft shops, a bakery, and old-Sonoma atmosphere — a short, sweet stroll, and a scenic drive in its own right (it's also roughly on the way toward Cazadero).</p><p class="know">Tiny — 30–45 min covers it. Great low-key pairing with a coast or back-roads drive.</p>`},
+    {name:'Duncans Mills',cat:'towns',lat:38.4549,lng:-123.0560,m:'Historic river village · zone ④ · ~15 min',q:'Duncans Mills CA',
+      full:`<p>A tiny restored 19th-century railroad town along the lower river — a cluster of weathered wooden buildings now holding antiques, boutiques and a café or two. A quick, photogenic stretch-your-legs stop on the scenic drive between Guerneville and the coast.</p><p class="know">Small; combine with Goat Rock/Jenner on a coast day.</p>`},
+    {name:'Sebastopol & The Barlow',cat:'towns',lat:38.4007,lng:-122.8215,m:'Maker district + quirky art · zone ② · ~25 min',q:'The Barlow Sebastopol CA',
+      full:`<p>Less a classic plaza, more a creative hub: The Barlow is an open-air district of makers, tasting rooms, food and shops (Khom Loi, Handline and Retrograde are all in town). Add the famous quirky junk-art houses on Florence Avenue for a fun, offbeat stroll.</p><p class="know">Pairs well with coffee at Retrograde and lunch at Khom Loi or Handline.</p>`}
   ];
 
   // ---- MAP ----
@@ -195,8 +224,18 @@
       var el=document.createElement('div');
       el.className='item'; el.style.borderLeftColor=color;
       el.innerHTML='<h3><a target="_blank" rel="noopener" href="'+g(d.q)+'">'+d.name+'</a></h3>'+
-        '<p class="m"><span class="tagdot" style="background:'+color+'"></span>'+d.m+'</p>';
+        '<p class="m"><span class="tagdot" style="background:'+color+'"></span>'+d.m+'</p>'+
+        '<span class="more">Details ▾</span>'+
+        '<div class="full">'+(d.full||'')+'</div>';
       grid.appendChild(el);
+      // click the card -> expand/collapse full details (name link still opens Maps)
+      var moreLabel=el.querySelector('.more');
+      el.querySelector('h3 a').addEventListener('click',function(ev){ ev.stopPropagation(); });
+      el.querySelector('.full').addEventListener('click',function(ev){ ev.stopPropagation(); });
+      el.addEventListener('click',function(){
+        var open=el.classList.toggle('open');
+        moreLabel.textContent=open?'Hide details ▴':'Details ▾';
+      });
       // hover the card -> highlight the matching pin
       (function(marker,c){
         el.addEventListener('mouseenter',function(){
