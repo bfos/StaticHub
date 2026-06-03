@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Russian River Weekend — Guerneville Wedding Guide</title>
+<style>
+  :root{
+    --bg:#f7f3ec; --ink:#2b2620; --muted:#6f675c; --line:#e3dccf;
+    --card:#fffdf8; --accent:#7a8450; --accent2:#a64b2a; --gold:#b8893b;
+    --yes:#3f7d4e; --yesbg:#e7f1e6; --no:#9a3b2f;
+    --shadow:0 1px 3px rgba(0,0,0,.06),0 6px 18px rgba(0,0,0,.05);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.55 "Iowan Old Style",Georgia,"Times New Roman",serif;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px 120px;}
+  header.top{padding:38px 0 18px;border-bottom:2px solid var(--line);margin-bottom:8px;}
+  h1{font-size:34px;margin:0 0 6px;letter-spacing:.2px;}
+  .sub{color:var(--muted);font-size:16px;margin:0 0 14px;}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:13.5px;color:var(--muted);
+    font-family:-apple-system,Segoe UI,Roboto,sans-serif;}
+  .legend b{color:var(--ink)}
+  .note{background:#fff7e8;border:1px solid #ecd9a8;border-radius:10px;
+    padding:12px 16px;margin:16px 0 4px;font-size:14.5px;color:#5a4f37;
+    font-family:-apple-system,Segoe UI,Roboto,sans-serif;}
+  .layout{display:grid;grid-template-columns:1fr 320px;gap:28px;align-items:start;margin-top:18px;}
+  @media(max-width:920px){.layout{grid-template-columns:1fr}}
+
+  h2.section{font-size:24px;margin:34px 0 4px;display:flex;align-items:center;gap:10px;}
+  h2.section .tag{font:12px/1 -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.08em;
+    text-transform:uppercase;color:#fff;background:var(--accent);padding:5px 9px;border-radius:20px;}
+  .section-intro{color:var(--muted);font-size:14.5px;margin:2px 0 14px;
+    font-family:-apple-system,Segoe UI,Roboto,sans-serif;}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:14px 0;box-shadow:var(--shadow);transition:.25s;}
+  .card.liked{border-color:var(--yes);box-shadow:0 0 0 2px var(--yesbg),var(--shadow);}
+  .card h3{margin:0 0 4px;font-size:20px;}
+  .meta{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:13px;color:var(--muted);
+    display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:10px;}
+  .meta .pill{background:#f0ebe0;border-radius:20px;padding:3px 10px;color:#574f43;}
+  .meta .rate{background:#eef3e6;color:#4d6327;font-weight:600;}
+  .meta .price{background:#f6ecdf;color:#8a5a23;}
+  .card p{margin:8px 0;font-size:15px;}
+  .card .know{font-size:13.5px;color:var(--muted);font-family:-apple-system,Segoe UI,Roboto,sans-serif;
+    border-left:3px solid var(--line);padding-left:10px;margin-top:10px;}
+  .actions{display:flex;gap:10px;margin-top:14px;}
+  button{font:600 14px/1 -apple-system,Segoe UI,Roboto,sans-serif;cursor:pointer;
+    border-radius:9px;padding:10px 16px;border:1px solid transparent;transition:.15s;}
+  .btn-yes{background:var(--yes);color:#fff;}
+  .btn-yes:hover{filter:brightness(1.07)}
+  .btn-no{background:#fff;color:var(--no);border-color:#e4cfc9;}
+  .btn-no:hover{background:#fbeeeb}
+  .card.liked .btn-yes{background:#2f6b3d}
+  .card.liked .btn-yes::after{content:" ✓"}
+
+  /* hidden list */
+  .hidden-wrap{margin-top:10px}
+  .hidden-toggle{font:600 13px/1 -apple-system,Segoe UI,Roboto,sans-serif;color:var(--muted);
+    background:none;border:1px dashed var(--line);padding:8px 12px;border-radius:8px;}
+  #hiddenList{list-style:none;padding:0;margin:10px 0 0;display:none;}
+  #hiddenList.show{display:block}
+  #hiddenList li{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:13.5px;
+    color:var(--muted);padding:7px 10px;border:1px solid var(--line);border-radius:8px;
+    margin:6px 0;display:flex;justify-content:space-between;gap:10px;background:#faf7f0;}
+  #hiddenList button{padding:4px 10px;font-size:12px;background:#fff;border:1px solid var(--line);color:var(--accent2)}
+
+  /* picks panel */
+  .picks{position:sticky;top:18px;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;box-shadow:var(--shadow);padding:18px;}
+  .picks h2{margin:0 0 4px;font-size:20px;}
+  .picks .count{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:12.5px;color:var(--muted);}
+  #picksList{list-style:none;padding:0;margin:14px 0 0;}
+  #picksList li{padding:10px 0;border-bottom:1px solid var(--line);}
+  #picksList li:last-child{border-bottom:none}
+  .pk-name{font-weight:600;font-size:15px}
+  .pk-meta{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:12px;color:var(--muted);display:block;margin-top:2px}
+  .pk-note{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:12.5px;color:#574f43;display:block;margin-top:3px}
+  .pk-rm{float:right;font:600 11px/1 -apple-system,Segoe UI,Roboto,sans-serif;color:var(--no);
+    background:none;border:none;cursor:pointer;padding:2px 4px}
+  .empty{font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:13.5px;color:var(--muted);
+    background:#faf7f0;border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center;}
+  .picks-actions{display:flex;gap:8px;margin-top:14px}
+  .picks-actions button{flex:1;font-size:13px;padding:9px}
+  .copybtn{background:var(--accent);color:#fff}
+  .printbtn{background:#fff;color:var(--ink);border:1px solid var(--line)}
+
+  details.itin{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:6px 20px;margin:16px 0;box-shadow:var(--shadow)}
+  details.itin summary{cursor:pointer;font-size:20px;font-weight:600;padding:12px 0;list-style:none}
+  details.itin summary::-webkit-details-marker{display:none}
+  details.itin summary::before{content:"▸ ";color:var(--accent)}
+  details.itin[open] summary::before{content:"▾ "}
+  .day{margin:10px 0 16px}
+  .day h4{margin:0 0 4px;font-size:16px;color:var(--accent2);font-family:-apple-system,Segoe UI,Roboto,sans-serif}
+  .day p{margin:4px 0;font-size:14.5px}
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+    font-family:-apple-system,Segoe UI,Roboto,sans-serif;font-size:12.5px;color:var(--muted)}
+  a{color:var(--accent2)}
+  @media print{.picks-actions,.actions,.hidden-wrap,.legend{display:none}.layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Russian River Weekend — Things to Do Around the Wedding</h1>
+    <p class="sub">Base: The Surrey Resort, Guerneville · Thursday–Sunday · Wedding events Fri &amp; Sat eve in Cazadero · Rental car</p>
+    <div class="legend">
+      <span><b>Drive times</b> are from Guerneville.</span>
+      <span>Cazadero (wedding) ≈ <b>20 min</b> NW.</span>
+      <span>★ = Google/aggregate rating, verified across multiple review sources.</span>
+    </div>
+    <div class="note">
+      <b>A note on the 4.8+ bar:</b> coffee shops and casual spots here do hit it, but full-service Wine Country
+      restaurants almost never do — the best, most-loved places in this area sit ~4.4–4.7 with hundreds of reviews.
+      I prioritized the highest-rated <i>local, non-chain</i> spots with strong consistent reviews, real patios/gardens,
+      and an international or food-truck lean. I excluded places with thin or suspicious review histories, and flagged
+      a few recent closures so you don't get caught out. Hours shift seasonally — worth a quick confirm call before you go.
+    </div>
+  </header>
+
+  <div class="layout">
+    <main>
+
+      <!-- ITINERARY -->
+      <details class="itin" open>
+        <summary>Suggested rhythm (built around wedding prep time)</summary>
+        <div class="day">
+          <h4>Thursday — arrive, settle, easy evening</h4>
+          <p>You're in Guerneville, so stay close. A short stroll through <b>Armstrong Redwoods</b> if there's daylight (5 min away), then dinner right in town — <b>The Lodge at Dawn Ranch</b> (in the redwoods) or casual <b>Boon</b> — and a nightcap at <b>El Barrio</b> on Main St.</p>
+        </div>
+        <div class="day">
+          <h4>Friday — your big free day (wedding event that evening in Cazadero)</h4>
+          <p>Do the marquee thing while you have a full window: <b>Burke's Canoe Trips</b> on the river, a <b>Sonoma Coast</b> drive (Bodega Head + Kortum Trail), or two scenic wineries (<b>Iron Horse</b> + <b>Korbel</b>). Coffee at <b>Coffee Bazaar</b> on the way out. Be back by mid-afternoon to get ready; Cazadero is a short 20-min hop.</p>
+        </div>
+        <div class="day">
+          <h4>Saturday — keep it light (wedding night, more prep time needed)</h4>
+          <p>Nothing far-flung. Slow coffee at <b>Retrograde</b> or <b>Sunshine</b>, a short <b>Armstrong Redwoods</b> walk or a <b>Healdsburg Plaza</b> stroll + relaxed lunch (<b>Bravas</b> patio), then back early to get ready in plenty of time.</p>
+        </div>
+        <div class="day">
+          <h4>Sunday — easy out</h4>
+          <p>Brunch or coffee, then the free <b>Korbel</b> garden + bubbles tour, or a quick poke around <b>Duncans Mills</b> / <b>Occidental</b> on your way toward the highway.</p>
+        </div>
+      </details>
+
+      <!-- DINNER -->
+      <h2 class="section"><span class="tag">Eat</span> Dinners &amp; standout meals</h2>
+      <p class="section-intro">Patios, gardens, and an international tilt. Book the marked ones ahead — small dining rooms fill on wedding-season weekends.</p>
+
+      <div class="card" data-note="Tasting menu in the redwoods, in-town. Book ahead. Fri–Mon only.">
+        <h3>The Lodge at Dawn Ranch</h3>
+        <div class="meta"><span class="pill">Guerneville · in town</span><span class="rate">★ ~4.7</span><span class="price">$$$$ tasting menu</span><span class="pill">Reservations: strongly rec.</span></div>
+        <p>A 7–12 course tasting menu from chefs Ignacio Zuzulich &amp; Juliana Thorpe, drawing on Brazilian, Argentine and Basque influences — playful, hands-on courses in an intimate 40-seat room set among ancient redwoods. Reviewers repeatedly say it "rivals Michelin-starred" places with "absolutely incredible service."</p>
+        <p class="know">Dinner Fri–Mon, 5:00–8:30pm (closed Tue–Thu). The best "we're already in Guerneville" splurge — ideal for Thursday night.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Michelin Bib Thai (Chiang Mai) with a pond + bamboo-light patio. ~30 min.">
+        <h3>Khom Loi <span style="font-weight:400;font-size:14px;color:var(--muted)">— Thai</span></h3>
+        <div class="meta"><span class="pill">Sebastopol · ~30 min</span><span class="rate">★ ~4.5 · Michelin Bib Gourmand</span><span class="price">$$ mid</span><span class="pill">Reservations rec.</span></div>
+        <p>The chefs traveled extensively through Thailand and brought a taste of Chiang Mai to Sonoma. It's a Bib Gourmand pick (great food, good value), and the space itself is a draw — a pretty pond and bamboo lanterns make the patio glow at night. Exactly your international-plus-outdoors sweet spot.</p>
+        <p class="know">Reserve via Resy. Larger parties: email ahead. A genuinely fun, non-stuffy dinner.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Spanish tapas with a string-light garden patio. Top-20 US tapas. ~35 min.">
+        <h3>Bravas Bar de Tapas <span style="font-weight:400;font-size:14px;color:var(--muted)">— Spanish</span></h3>
+        <div class="meta"><span class="pill">Healdsburg · ~35 min</span><span class="rate">★ ~4.5 · 1,500+ reviews</span><span class="price">$$–$$$ shareable</span><span class="pill">Reservations rec. (bar walk-in)</span></div>
+        <p>From James Beard finalists Mark &amp; Terri Stark, ranked among the top 20 tapas spots in the U.S. The real reason to go is the big back garden: a heated, partly-covered patio strung with lights and an outdoor bar — relaxed, festive, perfect for grazing on jamón, gildas and patatas bravas over sherry or vermouth.</p>
+        <p class="know">Reserve online (OpenTable); bar seating is first-come. Great as a Saturday lunch or a Friday-before-Cazadero bite if timing allows.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Tuscan, everything in-house, tree-lit patio w/ firepit. 10 min. Book ahead.">
+        <h3>Canneti Roadhouse Italiana <span style="font-weight:400;font-size:14px;color:var(--muted)">— Tuscan</span></h3>
+        <div class="meta"><span class="pill">Forestville · ~10 min</span><span class="rate">★ ~4.4</span><span class="price">$$$</span><span class="pill">Reservations needed</span></div>
+        <p>Chef Francesco Torre cooks modern Tuscan with everything made in-house — bread, cured meats, even the mozzarella and the fresh pasta. The draw beyond the plate is a warm, tree-lit patio with a fire pit; people consistently call it their "special occasion" dinner in the valley. Very close to home base.</p>
+        <p class="know">They'll turn away walk-ins on busy nights — call (707) 887-2232 to book.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Modern CA bistro, walkable on Main St. Closed Mon/Tue.">
+        <h3>Boon Eat + Drink <span style="font-weight:400;font-size:14px;color:var(--muted)">— California bistro</span></h3>
+        <div class="meta"><span class="pill">Guerneville · in town</span><span class="rate">★ ~4.5–4.6 · #1 in town</span><span class="price">$$$</span><span class="pill">Reservations rec.</span></div>
+        <p>The reliable in-town favorite — a small, seasonal California menu (organic produce, sustainably raised meats, sharp small plates) that's "fancy without being stuffy." Walkable from Main St., so no driving on a wedding-prep night. The boon brownie and panna cotta are the signatures.</p>
+        <p class="know">Closed Mon &amp; Tue; Wed–Sun dinner. Easy walk to El Barrio after.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Coastal CA, fish tacos, casual patio with a view. ~30 min.">
+        <h3>Handline <span style="font-weight:400;font-size:14px;color:var(--muted)">— Coastal California / seafood</span></h3>
+        <div class="meta"><span class="pill">Sebastopol · ~30 min</span><span class="rate">★ ~4.4</span><span class="price">$$ casual order-at-counter</span><span class="pill">No reservations</span></div>
+        <p>A modern, airy take on the old roadside drive-in — California-coastal cooking with excellent fish tacos, oysters and local produce, served on a breezy back patio. Lower-key and quick, a nice daytime or no-fuss option when you don't want a sit-down production.</p>
+        <p class="know">Order at the counter; great for a relaxed lunch on a sunny day.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Michelin-starred splurge. ~$200pp. Book weeks ahead. Mixed reviews.">
+        <h3>The Restaurant at Farmhouse Inn <span style="font-weight:400;font-size:14px;color:var(--muted)">— Michelin star</span></h3>
+        <div class="meta"><span class="pill">Forestville · ~12 min</span><span class="rate">★ ~4.5 · Michelin ★</span><span class="price">$$$$ (~$200/person)</span><span class="pill">Book weeks ahead</span></div>
+        <p>The area's marquee fine-dining room and a longtime Michelin-star holder; courtyard lunch under oak trees and passionfruit vines is lovely. Including it for completeness as the top-end special-occasion choice — reviews are strong but a touch mixed for the price, so go in wanting the full ceremony.</p>
+        <p class="know">Reservations open weeks out and go fast. If you want one blow-out meal, this or Dawn Ranch.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <!-- FOOD TRUCK / CASUAL -->
+      <h2 class="section"><span class="tag">Eat</span> Food truck &amp; drinks</h2>
+      <p class="section-intro">The cheap-and-great category you asked for.</p>
+
+      <div class="card" data-note="3-decade family taco truck, cash only, Safeway lot. Cheap + excellent.">
+        <h3>Guerneville Taco Truck <span style="font-weight:400;font-size:14px;color:var(--muted)">— Mexican, food truck</span></h3>
+        <div class="meta"><span class="pill">Guerneville · in town</span><span class="rate">★ ~4.6</span><span class="price">$ cheap · cash only</span><span class="pill">Walk up</span></div>
+        <p>Run by the Vazquez brothers for 30+ years, parked most days in the Safeway lot on Main St. Locals rave about the carne asada and pollo tacos, the housemade flour tortillas, and the California burrito (steak + fries). Generous, fast, dirt-cheap, eat-outside good — exactly the kind of food-truck stop that ends up being a trip highlight.</p>
+        <p class="know">Cash only. Perfect quick lunch before an afternoon on the river.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Mezcal/tequila craft cocktail bar on Main St. Walkable nightcap.">
+        <h3>El Barrio <span style="font-weight:400;font-size:14px;color:var(--muted)">— cocktail bar</span></h3>
+        <div class="meta"><span class="pill">Guerneville · in town</span><span class="rate">★ ~4.6</span><span class="price">$$ cocktails</span><span class="pill">Walk in</span></div>
+        <p>A small, funky-swanky bar specializing in mezcal, tequila and bourbon with inspired craft cocktails and outstanding margaritas (don't skip the guac). Great low-key spot for a pre- or post-dinner drink without driving — it's right on Main St.</p>
+        <p class="know">Cozy; can get busy on weekend evenings.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <!-- WINE -->
+      <h2 class="section"><span class="tag">Sip</span> Wineries with great patios &amp; views</h2>
+      <p class="section-intro">Russian River is Pinot &amp; Chardonnay country (plus sparkling). All of these are reservation-friendly, scenic, and outdoors-forward.</p>
+
+      <div class="card" data-note="Outdoor-only tasting, sweeping views, estate sparkling. $35pp. Book ~2 wks ahead.">
+        <h3>Iron Horse Vineyards</h3>
+        <div class="meta"><span class="pill">Sebastopol/Green Valley · ~20 min</span><span class="rate">★ ~4.7</span><span class="price">$35/person</span><span class="pill">Reservations required</span></div>
+        <p>The most scenic, least pretentious tasting around: the "tasting room" is literally outdoors on a hilltop, with estate vineyards spilling away beneath you and sweeping Sonoma views. They make iconic sparkling wines (poured at the White House since 1985) plus estate Chardonnay and Pinot. You can also reserve a picnic table and BYO food.</p>
+        <p class="know">Hourly slots 10am–4pm Thu–Sun. Book ~2 weeks ahead for weekends; max 6 guests. The standout sunny-morning activity.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="FREE historic tour + bubbles + gorgeous gardens + deli. 5 min away.">
+        <h3>Korbel Champagne Cellars</h3>
+        <div class="meta"><span class="pill">Guerneville · ~5 min</span><span class="rate">★ ~4.5 · 600+ reviews</span><span class="price">Free tour &amp; tasting</span><span class="pill">No-fuss / walk-in tasting</span></div>
+        <p>Right down River Road and refreshingly unpretentious. The free, hour-long history-and-cellar tour ends with a glass of bubbly, and the flower gardens are genuinely beautiful in late spring/early summer. There's a deli where you can grab lunch among the redwoods and blooms — a relaxed, low-commitment outing that's almost in your backyard.</p>
+        <p class="know">Garden tours Tue–Sun at 1pm &amp; 3pm. Great easy Sunday-on-the-way-out stop.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Hilltop views, lovely patio, low $15 tasting. ~35 min on Westside Rd.">
+        <h3>Gary Farrell Vineyards &amp; Winery</h3>
+        <div class="meta"><span class="pill">Healdsburg/Westside Rd · ~35 min</span><span class="rate">★ ~4.6</span><span class="price">$15 tasting (waived w/ purchase)</span><span class="pill">Reservations rec.</span></div>
+        <p>Perched on a hillside off scenic Westside Road, with some of the best valley views you'll get from a tasting patio and serious Pinot Noir and Chardonnay. The drive itself — winding past river and vineyards — is half the pleasure. Pair with MacRostie just down the road for an easy two-stop afternoon.</p>
+        <p class="know">$15 fee waived with a $100 purchase. Reserve ahead for patio seating.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Modern, fountain courtyard, 3 vineyard-view terraces. $20–55. Book ahead.">
+        <h3>MacRostie Winery</h3>
+        <div class="meta"><span class="pill">Healdsburg/Westside Rd · ~35 min</span><span class="rate">★ ~4.7</span><span class="price">$20–$55/person</span><span class="pill">Reservations required</span></div>
+        <p>A sleek glass-and-wood estate with a fountain courtyard and three expansive terraces looking over the vines — built for slowing down. Strong Pinot and Chardonnay program, seated tastings, and it sells out frequently, which tells you how reliably good the experience is.</p>
+        <p class="know">Reserve in advance; pairs naturally with Gary Farrell on the same Westside Road loop.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <!-- COFFEE -->
+      <h2 class="section"><span class="tag">Coffee</span> Relaxed coffee shops (with real flavors)</h2>
+      <p class="section-intro">Vibe-first, flavor-forward — exactly your brief. The two roasters below make their own syrups, so flavored drinks are a given.</p>
+
+      <div class="card" data-note="House-made syrups (cardamom, rose, beet), indoor + outdoor. ~4.7. ~30 min.">
+        <h3>Retrograde Coffee Roasters</h3>
+        <div class="meta"><span class="pill">Sebastopol · ~30 min</span><span class="rate">★ 4.7</span><span class="price">$ café</span><span class="pill">Indoor + patio</span></div>
+        <p>A beloved local roaster on Main St. where they hand-make all their syrups and add-ins — seasonal cardamom lattes, rose, even charcoal-and-beet — so you get real, interesting flavors rather than "just the beans." Warm, welcoming, regulars-greeted-like-family energy, with indoor and outdoor seating. Best match for "relaxing vibe + flavors."</p>
+        <p class="know">Drinks run a bit pricey, but the flavor program is the point. Tasty breakfast sandwiches too.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Organic roaster, horchata lattes, pet-friendly patio. ~4.7. Forestville ~10 min.">
+        <h3>Sunshine Coffee Roasters</h3>
+        <div class="meta"><span class="pill">Forestville ~10 min · also Sebastopol</span><span class="rate">★ ~4.7</span><span class="price">$ café</span><span class="pill">Patio · pet-friendly</span></div>
+        <p>Small-batch organic roaster going since 2004, with a friendly, easygoing counter and a signature horchata latte regulars swear by. The Forestville spot is the closest "good flavored latte + relax outside" option to Guerneville, and it's dog-friendly if that matters.</p>
+        <p class="know">Two locations (Front St., Forestville and Hwy 116, Sebastopol). Grab one en route to the coast or wineries.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Cozy in-town local spot with a side patio, on the way to the redwoods.">
+        <h3>Coffee Bazaar</h3>
+        <div class="meta"><span class="pill">Guerneville · in town</span><span class="rate">★ ~4.4 · 900+ reviews</span><span class="price">$ café</span><span class="pill">Side patio</span></div>
+        <p>The quintessential Guerneville hangout — hometown, unhurried, full of locals — with a relaxing side patio and a deep bench of regulars who keep coming back. It's on Armstrong Woods Rd, literally on the way to the redwoods, so it's the natural morning stop before a walk among the giants. Lattes get steady praise; flavor menu is solid if not as inventive as Retrograde.</p>
+        <p class="know">Closest of the three to your hotel; easiest grab-and-go before a hike.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <!-- OUTDOORS -->
+      <h2 class="section"><span class="tag">Outside</span> Easy, scenic hikes &amp; river time</h2>
+      <p class="section-intro">All easy/relaxed. The redwoods are 5 minutes away; the coast is a beautiful 30–40 min drive. Save the coast/canoe for Friday; keep Saturday short.</p>
+
+      <div class="card" data-note="Ancient redwoods, flat 1-mi loop, 5 min away. Free on foot. Saturday-friendly.">
+        <h3>Armstrong Redwoods State Natural Reserve</h3>
+        <div class="meta"><span class="pill">Guerneville · ~5 min</span><span class="rate">★ ~4.8 · 1,000+ reviews</span><span class="price">$10/car · free walk-in</span><span class="pill">Easy · flat</span></div>
+        <p>Old-growth coast redwoods right at your doorstep. The Pioneer Nature Trail (~1 mi) and Grove Loop (1.2 mi, ~25 min) are flat, shaded and family-easy, winding past the 1,400-year-old Colonel Armstrong Tree. Cool, quiet, and genuinely awe-inducing — the perfect low-effort, high-payoff walk, and short enough to slot in before Saturday's wedding prep.</p>
+        <p class="know">Open 8am–sunset. Park free by walking/biking in, or $10/vehicle. Bring a light layer — it's chilly under the canopy.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="10-mi scenic float, they shuttle you back. $95/canoe, 3.5–5 hrs. Friday activity.">
+        <h3>Burke's Canoe Trips</h3>
+        <div class="meta"><span class="pill">Forestville · ~12 min</span><span class="rate">★ ~4.6</span><span class="price">$95/canoe</span><span class="pill">Seasonal (summer)</span></div>
+        <p>The classic Russian River experience: a leisurely 10-mile paddle past rock beaches, towering redwoods and clear green water, with otters, herons and turtles along the way. Low-effort flatwater — most people stop to picnic and swim, taking 4–5 hours — and Burke's shuttles you back to your car at the end. No experience needed (just swim ability).</p>
+        <p class="know">A Friday-sized commitment; not a Saturday-before-wedding activity. Summer season only; reserve ahead on busy weekends.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="1.5-mi headland loop, ocean + whale views. ~40 min drive.">
+        <h3>Bodega Head Loop</h3>
+        <div class="meta"><span class="pill">Bodega Bay · ~40 min</span><span class="rate">★ ~4.8</span><span class="price">Free</span><span class="pill">Easy · 1.5 mi loop</span></div>
+        <p>A short, easy loop around dramatic headlands with the best whale-watching vantage in Sonoma County and big open-ocean views the whole way. Pairs perfectly with a coast drive and a stop for oysters or chowder in Bodega Bay.</p>
+        <p class="know">Windy and cooler at the coast — bring a jacket. Best as a Friday outing.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Flat blufftop trail, sea stacks + coves near Goat Rock/Jenner. ~35 min.">
+        <h3>Kortum Trail &amp; Goat Rock (Sonoma Coast)</h3>
+        <div class="meta"><span class="pill">Jenner · ~35 min</span><span class="rate">★ ~4.7</span><span class="price">Free</span><span class="pill">Easy · flat, do any length</span></div>
+        <p>A flat blufftop path above sandy coves and sea stacks — walk as much or as little as you like (the full Shell-to-Blind Beach stretch is ~4 mi round trip). Just south, Goat Rock Beach sits at the mouth of the Russian River and has a resident harbor-seal colony. Spectacular, and easy.</p>
+        <p class="know">For the most effortless version, the paved Vista Trail loop near Jenner (¾ mi) gives big views with zero strain. No dogs on Goat Rock Beach (seals).</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <!-- TOWNS -->
+      <h2 class="section"><span class="tag">Wander</span> Cute towns to walk &amp; shop</h2>
+      <p class="section-intro">For your "stroll a pretty town" mood. Healdsburg is the most walkable; the little ones are quick, charming pull-overs.</p>
+
+      <div class="card" data-note="Most walkable town: plaza, boutiques, tasting rooms, great coffee. ~35 min.">
+        <h3>Healdsburg Plaza</h3>
+        <div class="meta"><span class="pill">Healdsburg · ~35 min</span><span class="rate">★ top-rated downtown</span><span class="price">Free to wander</span><span class="pill">Half-day</span></div>
+        <p>The region's prettiest walkable downtown — a tree-shaded plaza ringed by independent boutiques, galleries, tasting rooms and some of Wine Country's best cafés and restaurants (Bravas is here). Easy to spend a relaxed half-day: coffee, browse, lunch on a patio, repeat.</p>
+        <p class="know">Best paired with a Westside Road winery stop or a Bravas lunch.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Tiny quaint 2-block village in the redwoods. ~20 min via Bohemian Hwy.">
+        <h3>Occidental</h3>
+        <div class="meta"><span class="pill">Occidental · ~20 min</span><span class="rate">★ charming</span><span class="price">Free to wander</span><span class="pill">Quick stop</span></div>
+        <p>A storybook two-block village tucked in the redwoods, reached via the lovely Bohemian Highway. A few craft shops, a bakery, and old-Sonoma atmosphere — a short, sweet stroll, and a scenic drive in its own right (it's also roughly on the way toward Cazadero).</p>
+        <p class="know">Tiny — 30–45 min covers it. Great low-key pairing with a coast or back-roads drive.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="Historic 1800s river village, antiques + boutiques. ~15 min toward coast.">
+        <h3>Duncans Mills</h3>
+        <div class="meta"><span class="pill">Duncans Mills · ~15 min</span><span class="rate">★ charming</span><span class="price">Free to wander</span><span class="pill">Quick stop</span></div>
+        <p>A tiny restored 19th-century railroad town along the lower river — a cluster of weathered wooden buildings now holding antiques, boutiques and a café or two. A quick, photogenic stretch-your-legs stop on the scenic drive between Guerneville and the coast.</p>
+        <p class="know">Small; combine with Goat Rock/Jenner on a coast day.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <div class="card" data-note="The Barlow maker district + quirky shops/art. ~25 min.">
+        <h3>Sebastopol &amp; The Barlow</h3>
+        <div class="meta"><span class="pill">Sebastopol · ~25 min</span><span class="rate">★ funky &amp; fun</span><span class="price">Free to wander</span><span class="pill">Half-day</span></div>
+        <p>Less a classic plaza, more a creative hub: The Barlow is an open-air district of makers, tasting rooms, food and shops (Khom Loi, Fern Bar and Retrograde are all in town). Add the famous quirky junk-art houses on Florence Avenue for a fun, offbeat stroll.</p>
+        <p class="know">Pairs well with coffee at Retrograde and a meal at Khom Loi or Handline.</p>
+        <div class="actions"><button class="btn-no">No thanks</button><button class="btn-yes">I like this</button></div>
+      </div>
+
+      <!-- HEADS UP -->
+      <h2 class="section"><span class="tag">FYI</span> Skipped / watch-list</h2>
+      <p class="section-intro">So you don't waste a trip — places that came up but I'd hold off on right now.</p>
+      <div class="card" style="opacity:.9">
+        <p style="margin:6px 0"><b>Hazel (Occidental)</b> — beloved, but closed last fall; relocating within Occidental and "reopening this summer" with no firm date as of now. Worth a quick check when your dates firm up.</p>
+        <p style="margin:6px 0"><b>Piala (Sebastopol)</b> — the area's only Georgian spot and a real charmer, but it's closing (lease ends end of August). Only consider if it's confirmed open for your dates.</p>
+        <p style="margin:6px 0"><b>Big Bottom Market (Guerneville)</b> — the famous "Oprah's biscuits" spot changed hands and is now <i>Piknik Town Market</i>; reviews have slipped to ~4.3 and turned mixed under new owners. I left it off the main list.</p>
+        <p style="margin:6px 0"><b>Barndiva (Healdsburg)</b> — gorgeous garden, but it's pivoting away from full multi-course dining toward casual suppers/private events; confirm what it's actually serving before counting on dinner.</p>
+      </div>
+
+      <footer>
+        Compiled from cross-checked reviews across Google, Yelp, Tripadvisor, OpenTable, the Michelin Guide, Sonoma Magazine and operators' own sites (June 2026). Ratings are approximate and move over time; hours and reservation policies shift seasonally — confirm directly before you go. Drive times are rough, from Guerneville.
+      </footer>
+    </main>
+
+    <!-- PICKS PANEL -->
+    <aside>
+      <div class="picks">
+        <h2>My Picks</h2>
+        <span class="count" id="pickCount">Tap “I like this” to build your shortlist</span>
+        <ul id="picksList"></ul>
+        <div id="picksEmpty" class="empty">Nothing yet — your liked spots will collect here as a clean, quick reference.</div>
+        <div class="picks-actions">
+          <button class="copybtn" id="copyBtn">Copy list</button>
+          <button class="printbtn" id="printBtn">Print / PDF</button>
+        </div>
+        <div class="hidden-wrap">
+          <button class="hidden-toggle" id="hiddenToggle">Hidden (0) ▾</button>
+          <ul id="hiddenList"></ul>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+(function(){
+  var picks=[]; // {id,name,meta,note,el}
+  var picksList=document.getElementById('picksList');
+  var picksEmpty=document.getElementById('picksEmpty');
+  var pickCount=document.getElementById('pickCount');
+  var hiddenList=document.getElementById('hiddenList');
+  var hiddenToggle=document.getElementById('hiddenToggle');
+  var hiddenCount=0;
+
+  function uid(card){ return card.querySelector('h3').textContent.trim(); }
+  function metaText(card){
+    var m=card.querySelector('.meta'); if(!m) return '';
+    return Array.prototype.map.call(m.querySelectorAll('span'),function(s){return s.textContent.trim();}).join(' · ');
+  }
+  function render(){
+    picksList.innerHTML='';
+    if(picks.length===0){picksEmpty.style.display='block';pickCount.textContent='Tap “I like this” to build your shortlist';}
+    else{
+      picksEmpty.style.display='none';
+      pickCount.textContent=picks.length+(picks.length===1?' place saved':' places saved');
+      picks.forEach(function(p){
+        var li=document.createElement('li');
+        li.innerHTML='<button class="pk-rm" title="remove">remove</button>'+
+          '<span class="pk-name">'+p.name+'</span>'+
+          '<span class="pk-meta">'+p.meta+'</span>'+
+          (p.note?'<span class="pk-note">'+p.note+'</span>':'');
+        li.querySelector('.pk-rm').onclick=function(){ unlike(p.id); };
+        picksList.appendChild(li);
+      });
+    }
+  }
+  function like(card){
+    var id=uid(card);
+    if(picks.some(function(p){return p.id===id;})) return;
+    card.classList.add('liked');
+    picks.push({id:id,name:id,meta:metaText(card),note:card.getAttribute('data-note')||'',el:card});
+    render();
+  }
+  function unlike(id){
+    var i=picks.findIndex(function(p){return p.id===id;});
+    if(i>-1){ picks[i].el.classList.remove('liked'); picks.splice(i,1); render(); }
+  }
+  function hide(card){
+    var id=uid(card);
+    unlike(id);
+    card.style.display='none';
+    hiddenCount++;
+    var li=document.createElement('li');
+    li.innerHTML='<span>'+id+'</span><button>restore</button>';
+    li.querySelector('button').onclick=function(){
+      card.style.display=''; li.remove(); hiddenCount--; updateHiddenLabel();
+    };
+    hiddenList.appendChild(li);
+    updateHiddenLabel();
+  }
+  function updateHiddenLabel(){
+    hiddenToggle.textContent='Hidden ('+hiddenCount+') '+(hiddenList.classList.contains('show')?'▴':'▾');
+  }
+  hiddenToggle.onclick=function(){ hiddenList.classList.toggle('show'); updateHiddenLabel(); };
+
+  document.querySelectorAll('.card').forEach(function(card){
+    var yes=card.querySelector('.btn-yes'), no=card.querySelector('.btn-no');
+    if(yes) yes.onclick=function(){ card.classList.contains('liked')?unlike(uid(card)):like(card); };
+    if(no) no.onclick=function(){ hide(card); };
+  });
+
+  document.getElementById('copyBtn').onclick=function(){
+    if(picks.length===0){ this.textContent='Nothing yet'; var b=this; setTimeout(function(){b.textContent='Copy list';},1200); return; }
+    var txt='MY RUSSIAN RIVER PICKS\n\n'+picks.map(function(p){
+      return '• '+p.name+'\n  '+p.meta+(p.note?'\n  '+p.note:'');
+    }).join('\n\n');
+    var btn=this;
+    navigator.clipboard.writeText(txt).then(function(){ btn.textContent='Copied!'; setTimeout(function(){btn.textContent='Copy list';},1200); },
+      function(){ btn.textContent='Copy failed'; setTimeout(function(){btn.textContent='Copy list';},1200); });
+  };
+  document.getElementById('printBtn').onclick=function(){ window.print(); };
+
+  render(); updateHiddenLabel();
+})();
+</script>
+</body>
+</html>
