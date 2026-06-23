@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dominican Republic Resorts — Ranked for Low Sargassum & Poolside Service</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,560;9..144,640&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --abyss:#07242F; --deep:#0E3A48; --surface:#FBF7F0; --card:#FFFFFF;
+    --turq:#18A7A0; --turq-deep:#0E7E79; --coral:#E76F4E; --coral-deep:#C9542F;
+    --gold:#C08A2D; --ink:#0E2A33; --muted:#5E7A84; --line:#E7DECF;
+    --shadow:0 1px 2px rgba(7,36,47,.06), 0 8px 24px rgba(7,36,47,.07);
+    --display:'Fraunces',Georgia,serif; --body:'Inter',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--surface);color:var(--ink);font-family:var(--body);line-height:1.5;
+    background-image:radial-gradient(1200px 500px at 80% -120px, rgba(24,167,160,.10), transparent 60%);}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 20px 72px}
+
+  /* Header */
+  header.masthead{padding:54px 0 30px;border-bottom:1px solid var(--line);margin-bottom:30px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--turq-deep);margin:0 0 14px}
+  h1{font-family:var(--display);font-weight:640;font-size:clamp(30px,5.2vw,52px);line-height:1.04;letter-spacing:-.01em;margin:0 0 16px;max-width:18ch}
+  h1 .tide{color:var(--turq-deep);font-style:italic;font-weight:560}
+  .lede{font-size:clamp(15px,2.2vw,18px);color:#2c4750;max-width:64ch;margin:0}
+  .lede b{color:var(--ink);font-weight:600}
+
+  /* Map */
+  .mapcard{position:relative;margin:30px 0 8px;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#dce9ea}
+  #map{height:440px;width:100%;background:#cfe3e4;font-family:var(--body)}
+  .map-cap{display:flex;flex-wrap:wrap;gap:8px 22px;align-items:center;padding:13px 16px;background:var(--card);border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+  .keydot{display:inline-flex;align-items:center;gap:7px;font-weight:500;color:var(--ink)}
+  .keydot i{width:14px;height:14px;border-radius:50%;display:inline-block}
+  .keydot .a{background:var(--coral)} .keydot .f{background:var(--turq)}
+  .keydot .num{width:18px;height:18px;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--mono);font-size:10px;display:inline-flex;align-items:center;justify-content:center}
+  .map-note{font-size:12.5px;color:var(--muted);margin:10px 2px 0}
+
+  /* Legend / how-ranked strip */
+  .howbar{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin:26px 0 8px}
+  @media(max-width:720px){.howbar{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
+  .panel h3{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--turq-deep);margin:0 0 10px;font-weight:600}
+  .panel p{margin:0;font-size:14px;color:#33525c}
+  .pricekey{display:flex;flex-direction:column;gap:7px;font-size:13.5px}
+  .pricekey div{display:flex;gap:10px}
+  .pricekey .t{font-family:var(--mono);color:var(--gold);font-weight:600;min-width:42px}
+
+  /* Location group */
+  .group{margin-top:46px}
+  .group-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-bottom:6px;border-bottom:2px solid var(--ink)}
+  .group-head h2{font-family:var(--display);font-weight:600;font-size:clamp(22px,3.4vw,30px);margin:0;letter-spacing:-.01em}
+  .group-head .count{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .group-sum{font-size:14.5px;color:#33525c;margin:12px 0 22px;max-width:78ch}
+  .group-sum b{color:var(--ink);font-weight:600}
+
+  /* Cards */
+  .card{position:relative;display:grid;grid-template-columns:54px 1fr;gap:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px 18px 18px;margin-bottom:14px;box-shadow:var(--shadow);transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease}
+  .card:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(7,36,47,.07),0 16px 34px rgba(7,36,47,.12);border-color:#d7ccb8}
+  .card.pick{border-color:var(--coral);box-shadow:0 0 0 1px var(--coral), var(--shadow)}
+  .rank{font-family:var(--mono);font-weight:600;font-size:20px;color:#fff;background:var(--ink);border-radius:11px;height:54px;display:flex;align-items:center;justify-content:center;letter-spacing:-.02em}
+  .card.adults .rank{background:var(--coral-deep)}
+  .body h4{font-family:var(--display);font-weight:600;font-size:19px;margin:1px 0 2px;letter-spacing:-.01em;line-height:1.15}
+  .sub{font-size:12.5px;color:var(--muted);margin:0 0 10px;font-family:var(--mono);letter-spacing:.02em}
+  .badges{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 11px}
+  .badge{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;line-height:1;border:1px solid transparent}
+  .b-adults{background:rgba(231,111,78,.12);color:var(--coral-deep);border-color:rgba(231,111,78,.30)}
+  .b-family{background:rgba(24,167,160,.12);color:var(--turq-deep);border-color:rgba(24,167,160,.28)}
+  .b-rate{background:rgba(192,138,45,.12);color:var(--gold);border-color:rgba(192,138,45,.30);font-family:var(--mono)}
+  .b-price{background:transparent;color:var(--gold);border-color:rgba(192,138,45,.45);font-family:var(--mono);letter-spacing:.05em}
+  .b-pick{background:var(--coral);color:#fff}
+  .b-noai{background:rgba(94,122,132,.12);color:var(--muted);border-color:rgba(94,122,132,.28)}
+  .summary{font-size:14.5px;color:#26424b;margin:0 0 8px}
+  .catch{font-size:13px;color:var(--muted);margin:0;display:flex;gap:7px}
+  .catch b{color:var(--coral-deep);font-weight:600;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;padding-top:1px}
+
+  footer{margin-top:54px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+  footer p{margin:0 0 8px;max-width:80ch}
+
+  a.skip{position:absolute;left:-999px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  .leaflet-popup-content{font-family:var(--body);margin:11px 13px}
+  .leaflet-popup-content .pp-name{font-family:var(--display);font-weight:600;font-size:15px;display:block;margin-bottom:5px}
+  .leaflet-popup-content .pp-meta{font-family:var(--mono);font-size:11.5px;color:#456}
+  .pin{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50% 50% 50% 2px;transform:rotate(45deg);box-shadow:0 2px 5px rgba(0,0,0,.3);border:2px solid #fff}
+  .pin span{transform:rotate(-45deg);font-family:var(--mono);font-weight:600;font-size:12px;color:#fff}
+</style>
+</head>
+<body>
+<a class="skip" href="#list">Skip to ranked list</a>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Dominican Republic · 4 nights · May 2027</p>
+    <h1>Where the water stays <span class="tide">clear</span> and someone brings the drinks to your lounger.</h1>
+    <p class="lede">Sixteen resorts, ranked together for your two priorities — <b>lowest sargassum risk</b> and <b>clear, calm Caribbean water</b> first, then <b>reliable poolside food-and-drink service</b>, with swim-up rooms as a bonus. Adults-only is now a badge, not a filter. The verdict in one line: your original Bayahíbe/Dominicus zone is genuinely the best place on the island for what you want — most everything else is a trade-off.</p>
+  </header>
+
+  <div class="mapcard">
+    <div id="map" role="img" aria-label="Map of 16 Dominican Republic resorts in two clusters: the Bayahíbe/Dominicus area near La Romana, and the Samaná peninsula to the northeast."></div>
+    <div class="map-cap">
+      <span class="keydot"><i class="a"></i> Adults-only</span>
+      <span class="keydot"><i class="f"></i> Family</span>
+      <span class="keydot"><span class="num">#</span> Number = overall fit rank</span>
+      <span style="margin-left:auto;font-size:12px">Click a pin for details · pinch / scroll buttons to zoom</span>
+    </div>
+  </div>
+  <p class="map-note">Sargassum drifts in from the east on Atlantic currents, so it punishes the east/southeast coast (Punta Cana, Bávaro, Cap Cana) and largely spares the southwest-facing Bayahíbe cluster. Samaná sits up north and gets less than the east coast, but its water is Atlantic — cooler, wavier, less turquoise.</p>
+
+  <div class="howbar">
+    <div class="panel">
+      <h3>How this is ranked</h3>
+      <p>Fit to your brief, in priority order: protection from sargassum → clear &amp; calm water → drinks and food brought to your lounger (not at a bar) → swim-up rooms as a plus. Google rating and indicative price are shown but don't drive the rank. That's why a 4.9-rated resort can sit mid-list if its beach water fails the test.</p>
+    </div>
+    <div class="panel">
+      <h3>Price badge (indicative, 2 adults / night)</h3>
+      <div class="pricekey">
+        <div><span class="t">$</span><span>Value · roughly under $300</span></div>
+        <div><span class="t">$$</span><span>Mid · roughly $350–550</span></div>
+        <div><span class="t">$$$</span><span>Upper · roughly $550–800</span></div>
+        <div><span class="t">$$$$</span><span>Luxury or non–all-inclusive · $800+</span></div>
+      </div>
+    </div>
+  </div>
+
+  <main id="list"></main>
+
+  <footer>
+    <p><b>A note on the badges &amp; pricing.</b> "Adults-only" / "Family" reflects the resort's current policy; a few Samaná options are boutique or à-la-carte rather than all-inclusive (marked "no AI"). Prices are indicative tiers, not quotes — May 2027 rates aren't bookable yet, and that window opens roughly 12–14 months out.</p>
+    <p><b>One honest caveat.</b> Scattered "we got sick" reviews appear across many Dominican all-inclusives here — including the highly-rated ones and your own original pick. Treat it as a regional baseline risk, not a tiebreaker between these specific resorts.</p>
+    <p>Ratings from Google as of June 2026. Built to compare options — verify live rates, room categories, and current sargassum reports before booking.</p>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const RESORTS = [
+  // ---- Bayahíbe & Dominicus (La Romana) ----
+  {rank:1, group:"bayahibe", name:"Catalonia Royal La Romana", loc:"Bayahíbe · adults-only AI", adults:true, rating:4.8, price:"$$", pick:true, lat:18.3462, lng:-68.8210,
+   summary:"Your current pick — and still the best all-round fit. True swim-up rooms with loungers sitting in the pool, pool-bar service guests rave about, and the protected turquoise water you're after.",
+   catch:"Beach is a 5-minute walk, not on-site."},
+  {rank:2, group:"bayahibe", name:"Secrets La Romana Resort & Spa", loc:"Bayahíbe · adults-only AI", adults:true, rating:4.7, price:"$$$", lat:18.3765, lng:-68.8432,
+   summary:"The strongest alternative. Steps from both the infinity pool and the beach (fixes the walk), swim-out rooms, two swim-up bars, and bookable with Chase UR → World of Hyatt points.",
+   catch:"Food is the recurring weak spot; currently renovating."},
+  {rank:3, group:"bayahibe", name:"Iberostar Selection Hacienda Dominicus", loc:"Dominicus · family AI", adults:false, rating:4.8, price:"$$", lat:18.3481, lng:-68.8225,
+   summary:"Highest-rated in the zone. Beachfront on Blue-Flag Dominicus with a landmark lighthouse, a swim-up bar, and clear warm water.",
+   catch:"Family resort; food quality is hit-or-miss."},
+  {rank:4, group:"bayahibe", name:"Dreams Dominicus La Romana", loc:"Dominicus · family AI", adults:false, rating:4.4, price:"$$", lat:18.3455, lng:-68.8198,
+   summary:"Hyatt Inclusive (same points play as Secrets), swim-out rooms, and the Blue-Flag beach reviewers call the area's best — guests specifically note no sargazo.",
+   catch:"Family-friendly; food underwhelms."},
+  {rank:5, group:"bayahibe", name:"Sunscape Dominicus La Romana", loc:"Dominicus · family AI", adults:false, rating:4.6, price:"$$", lat:18.3411, lng:-68.8169,
+   summary:"Big, lively, strong value on clear Dominicus water, with good pools and beach bars.",
+   catch:"~1,800 guests means crowds and lines — grab loungers early."},
+  {rank:7, group:"bayahibe", name:"HM Alma de Bayahibe", loc:"Bayahíbe · adults-only AI", adults:true, rating:4.4, price:"$", lat:18.3518, lng:-68.8350,
+   summary:"Adults-only with cliff-edge saltwater infinity pools and sweeping ocean views — the closest thing here to lounging by the pool with the sea right in front of you.",
+   catch:"No real beach (shuttle to public sand); budget service tier and bland food."},
+  {rank:8, group:"bayahibe", name:"Viva Dominicus Palace by Wyndham", loc:"Dominicus · family AI", adults:false, rating:4.1, price:"$", lat:18.3475, lng:-68.8267,
+   summary:"Right on the Blue-Flag beach, the quieter Viva sister, solid value for a pool-and-beach day.",
+   catch:"Watch the food-safety reviews; bar/restaurant service runs slow."},
+  {rank:9, group:"bayahibe", name:"Casa de Campo Resort & Villas", loc:"La Romana · luxury, no AI", adults:false, rating:4.7, price:"$$$$", noai:true, lat:18.4209, lng:-68.9189,
+   summary:"La Romana's icon: à-la-carte luxury, world-class golf, and small, calm, protected Minitas Beach.",
+   catch:"Not all-inclusive (pay per item) and a real splurge; reservations/service can frustrate."},
+  {rank:10, group:"bayahibe", name:"Viva Dominicus Beach by Wyndham", loc:"Bayahíbe · family AI", adults:false, rating:4.1, price:"$", lat:18.3490, lng:-68.8292,
+   summary:"Budget-friendly, beautiful clear Dominicus water, plenty of beach chairs.",
+   catch:"Food, service and cleanliness draw consistent complaints; the beach is the real draw."},
+
+  // ---- Playa Nueva Romana ----
+  {rank:6, group:"nueva", name:"Bahia Principe Escape Bouganville", loc:"Playa Nueva Romana · adults-only AI", adults:true, rating:4.9, price:"$$", lat:18.4340, lng:-69.1912,
+   summary:"Adults-only with swim-up rooms and the best-reviewed service of the whole set (4.9 across 23k+ reviews).",
+   catch:"Its 'beach' is a calm river-fed bay many call murky/brown — pool-only, and the location is isolated."},
+
+  // ---- Samaná Peninsula ----
+  {rank:11, group:"samana", name:"Bahia Principe Explore El Portillo", loc:"Las Terrenas · family AI", adults:false, rating:4.6, price:"$$", lat:19.3241, lng:-69.4950,
+   summary:"Samaná's most Bayahíbe-like water: the widest Las Terrenas beach, calm and clear, reviewers report no sargassum, and the cleanest pool in the chain.",
+   catch:"Family resort; dated rooms; long trip to reach."},
+  {rank:12, group:"samana", name:"Cayo Levantado Resort", loc:"Cayo Levantado island · luxury AI", adults:false, rating:4.7, price:"$$$$", lat:19.1669, lng:-69.2766,
+   summary:"Private-island luxury in calm Samaná Bay with raved-about pool and beach-bar service and very low sargassum.",
+   catch:"Premium price, reached by boat, and a quiet wellness vibe — not a party scene."},
+  {rank:13, group:"samana", name:"Bahia Principe Escape Samaná", loc:"Las Galeras · adults-only AI", adults:true, rating:4.6, price:"$$", lat:19.1843, lng:-69.2705,
+   summary:"Small, romantic adults-only on a quiet cove in Las Galeras; calm water and whale views in season.",
+   catch:"Dated and stair-heavy; some seaweed/debris noted; far to reach."},
+  {rank:14, group:"samana", name:"Sublime Samana Hotel & Residences", loc:"Playa Cosón · luxury, no AI", adults:false, rating:4.5, price:"$$$", noai:true, lat:19.2993, lng:-69.5822,
+   summary:"Polished boutique luxury at Playa Cosón with lovely pools and big suites.",
+   catch:"Not all-inclusive and above budget; better for quiet design than nonstop poolside service."},
+  {rank:15, group:"samana", name:"The Bannister Hotel & Yacht Club", loc:"Puerto Bahía · boutique, no AI", adults:false, rating:4.5, price:"$$$", noai:true, lat:19.1949, lng:-69.3553,
+   summary:"Boutique marina hotel with a world-class infinity pool over Samaná Bay.",
+   catch:"Not all-inclusive; some service inconsistency; quiet and remote."},
+  {rank:16, group:"samana", name:"Viva V Samaná by Wyndham", loc:"Bahía de Cosón · adults-only AI", adults:true, rating:4.2, price:"$", lat:19.3009, lng:-69.5808,
+   summary:"Intimate adults-only all-inclusive near Las Terrenas with free watersports and twice-daily yoga.",
+   catch:"Atlantic-side water is warm but rough — a surf vibe, not glassy turquoise."}
+];
+
+const GROUPS = {
+  bayahibe:{title:"Bayahíbe &amp; Dominicus", tag:"La Romana · the prime zone",
+    sum:"The island's <b>lowest-sargassum, most turquoise and calmest water</b> — sheltered by the East National Park peninsula and the Saona &amp; Catalina islands, which is why locals rate it the best swimming water in the DR. About 20 minutes from La Romana airport (LRM), ~1 hour from Punta Cana (PUJ). This is where your two priorities are satisfied together."},
+  nueva:{title:"Playa Nueva Romana", tag:"western La Romana",
+    sum:"20–30 minutes west of La Romana. <b>Low sargassum, but the shoreline is a calm, river-fed bay</b> many guests find murky and brown — a pool-first spot, not for the beach. More isolated; reached via Santo Domingo (~45 min) or PUJ (~1.5 hr)."},
+  samana:{title:"Samaná Peninsula", tag:"northeast · the trade-off zone",
+    sum:"Lush, uncrowded and lower-sargassum than the east coast — but the <b>Atlantic-side water runs cooler, wavier and less turquoise</b>, and getting there is a haul (tiny El Catey / AZS, or 2.5–3 hours by car from Santo Domingo). Choose it for scenery and seclusion, not for matching Bayahíbe's water."}
+};
+
+const order = ["bayahibe","nueva","samana"];
+const main = document.getElementById('list');
+
+order.forEach(key=>{
+  const g = GROUPS[key];
+  const items = RESORTS.filter(r=>r.group===key).sort((a,b)=>a.rank-b.rank);
+  const sec = document.createElement('section');
+  sec.className = 'group';
+  sec.innerHTML = `
+    <div class="group-head">
+      <h2>${g.title}</h2>
+      <span class="count">${g.tag} · ${items.length} resort${items.length>1?'s':''}</span>
+    </div>
+    <p class="group-sum">${g.sum}</p>
+    ${items.map(cardHTML).join('')}
+  `;
+  main.appendChild(sec);
+});
+
+function cardHTML(r){
+  const adultsBadge = r.adults
+    ? `<span class="badge b-adults">● Adults-only</span>`
+    : `<span class="badge b-family">● Family</span>`;
+  const noai = r.noai ? `<span class="badge b-noai">no all-inclusive</span>` : '';
+  const pick = r.pick ? `<span class="badge b-pick">★ Your pick</span>` : '';
+  return `
+  <article class="card ${r.adults?'adults':''} ${r.pick?'pick':''}">
+    <div class="rank" aria-label="Fit rank ${r.rank}">${r.rank}</div>
+    <div class="body">
+      <h4>${r.name}</h4>
+      <p class="sub">${r.loc}</p>
+      <div class="badges">
+        ${pick}${adultsBadge}
+        <span class="badge b-rate">★ ${r.rating.toFixed(1)}</span>
+        <span class="badge b-price">${r.price}</span>
+        ${noai}
+      </div>
+      <p class="summary">${r.summary}</p>
+      <p class="catch"><b>The catch</b> ${r.catch}</p>
+    </div>
+  </article>`;
+}
+
+/* ---------- Map ---------- */
+(function(){
+  if(typeof L === 'undefined'){ document.getElementById('map').innerHTML =
+    '<div style="padding:24px;font-family:sans-serif;color:#456">Map could not load. The ranked list below has every resort and its location.</div>'; return; }
+  const map = L.map('map',{scrollWheelZoom:false, attributionControl:true});
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
+    maxZoom:18, attribution:'&copy; OpenStreetMap &copy; CARTO'
+  }).addTo(map);
+
+  const markers = [];
+  RESORTS.forEach(r=>{
+    const color = r.adults ? '#E76F4E' : '#18A7A0';
+    const icon = L.divIcon({className:'', iconSize:[30,30], iconAnchor:[15,28], popupAnchor:[0,-26],
+      html:`<div class="pin" style="background:${color}"><span>${r.rank}</span></div>`});
+    const m = L.marker([r.lat,r.lng],{icon, title:`${r.rank}. ${r.name}`}).addTo(map);
+    m.bindPopup(`<span class="pp-name">${r.rank}. ${r.name}</span>
+      <span class="pp-meta">${r.adults?'Adults-only':'Family'} · ★ ${r.rating.toFixed(1)} · ${r.price}<br>${r.loc}</span>`);
+    markers.push(m);
+  });
+  const grp = L.featureGroup(markers);
+  map.fitBounds(grp.getBounds().pad(0.18));
+})();
+</script>
+</body>
+</html>
