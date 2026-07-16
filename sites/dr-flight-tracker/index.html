@@ -1,0 +1,796 @@
+<!DOCTYPE html><script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Dr Flight Price Tracker",
+  "schemaVersion": 1,
+  "description": "Daily price history for MCI→SDQ (Santo Domingo, DR), 2 adults, regular economy only (basic economy excluded), tracked for two itineraries: return May 16, 2027 and return May 20, 2027. Updated every morning by a scheduled Kayak check."
+}
+</script>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px;
+    background: #ffffff;
+    color: #1a1a1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  h1 { font-size: 20px; margin: 0 0 4px 0; }
+  .subtitle { color: #666; font-size: 13px; margin-bottom: 4px; }
+  .subtitle2 { color: #999; font-size: 12px; margin-bottom: 20px; }
+  .itin-section { margin-bottom: 22px; }
+  .itin-heading { font-size: 15px; font-weight: 700; margin: 0 0 10px 0; }
+  .badge-a { background: #e8f0fe; color: #1a56db; }
+  .badge-b { background: #fdeee8; color: #c2410c; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+  .flight-cards { display: flex; gap: 14px; flex-wrap: wrap; }
+  .card {
+    flex: 1;
+    min-width: 230px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 14px 16px;
+    background: #fafafa;
+  }
+  .card h2 { font-size: 13px; margin: 0 0 6px 0; color: #333; }
+  .card .price { font-size: 24px; font-weight: 700; margin: 2px 0; }
+  .card .meta { font-size: 11.5px; color: #777; line-height: 1.55; }
+  .delta-up { color: #c0392b; }
+  .delta-down { color: #1e8e3e; }
+  .delta-flat { color: #777; }
+  .frozen-note { color: #b8860b; font-weight: 600; }
+  .src-tag {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #eef2ff;
+    color: #4338ca;
+  }
+  .chart-wrap {
+    position: relative;
+    height: 380px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  h3.section { font-size: 14px; margin: 28px 0 10px 0; color: #333; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  th, td {
+    text-align: left;
+    padding: 7px 9px;
+    border-bottom: 1px solid #eee;
+  }
+  th { color: #555; font-weight: 600; background: #fafafa; }
+  tbody tr { cursor: default; transition: background 0.1s ease; }
+  tbody tr:hover td { background: #eef2ff; }
+  .flight-badge {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .empty-state { color: #999; font-size: 13px; padding: 20px 0; text-align: center; }
+  footer { margin-top: 16px; font-size: 11px; color: #999; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<h1>MCI &rarr; SDQ Flight Price Tracker</h1>
+<div class="subtitle">2 adults &middot; regular economy only, basic economy excluded &middot; American Airlines + Delta only &middot; checked daily at 6:00 AM &middot; sources: Kayak + Google Flights</div>
+<div class="subtitle2">Filters: arrive into SDQ 9:00 AM&ndash;2:00 PM &middot; depart SDQ after 1:00 PM, arrive MCI before midnight &middot; total duration under 11 hr both directions &middot; up to 5 cheapest qualifying flights tracked per itinerary &middot; each flight tracked individually across days (matched by airline + schedule, &plusmn;20 min tolerance); a schedule change beyond that starts a new line and freezes the old one</div>
+
+<div id="itinSections"></div>
+
+<div class="chart-wrap">
+  <canvas id="priceChart"></canvas>
+</div>
+
+<h3 class="section">Price history (one row per flight per day; cheapest source kept) &mdash; hover a row to highlight its line on the chart above</h3>
+<table id="historyTable">
+  <thead>
+    <tr>
+      <th>Date checked</th>
+      <th>Itinerary</th>
+      <th>Airline</th>
+      <th>Out</th>
+      <th>Back</th>
+      <th>Fare</th>
+      <th>Price / person</th>
+      <th>Total (2 adults)</th>
+      <th>Source</th>
+    </tr>
+  </thead>
+  <tbody id="historyBody"></tbody>
+</table>
+
+<footer>
+  Dates: depart May 13, 2027 from MCI. Girls returns May 16, 2027; Jen/Brian returns May 20, 2027.<br>
+  Only American Airlines and Delta flights are tracked. Prices exclude basic economy fares. Kayak and Google Flights are both checked daily for each qualifying flight; only the cheaper of the two is kept per flight per day, with its source labeled. Up to 5 cheapest qualifying flights are tracked per itinerary. If a tracked flight's schedule shifts by more than ~20 minutes (or it disappears from results), its line stops updating (frozen at last known price) and any new matching flight starts a fresh line.
+</footer>
+
+<script id="price-data" type="application/json">
+[
+  {
+    "date": "2026-07-13",
+    "itineraryId": "return_may16",
+    "itineraryLabel": "Return May 16, 2027",
+    "flightId": "A1",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-16",
+    "passengers": 2,
+    "airline": "American Airlines",
+    "outDeparture": "5:00 AM",
+    "outArrival": "1:18 PM",
+    "outDuration": "7h 18m",
+    "outStops": "1 stop, MIA",
+    "retDeparture": "2:25 PM",
+    "retArrival": "10:21 PM",
+    "retDuration": "8h 56m",
+    "retStops": "1 stop, MIA",
+    "fareClass": "Main Cabin (non-basic)",
+    "pricePerPerson": 845,
+    "totalPrice": 1690,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-13",
+    "itineraryId": "return_may20",
+    "itineraryLabel": "Return May 20, 2027",
+    "flightId": "B1",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-20",
+    "passengers": 2,
+    "airline": "American Airlines",
+    "outDeparture": "5:00 AM",
+    "outArrival": "1:18 PM",
+    "outDuration": "7h 18m",
+    "outStops": "1 stop, MIA",
+    "retDeparture": "2:25 PM",
+    "retArrival": "10:21 PM",
+    "retDuration": "8h 56m",
+    "retStops": "1 stop, MIA",
+    "fareClass": "Main Cabin (non-basic)",
+    "pricePerPerson": 790,
+    "totalPrice": 1580,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-14",
+    "itineraryId": "return_may16",
+    "itineraryLabel": "Return May 16, 2027",
+    "flightId": "A1",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-16",
+    "passengers": 2,
+    "airline": "American Airlines",
+    "outDeparture": "5:00 AM",
+    "outArrival": "1:18 PM",
+    "outDuration": "7h 18m",
+    "outStops": "1 stop, MIA",
+    "retDeparture": "2:25 PM",
+    "retArrival": "10:21 PM",
+    "retDuration": "8h 56m",
+    "retStops": "1 stop, MIA",
+    "fareClass": "Main Cabin (non-basic)",
+    "pricePerPerson": 845,
+    "totalPrice": 1690,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-14",
+    "itineraryId": "return_may16",
+    "itineraryLabel": "Return May 16, 2027",
+    "flightId": "A2",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-16",
+    "passengers": 2,
+    "airline": "Delta",
+    "outDeparture": "5:40 AM",
+    "outArrival": "1:30 PM",
+    "outDuration": "6h 50m",
+    "outStops": "1 stop, ATL",
+    "retDeparture": "2:55 PM",
+    "retArrival": "10:26 PM",
+    "retDuration": "8h 31m",
+    "retStops": "1 stop, ATL",
+    "fareClass": "Delta Main Classic (non-basic)",
+    "pricePerPerson": 1023,
+    "totalPrice": 2046,
+    "site": "Google Flights"
+  },
+  {
+    "date": "2026-07-14",
+    "itineraryId": "return_may20",
+    "itineraryLabel": "Return May 20, 2027",
+    "flightId": "B1",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-20",
+    "passengers": 2,
+    "airline": "American Airlines",
+    "outDeparture": "5:00 AM",
+    "outArrival": "1:18 PM",
+    "outDuration": "7h 18m",
+    "outStops": "1 stop, MIA",
+    "retDeparture": "2:25 PM",
+    "retArrival": "10:21 PM",
+    "retDuration": "8h 56m",
+    "retStops": "1 stop, MIA",
+    "fareClass": "Main Cabin (non-basic)",
+    "pricePerPerson": 790,
+    "totalPrice": 1580,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-14",
+    "itineraryId": "return_may20",
+    "itineraryLabel": "Return May 20, 2027",
+    "flightId": "B2",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-20",
+    "passengers": 2,
+    "airline": "Delta",
+    "outDeparture": "5:40 AM",
+    "outArrival": "1:30 PM",
+    "outDuration": "6h 50m",
+    "outStops": "1 stop, ATL",
+    "retDeparture": "2:55 PM",
+    "retArrival": "10:26 PM",
+    "retDuration": "8h 31m",
+    "retStops": "1 stop, ATL",
+    "fareClass": "Delta Main Classic (non-basic)",
+    "pricePerPerson": 830,
+    "totalPrice": 1660,
+    "site": "Google Flights"
+  },
+  {
+    "date": "2026-07-15",
+    "itineraryId": "return_may16",
+    "itineraryLabel": "Return May 16, 2027",
+    "flightId": "A1",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-16",
+    "passengers": 2,
+    "airline": "American Airlines",
+    "outDeparture": "5:00 AM",
+    "outArrival": "1:18 PM",
+    "outDuration": "7h 18m",
+    "outStops": "1 stop, MIA",
+    "retDeparture": "2:25 PM",
+    "retArrival": "10:21 PM",
+    "retDuration": "8h 56m",
+    "retStops": "1 stop, MIA",
+    "fareClass": "Main Cabin (non-basic)",
+    "pricePerPerson": 835,
+    "totalPrice": 1670,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-15",
+    "itineraryId": "return_may16",
+    "itineraryLabel": "Return May 16, 2027",
+    "flightId": "A2",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-16",
+    "passengers": 2,
+    "airline": "Delta",
+    "outDeparture": "5:40 AM",
+    "outArrival": "1:30 PM",
+    "outDuration": "6h 50m",
+    "outStops": "1 stop, ATL",
+    "retDeparture": "2:55 PM",
+    "retArrival": "10:26 PM",
+    "retDuration": "8h 31m",
+    "retStops": "1 stop, ATL",
+    "fareClass": "Delta Main Classic (non-basic)",
+    "pricePerPerson": 925,
+    "totalPrice": 1850,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-15",
+    "itineraryId": "return_may20",
+    "itineraryLabel": "Return May 20, 2027",
+    "flightId": "B1",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-20",
+    "passengers": 2,
+    "airline": "American Airlines",
+    "outDeparture": "5:00 AM",
+    "outArrival": "1:18 PM",
+    "outDuration": "7h 18m",
+    "outStops": "1 stop, MIA",
+    "retDeparture": "2:25 PM",
+    "retArrival": "10:21 PM",
+    "retDuration": "8h 56m",
+    "retStops": "1 stop, MIA",
+    "fareClass": "Main Cabin (non-basic)",
+    "pricePerPerson": 780,
+    "totalPrice": 1560,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-15",
+    "itineraryId": "return_may20",
+    "itineraryLabel": "Return May 20, 2027",
+    "flightId": "B2",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-20",
+    "passengers": 2,
+    "airline": "Delta",
+    "outDeparture": "5:40 AM",
+    "outArrival": "1:30 PM",
+    "outDuration": "6h 50m",
+    "outStops": "1 stop, ATL",
+    "retDeparture": "2:55 PM",
+    "retArrival": "10:26 PM",
+    "retDuration": "8h 31m",
+    "retStops": "1 stop, ATL",
+    "fareClass": "Delta Main Classic (non-basic)",
+    "pricePerPerson": 830,
+    "totalPrice": 1660,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-15",
+    "itineraryId": "return_may20",
+    "itineraryLabel": "Return May 20, 2027",
+    "flightId": "B3",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-20",
+    "passengers": 2,
+    "airline": "Delta",
+    "outDeparture": "5:40 AM",
+    "outArrival": "1:30 PM",
+    "outDuration": "6h 50m",
+    "outStops": "1 stop, ATL",
+    "retDeparture": "2:55 PM",
+    "retArrival": "11:58 PM",
+    "retDuration": "10h 3m",
+    "retStops": "1 stop, ATL",
+    "fareClass": "Delta Main Classic (non-basic)",
+    "pricePerPerson": 830,
+    "totalPrice": 1660,
+    "site": "Google Flights"
+  },
+  {
+    "date": "2026-07-16",
+    "itineraryId": "return_may16",
+    "itineraryLabel": "Return May 16, 2027",
+    "flightId": "A1",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-16",
+    "passengers": 2,
+    "airline": "American Airlines",
+    "outDeparture": "5:00 AM",
+    "outArrival": "1:18 PM",
+    "outDuration": "7h 18m",
+    "outStops": "1 stop, MIA",
+    "retDeparture": "2:25 PM",
+    "retArrival": "10:21 PM",
+    "retDuration": "8h 56m",
+    "retStops": "1 stop, MIA",
+    "fareClass": "Main Cabin (non-basic)",
+    "pricePerPerson": 835,
+    "totalPrice": 1670,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-16",
+    "itineraryId": "return_may16",
+    "itineraryLabel": "Return May 16, 2027",
+    "flightId": "A3",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-16",
+    "passengers": 2,
+    "airline": "Delta",
+    "outDeparture": "5:40 AM",
+    "outArrival": "1:30 PM",
+    "outDuration": "6h 50m",
+    "outStops": "1 stop, ATL",
+    "retDeparture": "2:55 PM",
+    "retArrival": "11:58 PM",
+    "retDuration": "10h 3m",
+    "retStops": "1 stop, ATL",
+    "fareClass": "Delta Main Classic (non-basic)",
+    "pricePerPerson": 925,
+    "totalPrice": 1850,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-16",
+    "itineraryId": "return_may16",
+    "itineraryLabel": "Return May 16, 2027",
+    "flightId": "A2",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-16",
+    "passengers": 2,
+    "airline": "Delta",
+    "outDeparture": "5:40 AM",
+    "outArrival": "1:30 PM",
+    "outDuration": "6h 50m",
+    "outStops": "1 stop, ATL",
+    "retDeparture": "2:55 PM",
+    "retArrival": "10:26 PM",
+    "retDuration": "8h 31m",
+    "retStops": "1 stop, ATL",
+    "fareClass": "Delta Main Classic (non-basic)",
+    "pricePerPerson": 1023,
+    "totalPrice": 2046,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-16",
+    "itineraryId": "return_may16",
+    "itineraryLabel": "Return May 16, 2027",
+    "flightId": "A4",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-16",
+    "passengers": 2,
+    "airline": "American Airlines",
+    "outDeparture": "5:00 AM",
+    "outArrival": "1:18 PM",
+    "outDuration": "7h 18m",
+    "outStops": "1 stop, MIA",
+    "retDeparture": "2:25 PM",
+    "retArrival": "11:59 PM",
+    "retDuration": "10h 34m",
+    "retStops": "2 stops, MIA, ORD",
+    "fareClass": "Main Cabin (non-basic)",
+    "pricePerPerson": 1001,
+    "totalPrice": 2001,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-16",
+    "itineraryId": "return_may20",
+    "itineraryLabel": "Return May 20, 2027",
+    "flightId": "B1",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-20",
+    "passengers": 2,
+    "airline": "American Airlines",
+    "outDeparture": "5:00 AM",
+    "outArrival": "1:18 PM",
+    "outDuration": "7h 18m",
+    "outStops": "1 stop, MIA",
+    "retDeparture": "2:25 PM",
+    "retArrival": "10:21 PM",
+    "retDuration": "8h 56m",
+    "retStops": "1 stop, MIA",
+    "fareClass": "Main Cabin (non-basic)",
+    "pricePerPerson": 780,
+    "totalPrice": 1560,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-16",
+    "itineraryId": "return_may20",
+    "itineraryLabel": "Return May 20, 2027",
+    "flightId": "B2",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-20",
+    "passengers": 2,
+    "airline": "Delta",
+    "outDeparture": "5:40 AM",
+    "outArrival": "1:30 PM",
+    "outDuration": "6h 50m",
+    "outStops": "1 stop, ATL",
+    "retDeparture": "2:55 PM",
+    "retArrival": "10:26 PM",
+    "retDuration": "8h 31m",
+    "retStops": "1 stop, ATL",
+    "fareClass": "Delta Main Classic (non-basic)",
+    "pricePerPerson": 790,
+    "totalPrice": 1580,
+    "site": "Kayak"
+  },
+  {
+    "date": "2026-07-16",
+    "itineraryId": "return_may20",
+    "itineraryLabel": "Return May 20, 2027",
+    "flightId": "B3",
+    "route": "MCI-SDQ",
+    "depart": "2027-05-13",
+    "return": "2027-05-20",
+    "passengers": 2,
+    "airline": "Delta",
+    "outDeparture": "5:40 AM",
+    "outArrival": "1:30 PM",
+    "outDuration": "6h 50m",
+    "outStops": "1 stop, ATL",
+    "retDeparture": "2:55 PM",
+    "retArrival": "11:58 PM",
+    "retDuration": "10h 3m",
+    "retStops": "1 stop, ATL",
+    "fareClass": "Delta Main Classic (non-basic)",
+    "pricePerPerson": 790,
+    "totalPrice": 1580,
+    "site": "Kayak"
+  }
+]
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<script>
+(function () {
+  var data = JSON.parse(document.getElementById('price-data').textContent);
+
+  var itinMeta = {
+    return_may16: { label: 'Girls — Return May 16, 2027', badge: 'badge-a', palette: ['#1a56db', '#5b8def', '#8fb8f7', '#0d3a91', '#3d7ce0'] },
+    return_may20: { label: 'Jen/Brian — Return May 20, 2027', badge: 'badge-b', palette: ['#c2410c', '#e07a3f', '#f0a373', '#8a2e08', '#d9601f'] }
+  };
+  var itinOrder = Object.keys(itinMeta);
+
+  function fmt(n) { return '$' + Number(n).toLocaleString(); }
+
+  function hexToRgba(hex, alpha) {
+    var h = hex.replace('#', '');
+    var r = parseInt(h.substring(0, 2), 16);
+    var g = parseInt(h.substring(2, 4), 16);
+    var b = parseInt(h.substring(4, 6), 16);
+    return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+  }
+
+  // Group rows by flightId, sorted by date within each group
+  function groupByFlight(rows) {
+    var byFlight = {};
+    rows.forEach(function (r) {
+      if (!byFlight[r.flightId]) byFlight[r.flightId] = [];
+      byFlight[r.flightId].push(r);
+    });
+    Object.keys(byFlight).forEach(function (fid) {
+      byFlight[fid].sort(function (a, b) { return a.date.localeCompare(b.date); });
+    });
+    return byFlight;
+  }
+
+  var allByFlight = groupByFlight(data);
+  // Stable ordering of flightIds: itinerary, then flight number within itinerary
+  var flightIds = Object.keys(allByFlight).sort(function (a, b) {
+    var aItin = allByFlight[a][0].itineraryId, bItin = allByFlight[b][0].itineraryId;
+    if (aItin !== bItin) return aItin.localeCompare(bItin);
+    return a.localeCompare(b, undefined, { numeric: true });
+  });
+
+  // Assign colors per flight, cycling through itinerary's palette
+  var colorByFlight = {};
+  var counters = {};
+  flightIds.forEach(function (fid) {
+    var itin = allByFlight[fid][0].itineraryId;
+    var meta = itinMeta[itin] || { palette: ['#666'] };
+    var idx = counters[itin] || 0;
+    colorByFlight[fid] = meta.palette[idx % meta.palette.length];
+    counters[itin] = idx + 1;
+  });
+
+  function flightLabel(latest) {
+    return latest.airline + ' ' + latest.outDeparture + '→' + latest.retDeparture.replace(' ', '') + ' return';
+  }
+  function flightShort(latest) {
+    return latest.airline + ' (out ' + latest.outDeparture + ', back ' + latest.retDeparture + ')';
+  }
+
+  // ---- Itinerary sections with per-flight mini cards ----
+  var itinSectionsEl = document.getElementById('itinSections');
+  Object.keys(itinMeta).forEach(function (itinId) {
+    var meta = itinMeta[itinId];
+    var section = document.createElement('div');
+    section.className = 'itin-section';
+    var heading = document.createElement('div');
+    heading.className = 'itin-heading';
+    heading.innerHTML = '<span class="badge ' + meta.badge + '">' + meta.label + '</span>';
+    section.appendChild(heading);
+
+    var cardsWrap = document.createElement('div');
+    cardsWrap.className = 'flight-cards';
+
+    var itinFlightIds = flightIds.filter(function (fid) { return allByFlight[fid][0].itineraryId === itinId; });
+
+    if (itinFlightIds.length === 0) {
+      var empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.textContent = 'No data yet';
+      cardsWrap.appendChild(empty);
+    } else {
+      itinFlightIds.forEach(function (fid) {
+        var rows = allByFlight[fid];
+        var latest = rows[rows.length - 1];
+        var prev = rows.length > 1 ? rows[rows.length - 2] : null;
+
+        // Is this flight "frozen"? i.e. most recent date is not the max date across all data
+        var maxDate = data.reduce(function (m, r) { return r.date > m ? r.date : m; }, data[0].date);
+        var isFrozen = latest.date !== maxDate;
+
+        var deltaHtml = '';
+        if (prev) {
+          var diff = latest.totalPrice - prev.totalPrice;
+          var cls = diff > 0 ? 'delta-up' : (diff < 0 ? 'delta-down' : 'delta-flat');
+          var arrow = diff > 0 ? '↑' : (diff < 0 ? '↓' : '→');
+          deltaHtml = '<span class="' + cls + '">' + arrow + ' ' + fmt(Math.abs(diff)) + ' since last check</span><br>';
+        }
+
+        var card = document.createElement('div');
+        card.className = 'card';
+        card.style.borderTop = '3px solid ' + colorByFlight[fid];
+        card.innerHTML =
+          '<h2><span class="flight-badge" style="background:' + colorByFlight[fid] + '"></span>' + flightShort(latest) + '</h2>' +
+          '<div class="price">' + fmt(latest.totalPrice) + ' <span style="font-size:12px;font-weight:400;color:#777;">total / 2 adults</span></div>' +
+          '<div class="meta">' +
+            fmt(latest.pricePerPerson) + ' / person &middot; ' + latest.fareClass + '<br>' +
+            'Out: ' + latest.outDeparture + '–' + latest.outArrival + ' (' + latest.outDuration + ', ' + latest.outStops + ')<br>' +
+            'Back: ' + latest.retDeparture + '–' + latest.retArrival + ' (' + latest.retDuration + ', ' + latest.retStops + ')<br>' +
+            'Cheapest source: <span class="src-tag">' + latest.site + '</span><br>' +
+            'Last checked ' + latest.date +
+            (isFrozen ? ' &mdash; <span class="frozen-note">not seen since (frozen)</span>' : '') + '<br>' +
+            deltaHtml +
+          '</div>';
+        cardsWrap.appendChild(card);
+      });
+    }
+    section.appendChild(cardsWrap);
+    itinSectionsEl.appendChild(section);
+  });
+
+  // ---- Chart: one line per flightId ----
+  var ctx = document.getElementById('priceChart').getContext('2d');
+  var datasets = flightIds.map(function (fid) {
+    var rows = allByFlight[fid];
+    var latest = rows[rows.length - 1];
+    return {
+      label: (itinMeta[latest.itineraryId] ? itinMeta[latest.itineraryId].label.split('—')[0].trim() : latest.itineraryId) + ' · ' + flightShort(latest),
+      data: rows.map(function (r) { return { x: r.date, y: r.totalPrice }; }),
+      borderColor: colorByFlight[fid],
+      backgroundColor: colorByFlight[fid],
+      borderWidth: 2,
+      tension: 0.2,
+      pointRadius: rows.map(function () { return 4; }),
+      pointBackgroundColor: rows.map(function () { return colorByFlight[fid]; }),
+      pointBorderColor: rows.map(function () { return colorByFlight[fid]; }),
+      pointBorderWidth: rows.map(function () { return 1; }),
+      spanGaps: false
+    };
+  });
+
+  var priceChart = new Chart(ctx, {
+    type: 'line',
+    data: { datasets: datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 200 },
+      scales: {
+        x: { type: 'category', title: { display: true, text: 'Date checked' } },
+        y: { title: { display: true, text: 'Total price, 2 adults (USD)' }, beginAtZero: false }
+      },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
+        tooltip: {
+          callbacks: {
+            label: function (ctx) { return ctx.dataset.label + ': ' + fmt(ctx.parsed.y); }
+          }
+        }
+      }
+    }
+  });
+
+  // ---- Hover linking between table rows and chart series ----
+  function highlightFlight(fid, date) {
+    priceChart.data.datasets.forEach(function (ds, i) {
+      var thisFid = flightIds[i];
+      var color = colorByFlight[thisFid];
+      if (thisFid === fid) {
+        var rows = allByFlight[thisFid];
+        ds.borderColor = color;
+        ds.backgroundColor = color;
+        ds.borderWidth = 5;
+        ds.order = 0;
+        ds.pointRadius = rows.map(function (r) { return r.date === date ? 9 : 4; });
+        ds.pointBackgroundColor = rows.map(function (r) { return r.date === date ? '#111111' : color; });
+        ds.pointBorderColor = rows.map(function (r) { return r.date === date ? color : color; });
+        ds.pointBorderWidth = rows.map(function (r) { return r.date === date ? 3 : 1; });
+      } else {
+        var otherLen = allByFlight[thisFid].length;
+        ds.borderColor = hexToRgba(color, 0.12);
+        ds.backgroundColor = hexToRgba(color, 0.12);
+        ds.borderWidth = 1.5;
+        ds.order = 1;
+        ds.pointRadius = new Array(otherLen).fill(2);
+        ds.pointBackgroundColor = new Array(otherLen).fill(hexToRgba(color, 0.12));
+        ds.pointBorderColor = new Array(otherLen).fill(hexToRgba(color, 0.12));
+        ds.pointBorderWidth = new Array(otherLen).fill(1);
+      }
+    });
+    priceChart.update();
+  }
+
+  function clearHighlight() {
+    priceChart.data.datasets.forEach(function (ds, i) {
+      var thisFid = flightIds[i];
+      var color = colorByFlight[thisFid];
+      var len = allByFlight[thisFid].length;
+      ds.borderColor = color;
+      ds.backgroundColor = color;
+      ds.borderWidth = 2;
+      ds.order = 0;
+      ds.pointRadius = new Array(len).fill(4);
+      ds.pointBackgroundColor = new Array(len).fill(color);
+      ds.pointBorderColor = new Array(len).fill(color);
+      ds.pointBorderWidth = new Array(len).fill(1);
+    });
+    priceChart.update();
+  }
+
+  // ---- History table: one row per (flightId, date), most recent first ----
+  var tbody = document.getElementById('historyBody');
+  function stripNonBasic(fareClass) {
+    return (fareClass || '').replace(/\s*\(non-basic\)/i, '');
+  }
+  function outCell(d) {
+    return d.outDeparture + '–' + d.outArrival;
+  }
+  function backCell(d) {
+    return d.retDeparture + '–' + d.retArrival;
+  }
+
+  if (data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No price checks logged yet.</td></tr>';
+  } else {
+    var sorted = data.slice().sort(function (a, b) {
+      var dateCmp = b.date.localeCompare(a.date);
+      if (dateCmp !== 0) return dateCmp;
+      var aIdx = itinOrder.indexOf(a.itineraryId), bIdx = itinOrder.indexOf(b.itineraryId);
+      if (aIdx !== bIdx) return aIdx - bIdx;
+      return a.flightId.localeCompare(b.flightId, undefined, { numeric: true });
+    });
+    sorted.forEach(function (d) {
+      var meta = itinMeta[d.itineraryId];
+      var tr = document.createElement('tr');
+      tr.innerHTML =
+        '<td>' + d.date + '</td>' +
+        '<td><span class="badge ' + (meta ? meta.badge : '') + '">' + (meta ? meta.label.split('—')[0].trim() : d.itineraryId) + '</span></td>' +
+        '<td><span class="flight-badge" style="background:' + colorByFlight[d.flightId] + '"></span>' + d.airline + '</td>' +
+        '<td>' + outCell(d) + '</td>' +
+        '<td>' + backCell(d) + '</td>' +
+        '<td>' + stripNonBasic(d.fareClass) + '</td>' +
+        '<td>' + fmt(d.pricePerPerson) + '</td>' +
+        '<td>' + fmt(d.totalPrice) + '</td>' +
+        '<td>' + d.site + '</td>';
+      tr.addEventListener('mouseenter', function () { highlightFlight(d.flightId, d.date); });
+      tr.addEventListener('mouseleave', clearHighlight);
+      tbody.appendChild(tr);
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
