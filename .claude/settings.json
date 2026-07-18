@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tasklist //FI \"IMAGENAME eq git.exe\")",
+      "Bash(rm /c/Users/brian/code/StaticHub/.git/HEAD.lock && git -C /c/Users/brian/code/StaticHub status --short)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\brian\\code\\StaticHub\\.git"
+    ]
+  }
+}
