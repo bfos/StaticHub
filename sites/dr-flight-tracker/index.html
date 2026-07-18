@@ -51,6 +51,23 @@
     background: #eef2ff;
     color: #4338ca;
   }
+  .card-booked {
+    background: #fffdf5;
+    border-color: #e6c757;
+    box-shadow: 0 0 0 1px #d4af37 inset;
+  }
+  .booked-ribbon {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    background: #fbf1d3;
+    color: #8a6d00;
+    letter-spacing: 0.2px;
+    vertical-align: middle;
+  }
   .chart-wrap {
     position: relative;
     height: 380px;
@@ -73,6 +90,9 @@
   th { color: #555; font-weight: 600; background: #fafafa; }
   tbody tr { cursor: default; transition: background 0.1s ease; }
   tbody tr:hover td { background: #eef2ff; }
+  tr.booked-row td { background: #fffdf5; }
+  tr.booked-row:hover td { background: #fbf1d3; }
+  tr.booked-row td:first-child { border-left: 3px solid #d4af37; }
   .flight-badge {
     display: inline-block;
     width: 10px;
@@ -82,6 +102,26 @@
     vertical-align: middle;
   }
   .empty-state { color: #999; font-size: 13px; padding: 20px 0; text-align: center; }
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #666;
+  }
+  .pagination button {
+    padding: 4px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    color: #333;
+  }
+  .pagination button:disabled { opacity: 0.4; cursor: default; }
+  .pagination button:not(:disabled):hover { background: #f5f5f5; }
   footer { margin-top: 16px; font-size: 11px; color: #999; line-height: 1.6; }
 </style>
 </head>
@@ -89,7 +129,7 @@
 
 <h1>MCI &rarr; SDQ Flight Price Tracker</h1>
 <div class="subtitle">2 adults &middot; regular economy only, basic economy excluded &middot; American Airlines + Delta only &middot; checked daily at 6:00 AM &middot; sources: Kayak + Google Flights</div>
-<div class="subtitle2">Filters: arrive into SDQ 9:00 AM&ndash;2:00 PM &middot; depart SDQ after 1:00 PM, arrive MCI before midnight &middot; total duration under 11 hr both directions &middot; up to 5 cheapest qualifying flights tracked per itinerary &middot; each flight tracked individually across days (matched by airline + schedule, &plusmn;20 min tolerance); a schedule change beyond that starts a new line and freezes the old one</div>
+<div class="subtitle2">Filters: arrive into SDQ 9:00 AM&ndash;2:00 PM &middot; depart SDQ after 1:00 PM, arrive MCI before midnight &middot; total duration under 11 hr both directions &middot; up to 5 cheapest qualifying flights tracked per itinerary &middot; each flight tracked individually across days (matched by airline + schedule, &plusmn;20 min tolerance); a schedule change beyond that starts a new line and freezes the old one &middot; <span class="booked-ribbon">✓ BOOKED</span> flights are refundable fares already purchased</div>
 
 <div id="itinSections"></div>
 
@@ -114,10 +154,12 @@
   </thead>
   <tbody id="historyBody"></tbody>
 </table>
+<div class="pagination" id="tablePagination"></div>
 
 <footer>
   Dates: depart May 13, 2027 from MCI. Girls returns May 16, 2027; Jen/Brian returns May 20, 2027.<br>
-  Only American Airlines and Delta flights are tracked. Prices exclude basic economy fares. Kayak and Google Flights are both checked daily for each qualifying flight; only the cheaper of the two is kept per flight per day, with its source labeled. Up to 5 cheapest qualifying flights are tracked per itinerary. If a tracked flight's schedule shifts by more than ~20 minutes (or it disappears from results), its line stops updating (frozen at last known price) and any new matching flight starts a fresh line.
+  Only American Airlines and Delta flights are tracked. Prices exclude basic economy fares. Kayak and Google Flights are both checked daily for each qualifying flight; only the cheaper of the two is kept per flight per day, with its source labeled. Up to 5 cheapest qualifying flights are tracked per itinerary. If a tracked flight's schedule shifts by more than ~20 minutes (or it disappears from results), its line stops updating (frozen at last known price) and any new matching flight starts a fresh line.<br>
+  Rows and chart lines marked <span class="booked-ribbon">✓ BOOKED</span> are refundable fares already purchased for that itinerary — kept for reference/price comparison, not action items. The table's gold row highlight shows only on the most recent check date; older rows for that same flight appear unhighlighted.
 </footer>
 
 <script id="price-data" type="application/json">
@@ -872,6 +914,13 @@
   };
   var itinOrder = Object.keys(itinMeta);
 
+  // Flights already booked on a refundable fare — highlighted throughout the dashboard.
+  var bookedFlightIds = ['A1', 'B1'];
+  var GOLD = '#d4af37';
+  var GLOW_DELTA = 2; // total extra width/radius vs. the main line — ~1px per edge
+  var FILL_ALPHA = 0.15; // translucent fill under booked lines, in their original color
+  function isBooked(fid) { return bookedFlightIds.indexOf(fid) !== -1; }
+
   function fmt(n) { return '$' + Number(n).toLocaleString(); }
 
   function hexToRgba(hex, alpha) {
@@ -896,6 +945,8 @@
   }
 
   var allByFlight = groupByFlight(data);
+  var globalMaxDate = data.reduce(function (m, r) { return r.date > m ? r.date : m; }, data[0].date);
+
   // Stable ordering of flightIds: itinerary, then flight number within itinerary
   var flightIds = Object.keys(allByFlight).sort(function (a, b) {
     var aItin = allByFlight[a][0].itineraryId, bItin = allByFlight[b][0].itineraryId;
@@ -947,10 +998,9 @@
         var rows = allByFlight[fid];
         var latest = rows[rows.length - 1];
         var prev = rows.length > 1 ? rows[rows.length - 2] : null;
+        var booked = isBooked(fid);
 
-        // Is this flight "frozen"? i.e. most recent date is not the max date across all data
-        var maxDate = data.reduce(function (m, r) { return r.date > m ? r.date : m; }, data[0].date);
-        var isFrozen = latest.date !== maxDate;
+        var isFrozen = latest.date !== globalMaxDate;
 
         var deltaHtml = '';
         if (prev) {
@@ -961,10 +1011,10 @@
         }
 
         var card = document.createElement('div');
-        card.className = 'card';
-        card.style.borderTop = '3px solid ' + colorByFlight[fid];
+        card.className = 'card' + (booked ? ' card-booked' : '');
+        card.style.borderTop = '3px solid ' + (booked ? GOLD : colorByFlight[fid]);
         card.innerHTML =
-          '<h2><span class="flight-badge" style="background:' + colorByFlight[fid] + '"></span>' + flightShort(latest) + '</h2>' +
+          '<h2><span class="flight-badge" style="background:' + colorByFlight[fid] + '"></span>' + flightShort(latest) + (booked ? '<span class="booked-ribbon">✓ BOOKED</span>' : '') + '</h2>' +
           '<div class="price">' + fmt(latest.totalPrice) + ' <span style="font-size:12px;font-weight:400;color:#777;">total / 2 adults</span></div>' +
           '<div class="meta">' +
             fmt(latest.pricePerPerson) + ' / person &middot; ' + latest.fareClass + '<br>' +
@@ -982,24 +1032,56 @@
     itinSectionsEl.appendChild(section);
   });
 
-  // ---- Chart: one line per flightId ----
+  // ---- Chart: one line per flightId. Booked flights get an extra "glow" dataset
+  // drawn behind them in gold — just a couple pixels wider/larger than the main
+  // line/points so it reads as a thin outline rather than a thick highlight. ----
   var ctx = document.getElementById('priceChart').getContext('2d');
-  var datasets = flightIds.map(function (fid) {
+  var datasets = [];
+  var datasetMeta = []; // parallel array: { fid, role: 'glow' | 'main' }
+  var MAIN_WIDTH = 2;
+  var MAIN_RADIUS = 4;
+
+  flightIds.forEach(function (fid) {
     var rows = allByFlight[fid];
     var latest = rows[rows.length - 1];
-    return {
-      label: (itinMeta[latest.itineraryId] ? itinMeta[latest.itineraryId].label.split('—')[0].trim() : latest.itineraryId) + ' · ' + flightShort(latest),
+    var booked = isBooked(fid);
+    var color = colorByFlight[fid];
+    var label = (itinMeta[latest.itineraryId] ? itinMeta[latest.itineraryId].label.split('—')[0].trim() : latest.itineraryId) + ' · ' + flightShort(latest) + (booked ? ' ★ Booked' : '');
+
+    if (booked) {
+      datasets.push({
+        label: '__glow_' + fid,
+        data: rows.map(function (r) { return { x: r.date, y: r.totalPrice }; }),
+        borderColor: GOLD,
+        backgroundColor: GOLD,
+        borderWidth: MAIN_WIDTH + GLOW_DELTA,
+        tension: 0.2,
+        pointRadius: rows.map(function () { return MAIN_RADIUS + GLOW_DELTA; }),
+        pointBackgroundColor: rows.map(function () { return GOLD; }),
+        pointBorderColor: rows.map(function () { return GOLD; }),
+        pointBorderWidth: rows.map(function () { return 0; }),
+        spanGaps: false,
+        order: -1
+      });
+      datasetMeta.push({ fid: fid, role: 'glow' });
+    }
+
+    datasets.push({
+      label: label,
       data: rows.map(function (r) { return { x: r.date, y: r.totalPrice }; }),
-      borderColor: colorByFlight[fid],
-      backgroundColor: colorByFlight[fid],
-      borderWidth: 2,
+      borderColor: color,
+      backgroundColor: booked ? hexToRgba(color, FILL_ALPHA) : color,
+      fill: booked,
+      borderWidth: MAIN_WIDTH,
       tension: 0.2,
-      pointRadius: rows.map(function () { return 4; }),
-      pointBackgroundColor: rows.map(function () { return colorByFlight[fid]; }),
-      pointBorderColor: rows.map(function () { return colorByFlight[fid]; }),
+      pointRadius: rows.map(function () { return MAIN_RADIUS; }),
+      pointBackgroundColor: rows.map(function () { return color; }),
+      pointBorderColor: rows.map(function () { return color; }),
       pointBorderWidth: rows.map(function () { return 1; }),
-      spanGaps: false
-    };
+      spanGaps: false,
+      order: 0
+    });
+    datasetMeta.push({ fid: fid, role: 'main' });
   });
 
   var priceChart = new Chart(ctx, {
@@ -1014,8 +1096,16 @@
         y: { title: { display: true, text: 'Total price, 2 adults (USD)' }, beginAtZero: false }
       },
       plugins: {
-        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } },
+        legend: {
+          position: 'bottom',
+          labels: {
+            boxWidth: 12,
+            font: { size: 10 },
+            filter: function (legendItem) { return legendItem.text.indexOf('__glow_') !== 0; }
+          }
+        },
         tooltip: {
+          filter: function (ctx) { return ctx.dataset.label.indexOf('__glow_') !== 0; },
           callbacks: {
             label: function (ctx) { return ctx.dataset.label + ': ' + fmt(ctx.parsed.y); }
           }
@@ -1027,28 +1117,57 @@
   // ---- Hover linking between table rows and chart series ----
   function highlightFlight(fid, date) {
     priceChart.data.datasets.forEach(function (ds, i) {
-      var thisFid = flightIds[i];
+      var meta = datasetMeta[i];
+      var thisFid = meta.fid;
       var color = colorByFlight[thisFid];
-      if (thisFid === fid) {
-        var rows = allByFlight[thisFid];
-        ds.borderColor = color;
-        ds.backgroundColor = color;
-        ds.borderWidth = 5;
-        ds.order = 0;
-        ds.pointRadius = rows.map(function (r) { return r.date === date ? 9 : 4; });
-        ds.pointBackgroundColor = rows.map(function (r) { return r.date === date ? '#111111' : color; });
-        ds.pointBorderColor = rows.map(function (r) { return r.date === date ? color : color; });
-        ds.pointBorderWidth = rows.map(function (r) { return r.date === date ? 3 : 1; });
+      var rows = allByFlight[thisFid];
+      var isTarget = thisFid === fid;
+
+      if (meta.role === 'glow') {
+        if (isTarget) {
+          var targetMainWidth = 4;
+          var targetMainRadius = 4;
+          ds.borderColor = GOLD;
+          ds.backgroundColor = GOLD;
+          ds.borderWidth = targetMainWidth + GLOW_DELTA;
+          ds.order = 1;
+          ds.pointRadius = rows.map(function (r) { return (r.date === date ? 9 : targetMainRadius) + GLOW_DELTA; });
+          ds.pointBackgroundColor = rows.map(function () { return GOLD; });
+          ds.pointBorderColor = rows.map(function () { return GOLD; });
+          ds.pointBorderWidth = rows.map(function () { return 0; });
+        } else {
+          var glowLen = rows.length;
+          ds.borderColor = hexToRgba(GOLD, 0.2);
+          ds.backgroundColor = hexToRgba(GOLD, 0.2);
+          ds.borderWidth = 1.5 + GLOW_DELTA;
+          ds.order = -1;
+          ds.pointRadius = new Array(glowLen).fill(2 + GLOW_DELTA);
+          ds.pointBackgroundColor = new Array(glowLen).fill(hexToRgba(GOLD, 0.2));
+          ds.pointBorderColor = new Array(glowLen).fill(hexToRgba(GOLD, 0.2));
+          ds.pointBorderWidth = new Array(glowLen).fill(0);
+        }
       } else {
-        var otherLen = allByFlight[thisFid].length;
-        ds.borderColor = hexToRgba(color, 0.12);
-        ds.backgroundColor = hexToRgba(color, 0.12);
-        ds.borderWidth = 1.5;
-        ds.order = 1;
-        ds.pointRadius = new Array(otherLen).fill(2);
-        ds.pointBackgroundColor = new Array(otherLen).fill(hexToRgba(color, 0.12));
-        ds.pointBorderColor = new Array(otherLen).fill(hexToRgba(color, 0.12));
-        ds.pointBorderWidth = new Array(otherLen).fill(1);
+        var isBookedMain = isBooked(thisFid);
+        if (isTarget) {
+          ds.borderColor = color;
+          ds.backgroundColor = isBookedMain ? hexToRgba(color, FILL_ALPHA) : color;
+          ds.borderWidth = 4;
+          ds.order = 2;
+          ds.pointRadius = rows.map(function (r) { return r.date === date ? 9 : 4; });
+          ds.pointBackgroundColor = rows.map(function (r) { return r.date === date ? '#111111' : color; });
+          ds.pointBorderColor = rows.map(function () { return color; });
+          ds.pointBorderWidth = rows.map(function (r) { return r.date === date ? 3 : 1; });
+        } else {
+          var otherLen = rows.length;
+          ds.borderColor = hexToRgba(color, 0.12);
+          ds.backgroundColor = isBookedMain ? hexToRgba(color, FILL_ALPHA * 0.5) : hexToRgba(color, 0.12);
+          ds.borderWidth = 1.5;
+          ds.order = 0;
+          ds.pointRadius = new Array(otherLen).fill(2);
+          ds.pointBackgroundColor = new Array(otherLen).fill(hexToRgba(color, 0.12));
+          ds.pointBorderColor = new Array(otherLen).fill(hexToRgba(color, 0.12));
+          ds.pointBorderWidth = new Array(otherLen).fill(1);
+        }
       }
     });
     priceChart.update();
@@ -1056,23 +1175,42 @@
 
   function clearHighlight() {
     priceChart.data.datasets.forEach(function (ds, i) {
-      var thisFid = flightIds[i];
+      var meta = datasetMeta[i];
+      var thisFid = meta.fid;
       var color = colorByFlight[thisFid];
-      var len = allByFlight[thisFid].length;
-      ds.borderColor = color;
-      ds.backgroundColor = color;
-      ds.borderWidth = 2;
-      ds.order = 0;
-      ds.pointRadius = new Array(len).fill(4);
-      ds.pointBackgroundColor = new Array(len).fill(color);
-      ds.pointBorderColor = new Array(len).fill(color);
-      ds.pointBorderWidth = new Array(len).fill(1);
+      var rows = allByFlight[thisFid];
+      var len = rows.length;
+
+      if (meta.role === 'glow') {
+        ds.borderColor = GOLD;
+        ds.backgroundColor = GOLD;
+        ds.borderWidth = MAIN_WIDTH + GLOW_DELTA;
+        ds.order = -1;
+        ds.pointRadius = new Array(len).fill(MAIN_RADIUS + GLOW_DELTA);
+        ds.pointBackgroundColor = new Array(len).fill(GOLD);
+        ds.pointBorderColor = new Array(len).fill(GOLD);
+        ds.pointBorderWidth = new Array(len).fill(0);
+      } else {
+        var isBookedMain = isBooked(thisFid);
+        ds.borderColor = color;
+        ds.backgroundColor = isBookedMain ? hexToRgba(color, FILL_ALPHA) : color;
+        ds.borderWidth = MAIN_WIDTH;
+        ds.order = 0;
+        ds.pointRadius = new Array(len).fill(MAIN_RADIUS);
+        ds.pointBackgroundColor = new Array(len).fill(color);
+        ds.pointBorderColor = new Array(len).fill(color);
+        ds.pointBorderWidth = new Array(len).fill(1);
+      }
     });
     priceChart.update();
   }
 
-  // ---- History table: one row per (flightId, date), most recent first ----
+  // ---- History table: one row per (flightId, date), most recent first, paginated
+  // 5 calendar days (all itineraries/flights on that day) per page. ----
   var tbody = document.getElementById('historyBody');
+  var paginationEl = document.getElementById('tablePagination');
+  var DATES_PER_PAGE = 5;
+
   function stripNonBasic(fareClass) {
     return (fareClass || '').replace(/\s*\(non-basic\)/i, '');
   }
@@ -1083,36 +1221,71 @@
     return d.retDeparture + '–' + d.retArrival;
   }
 
-  if (data.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No price checks logged yet.</td></tr>';
-  } else {
-    var sorted = data.slice().sort(function (a, b) {
-      var dateCmp = b.date.localeCompare(a.date);
-      if (dateCmp !== 0) return dateCmp;
-      var aIdx = itinOrder.indexOf(a.itineraryId), bIdx = itinOrder.indexOf(b.itineraryId);
-      if (aIdx !== bIdx) return aIdx - bIdx;
-      return a.flightId.localeCompare(b.flightId, undefined, { numeric: true });
-    });
-    sorted.forEach(function (d) {
-      var meta = itinMeta[d.itineraryId];
-      var tr = document.createElement('tr');
-      tr.innerHTML =
-        '<td>' + d.date + '</td>' +
-        '<td><span class="badge ' + (meta ? meta.badge : '') + '">' + (meta ? meta.label.split('—')[0].trim() : d.itineraryId) + '</span></td>' +
-        '<td><span class="flight-badge" style="background:' + colorByFlight[d.flightId] + '"></span>' + d.airline + '</td>' +
-        '<td>' + outCell(d) + '</td>' +
-        '<td>' + backCell(d) + '</td>' +
-        '<td>' + stripNonBasic(d.fareClass) + '</td>' +
-        '<td>' + fmt(d.pricePerPerson) + '</td>' +
-        '<td>' + fmt(d.totalPrice) + '</td>' +
-        '<td>' + d.site + '</td>';
-      tr.addEventListener('mouseenter', function () { highlightFlight(d.flightId, d.date); });
-      tr.addEventListener('mouseleave', clearHighlight);
-      tbody.appendChild(tr);
-    });
-  }
-})();
-</script>
+  var sortedAll = data.slice().sort(function (a, b) {
+    var dateCmp = b.date.localeCompare(a.date);
+    if (dateCmp !== 0) return dateCmp;
+    var aIdx = itinOrder.indexOf(a.itineraryId), bIdx = itinOrder.indexOf(b.itineraryId);
+    if (aIdx !== bIdx) return aIdx - bIdx;
+    return a.flightId.localeCompare(b.flightId, undefined, { numeric: true });
+  });
 
-</body>
-</html>
+  var distinctDatesDesc = [];
+  (function () {
+    var seen = {};
+    sortedAll.forEach(function (d) {
+      if (!seen[d.date]) { seen[d.date] = true; distinctDatesDesc.push(d.date); }
+    });
+  })();
+
+  var totalPages = Math.max(1, Math.ceil(distinctDatesDesc.length / DATES_PER_PAGE));
+  var currentPage = 0;
+
+  function renderRow(d) {
+    var meta = itinMeta[d.itineraryId];
+    var booked = isBooked(d.flightId) && d.date === globalMaxDate;
+    var tr = document.createElement('tr');
+    tr.className = booked ? 'booked-row' : '';
+    tr.innerHTML =
+      '<td>' + d.date + '</td>' +
+      '<td><span class="badge ' + (meta ? meta.badge : '') + '">' + (meta ? meta.label.split('—')[0].trim() : d.itineraryId) + '</span></td>' +
+      '<td><span class="flight-badge" style="background:' + colorByFlight[d.flightId] + '"></span>' + d.airline + (booked ? '<span class="booked-ribbon">✓ Booked</span>' : '') + '</td>' +
+      '<td>' + outCell(d) + '</td>' +
+      '<td>' + backCell(d) + '</td>' +
+      '<td>' + stripNonBasic(d.fareClass) + '</td>' +
+      '<td>' + fmt(d.pricePerPerson) + '</td>' +
+      '<td>' + fmt(d.totalPrice) + '</td>' +
+      '<td>' + d.site + '</td>';
+    tr.addEventListener('mouseenter', function () { highlightFlight(d.flightId, d.date); });
+    tr.addEventListener('mouseleave', clearHighlight);
+    return tr;
+  }
+
+  function renderPage(page) {
+    if (page < 0) page = 0;
+    if (page > totalPages - 1) page = totalPages - 1;
+    currentPage = page;
+
+    tbody.innerHTML = '';
+
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="9" class="empty-state">No price checks logged yet.</td></tr>';
+      paginationEl.innerHTML = '';
+      return;
+    }
+
+    var pageDates = distinctDatesDesc.slice(page * DATES_PER_PAGE, page * DATES_PER_PAGE + DATES_PER_PAGE);
+    var pageDateSet = {};
+    pageDates.forEach(function (d) { pageDateSet[d] = true; });
+
+    sortedAll.filter(function (d) { return pageDateSet[d.date]; })
+      .forEach(function (d) { tbody.appendChild(renderRow(d)); });
+
+    var rangeLabel = pageDates.length ? (pageDates[pageDates.length - 1] + ' – ' + pageDates[0]) : '';
+    paginationEl.innerHTML = '';
+    var label = document.createElement('span');
+    label.textContent = rangeLabel + ' (page ' + (currentPage + 1) + ' of ' + totalPages + ')';
+    var prevBtn = document.createElement('button');
+    prevBtn.textContent = '← Newer';
+    prevBtn.disabled = currentPage === 0;
+    prevBtn.addEventListener('click', function () { renderPage(currentPage - 1); });
+    var nextBtn
