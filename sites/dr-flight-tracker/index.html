@@ -165,7 +165,7 @@
 
 <h1>MCI &rarr; SDQ Flight Price Tracker</h1>
 <div class="subtitle">2 adults &middot; regular economy only, basic economy excluded &middot; American Airlines + Delta only &middot; checked daily at 6:00 AM &middot; sources: Kayak + Google Flights</div>
-<div class="subtitle2">Filters: arrive into SDQ 9:00 AM&ndash;2:00 PM &middot; depart SDQ after 1:00 PM, arrive MCI before midnight &middot; total duration under 11 hr both directions &middot; up to 5 cheapest qualifying flights tracked per itinerary &middot; each flight tracked individually across days (matched by airline + schedule, &plusmn;20 min tolerance); a schedule change beyond that starts a new line and freezes the old one &middot; <span class="booked-ribbon">✓ BOOKED</span> flights are refundable fares already purchased &middot; <span class="drop-ribbon">▼ BELOW PAID PRICE</span> flags a booked flight now cheaper than what was paid</div>
+<div class="subtitle2">Filters: arrive into SDQ 9:00 AM&ndash;2:00 PM &middot; depart SDQ after 1:00 PM, arrive MCI before midnight &middot; total duration under 11 hr both directions &middot; up to 5 cheapest qualifying flights tracked per itinerary &middot; each flight tracked individually across days (matched by airline + schedule, &plusmn;20 min tolerance); a schedule change beyond that starts a new line and freezes the old one &middot; <span class="booked-ribbon">✓ BOOKED</span> flights are refundable fares already purchased &middot; <span class="drop-ribbon">▼ BELOW PAID PRICE</span> / <span class="drop-ribbon">▼ CHEAPER THAN BOOKED</span> flag a tracked flight now cheaper than what was paid for the booked itinerary</div>
 
 <div id="dropBanner"></div>
 <div id="itinSections"></div>
@@ -197,7 +197,7 @@
   Dates: depart May 13, 2027 from MCI. Girls returns May 16, 2027; Jen/Brian returns May 20, 2027.<br>
   Only American Airlines and Delta flights are tracked. Prices exclude basic economy fares. Kayak and Google Flights are both checked daily for each qualifying flight; only the cheaper of the two is kept per flight per day, with its source labeled. Up to 5 cheapest qualifying flights are tracked per itinerary. If a tracked flight's schedule shifts by more than ~20 minutes (or it disappears from results), its line stops updating (frozen at last known price) and any new matching flight starts a fresh line.<br>
   Rows and chart lines marked <span class="booked-ribbon">✓ BOOKED</span> are refundable fares already purchased for that itinerary — kept for reference/price comparison, not action items. The table's gold row highlight shows only on the most recent check date; older rows for that same flight appear unhighlighted.<br>
-  Booked prices paid: Girls (A1) $1,670 total &middot; Jen/Brian (B1) $1,560 total. If a booked flight's latest tracked price drops below what was paid, it's flagged with a <span class="drop-ribbon">▼ BELOW PAID PRICE</span> ribbon on its card and called out in a banner at the top of the page — worth a look since these are refundable fares.
+  Booked prices paid: Girls (A1) $1,670 total &middot; Jen/Brian (B1) $1,560 total — shown on each booked card. If a booked flight's own tracked price drops below what was paid, its card gets a <span class="drop-ribbon">▼ BELOW PAID PRICE</span> ribbon; if a different tracked flight (e.g. the other airline) on that same itinerary drops below the booked price, its card gets a <span class="drop-ribbon">▼ CHEAPER THAN BOOKED</span> ribbon instead. Either case is also called out in a banner at the top of the page — worth a look since these are refundable fares.
 </footer>
 
 <script id="price-data" type="application/json">
@@ -2731,420 +2731,6 @@
     "pricePerPerson": 850,
     "totalPrice": 1700,
     "site": "Kayak"
-  },
-  {
-    "date": "2026-07-31",
-    "itineraryId": "return_may16",
-    "itineraryLabel": "Return May 16, 2027",
-    "flightId": "A1",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-16",
-    "passengers": 2,
-    "airline": "American Airlines",
-    "outDeparture": "5:00 AM",
-    "outArrival": "1:18 PM",
-    "outDuration": "7h 18m",
-    "outStops": "1 stop, MIA",
-    "retDeparture": "2:25 PM",
-    "retArrival": "10:21 PM",
-    "retDuration": "8h 56m",
-    "retStops": "1 stop, MIA",
-    "fareClass": "Main Cabin (non-basic)",
-    "pricePerPerson": 934,
-    "totalPrice": 1868,
-    "site": "Google Flights"
-  },
-  {
-    "date": "2026-07-31",
-    "itineraryId": "return_may16",
-    "itineraryLabel": "Return May 16, 2027",
-    "flightId": "A3",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-16",
-    "passengers": 2,
-    "airline": "Delta",
-    "outDeparture": "5:40 AM",
-    "outArrival": "1:30 PM",
-    "outDuration": "6h 50m",
-    "outStops": "1 stop, ATL",
-    "retDeparture": "2:55 PM",
-    "retArrival": "11:58 PM",
-    "retDuration": "10h 3m",
-    "retStops": "1 stop, ATL",
-    "fareClass": "Delta Main Classic (non-basic)",
-    "pricePerPerson": 960,
-    "totalPrice": 1920,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-07-31",
-    "itineraryId": "return_may16",
-    "itineraryLabel": "Return May 16, 2027",
-    "flightId": "A2",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-16",
-    "passengers": 2,
-    "airline": "Delta",
-    "outDeparture": "5:40 AM",
-    "outArrival": "1:30 PM",
-    "outDuration": "6h 50m",
-    "outStops": "1 stop, ATL",
-    "retDeparture": "2:55 PM",
-    "retArrival": "10:26 PM",
-    "retDuration": "8h 31m",
-    "retStops": "1 stop, ATL",
-    "fareClass": "Delta Main Classic (non-basic)",
-    "pricePerPerson": 1043,
-    "totalPrice": 2086,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-07-31",
-    "itineraryId": "return_may20",
-    "itineraryLabel": "Return May 20, 2027",
-    "flightId": "B3",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-20",
-    "passengers": 2,
-    "airline": "Delta",
-    "outDeparture": "5:40 AM",
-    "outArrival": "1:30 PM",
-    "outDuration": "6h 50m",
-    "outStops": "1 stop, ATL",
-    "retDeparture": "2:55 PM",
-    "retArrival": "11:58 PM",
-    "retDuration": "10h 3m",
-    "retStops": "1 stop, ATL",
-    "fareClass": "Delta Main Classic (non-basic)",
-    "pricePerPerson": 800,
-    "totalPrice": 1600,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-07-31",
-    "itineraryId": "return_may20",
-    "itineraryLabel": "Return May 20, 2027",
-    "flightId": "B2",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-20",
-    "passengers": 2,
-    "airline": "Delta",
-    "outDeparture": "5:40 AM",
-    "outArrival": "1:30 PM",
-    "outDuration": "6h 50m",
-    "outStops": "1 stop, ATL",
-    "retDeparture": "2:55 PM",
-    "retArrival": "10:26 PM",
-    "retDuration": "8h 31m",
-    "retStops": "1 stop, ATL",
-    "fareClass": "Delta Main Classic (non-basic)",
-    "pricePerPerson": 850,
-    "totalPrice": 1700,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-07-31",
-    "itineraryId": "return_may20",
-    "itineraryLabel": "Return May 20, 2027",
-    "flightId": "B1",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-20",
-    "passengers": 2,
-    "airline": "American Airlines",
-    "outDeparture": "5:00 AM",
-    "outArrival": "1:18 PM",
-    "outDuration": "7h 18m",
-    "outStops": "1 stop, MIA",
-    "retDeparture": "2:25 PM",
-    "retArrival": "10:21 PM",
-    "retDuration": "8h 56m",
-    "retStops": "1 stop, MIA",
-    "fareClass": "Main Cabin (non-basic)",
-    "pricePerPerson": 869,
-    "totalPrice": 1738,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-08-01",
-    "itineraryId": "return_may16",
-    "itineraryLabel": "Return May 16, 2027",
-    "flightId": "A1",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-16",
-    "passengers": 2,
-    "airline": "American Airlines",
-    "outDeparture": "5:00 AM",
-    "outArrival": "1:18 PM",
-    "outDuration": "7h 18m",
-    "outStops": "1 stop, MIA",
-    "retDeparture": "2:25 PM",
-    "retArrival": "10:21 PM",
-    "retDuration": "8h 56m",
-    "retStops": "1 stop, MIA",
-    "fareClass": "Main Cabin (non-basic)",
-    "pricePerPerson": 905,
-    "totalPrice": 1810,
-    "site": "Google Flights"
-  },
-  {
-    "date": "2026-08-01",
-    "itineraryId": "return_may16",
-    "itineraryLabel": "Return May 16, 2027",
-    "flightId": "A2",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-16",
-    "passengers": 2,
-    "airline": "Delta",
-    "outDeparture": "5:40 AM",
-    "outArrival": "1:30 PM",
-    "outDuration": "6h 50m",
-    "outStops": "1 stop, ATL",
-    "retDeparture": "2:55 PM",
-    "retArrival": "10:26 PM",
-    "retDuration": "8h 31m",
-    "retStops": "1 stop, ATL",
-    "fareClass": "Delta Main Classic (non-basic)",
-    "pricePerPerson": 1033,
-    "totalPrice": 2066,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-08-01",
-    "itineraryId": "return_may16",
-    "itineraryLabel": "Return May 16, 2027",
-    "flightId": "A3",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-16",
-    "passengers": 2,
-    "airline": "Delta",
-    "outDeparture": "5:40 AM",
-    "outArrival": "1:30 PM",
-    "outDuration": "6h 50m",
-    "outStops": "1 stop, ATL",
-    "retDeparture": "2:55 PM",
-    "retArrival": "11:58 PM",
-    "retDuration": "10h 3m",
-    "retStops": "1 stop, ATL",
-    "fareClass": "Delta Main Classic (non-basic)",
-    "pricePerPerson": 1033,
-    "totalPrice": 2066,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-08-01",
-    "itineraryId": "return_may20",
-    "itineraryLabel": "Return May 20, 2027",
-    "flightId": "B3",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-20",
-    "passengers": 2,
-    "airline": "Delta",
-    "outDeparture": "5:40 AM",
-    "outArrival": "1:30 PM",
-    "outDuration": "6h 50m",
-    "outStops": "1 stop, ATL",
-    "retDeparture": "2:55 PM",
-    "retArrival": "11:58 PM",
-    "retDuration": "10h 3m",
-    "retStops": "1 stop, ATL",
-    "fareClass": "Delta Main Classic (non-basic)",
-    "pricePerPerson": 790,
-    "totalPrice": 1580,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-08-01",
-    "itineraryId": "return_may20",
-    "itineraryLabel": "Return May 20, 2027",
-    "flightId": "B1",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-20",
-    "passengers": 2,
-    "airline": "American Airlines",
-    "outDeparture": "5:00 AM",
-    "outArrival": "1:18 PM",
-    "outDuration": "7h 18m",
-    "outStops": "1 stop, MIA",
-    "retDeparture": "2:25 PM",
-    "retArrival": "10:21 PM",
-    "retDuration": "8h 56m",
-    "retStops": "1 stop, MIA",
-    "fareClass": "Main Cabin (non-basic)",
-    "pricePerPerson": 830,
-    "totalPrice": 1660,
-    "site": "Google Flights"
-  },
-  {
-    "date": "2026-08-01",
-    "itineraryId": "return_may20",
-    "itineraryLabel": "Return May 20, 2027",
-    "flightId": "B2",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-20",
-    "passengers": 2,
-    "airline": "Delta",
-    "outDeparture": "5:40 AM",
-    "outArrival": "1:30 PM",
-    "outDuration": "6h 50m",
-    "outStops": "1 stop, ATL",
-    "retDeparture": "2:55 PM",
-    "retArrival": "10:26 PM",
-    "retDuration": "8h 31m",
-    "retStops": "1 stop, ATL",
-    "fareClass": "Delta Main Classic (non-basic)",
-    "pricePerPerson": 840,
-    "totalPrice": 1680,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-08-02",
-    "itineraryId": "return_may16",
-    "itineraryLabel": "Return May 16, 2027",
-    "flightId": "A1",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-16",
-    "passengers": 2,
-    "airline": "American Airlines",
-    "outDeparture": "5:00 AM",
-    "outArrival": "1:18 PM",
-    "outDuration": "7h 18m",
-    "outStops": "1 stop, MIA",
-    "retDeparture": "2:25 PM",
-    "retArrival": "10:21 PM",
-    "retDuration": "8h 56m",
-    "retStops": "1 stop, MIA",
-    "fareClass": "Main Cabin (non-basic)",
-    "pricePerPerson": 905,
-    "totalPrice": 1810,
-    "site": "Google Flights"
-  },
-  {
-    "date": "2026-08-02",
-    "itineraryId": "return_may16",
-    "itineraryLabel": "Return May 16, 2027",
-    "flightId": "A3",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-16",
-    "passengers": 2,
-    "airline": "Delta",
-    "outDeparture": "5:40 AM",
-    "outArrival": "1:30 PM",
-    "outDuration": "6h 50m",
-    "outStops": "1 stop, ATL",
-    "retDeparture": "2:55 PM",
-    "retArrival": "11:58 PM",
-    "retDuration": "10h 3m",
-    "retStops": "1 stop, ATL",
-    "fareClass": "Delta Main Classic (non-basic)",
-    "pricePerPerson": 909,
-    "totalPrice": 1818,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-08-02",
-    "itineraryId": "return_may16",
-    "itineraryLabel": "Return May 16, 2027",
-    "flightId": "A2",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-16",
-    "passengers": 2,
-    "airline": "Delta",
-    "outDeparture": "5:40 AM",
-    "outArrival": "1:30 PM",
-    "outDuration": "6h 50m",
-    "outStops": "1 stop, ATL",
-    "retDeparture": "2:55 PM",
-    "retArrival": "10:26 PM",
-    "retDuration": "8h 31m",
-    "retStops": "1 stop, ATL",
-    "fareClass": "Delta Main Classic (non-basic)",
-    "pricePerPerson": 983,
-    "totalPrice": 1966,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-08-02",
-    "itineraryId": "return_may20",
-    "itineraryLabel": "Return May 20, 2027",
-    "flightId": "B3",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-20",
-    "passengers": 2,
-    "airline": "Delta",
-    "outDeparture": "5:40 AM",
-    "outArrival": "1:30 PM",
-    "outDuration": "6h 50m",
-    "outStops": "1 stop, ATL",
-    "retDeparture": "2:55 PM",
-    "retArrival": "11:58 PM",
-    "retDuration": "10h 3m",
-    "retStops": "1 stop, ATL",
-    "fareClass": "Delta Main Classic (non-basic)",
-    "pricePerPerson": 740,
-    "totalPrice": 1480,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-08-02",
-    "itineraryId": "return_may20",
-    "itineraryLabel": "Return May 20, 2027",
-    "flightId": "B2",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-20",
-    "passengers": 2,
-    "airline": "Delta",
-    "outDeparture": "5:40 AM",
-    "outArrival": "1:30 PM",
-    "outDuration": "6h 50m",
-    "outStops": "1 stop, ATL",
-    "retDeparture": "2:55 PM",
-    "retArrival": "10:26 PM",
-    "retDuration": "8h 31m",
-    "retStops": "1 stop, ATL",
-    "fareClass": "Delta Main Classic (non-basic)",
-    "pricePerPerson": 790,
-    "totalPrice": 1580,
-    "site": "Kayak"
-  },
-  {
-    "date": "2026-08-02",
-    "itineraryId": "return_may20",
-    "itineraryLabel": "Return May 20, 2027",
-    "flightId": "B1",
-    "route": "MCI-SDQ",
-    "depart": "2027-05-13",
-    "return": "2027-05-20",
-    "passengers": 2,
-    "airline": "American Airlines",
-    "outDeparture": "5:00 AM",
-    "outArrival": "1:18 PM",
-    "outDuration": "7h 18m",
-    "outStops": "1 stop, MIA",
-    "retDeparture": "2:25 PM",
-    "retArrival": "10:21 PM",
-    "retDuration": "8h 56m",
-    "retStops": "1 stop, MIA",
-    "fareClass": "Main Cabin (non-basic)",
-    "pricePerPerson": 830,
-    "totalPrice": 1660,
-    "site": "Google Flights"
   }
 ]
 </script>
@@ -3195,6 +2781,17 @@
 
   var allByFlight = groupByFlight(data);
   var globalMaxDate = data.reduce(function (m, r) { return r.date > m ? r.date : m; }, data[0].date);
+
+  // Map itineraryId -> { fid, paid } for the booked flight in that itinerary (derived from
+  // bookedFlightIds + bookedPrices) — lets us compare EVERY tracked flight on an itinerary
+  // (not just the booked one) against what was actually paid.
+  var bookedByItinerary = {};
+  bookedFlightIds.forEach(function (fid) {
+    var rows = allByFlight[fid];
+    if (!rows || !rows.length) return;
+    var itinId = rows[0].itineraryId;
+    bookedByItinerary[itinId] = { fid: fid, paid: bookedPrices[fid] };
+  });
 
   // Stable ordering of flightIds: itinerary, then flight number within itinerary
   var flightIds = Object.keys(allByFlight).sort(function (a, b) {
@@ -3264,13 +2861,22 @@
         var droppedBelowPaid = booked && paidPrice != null && latest.totalPrice < paidPrice;
         var dropAmount = droppedBelowPaid ? (paidPrice - latest.totalPrice) : 0;
 
+        // Does this itinerary have a booked flight, and if this card ISN'T it, is this
+        // alternate flight (e.g. the other airline) now cheaper than what was paid for the booked one?
+        var itinBookedInfo = bookedByItinerary[itinId];
+        var beatsBooked = !booked && itinBookedInfo && latest.totalPrice < itinBookedInfo.paid;
+        var beatsBookedAmount = beatsBooked ? (itinBookedInfo.paid - latest.totalPrice) : 0;
+
+        var paidLineHtml = booked ? ('Paid: <strong>' + fmt(paidPrice) + '</strong> total (refundable)<br>') : '';
+
         var card = document.createElement('div');
         card.className = 'card' + (booked ? ' card-booked' : '');
         card.style.borderTop = '3px solid ' + (booked ? GOLD : colorByFlight[fid]);
         card.innerHTML =
-          '<h2><span class="flight-badge" style="background:' + colorByFlight[fid] + '"></span>' + flightShort(latest) + (booked ? '<span class="booked-ribbon">✓ BOOKED</span>' : '') + (droppedBelowPaid ? '<span class="drop-ribbon">▼ BELOW PAID PRICE</span>' : '') + '</h2>' +
+          '<h2><span class="flight-badge" style="background:' + colorByFlight[fid] + '"></span>' + flightShort(latest) + (booked ? '<span class="booked-ribbon">✓ BOOKED</span>' : '') + (droppedBelowPaid ? '<span class="drop-ribbon">▼ BELOW PAID PRICE</span>' : '') + (beatsBooked ? '<span class="drop-ribbon">▼ CHEAPER THAN BOOKED</span>' : '') + '</h2>' +
           '<div class="price">' + fmt(latest.totalPrice) + ' <span style="font-size:12px;font-weight:400;color:#777;">total / 2 adults</span></div>' +
           '<div class="meta">' +
+            paidLineHtml +
             fmt(latest.pricePerPerson) + ' / person &middot; ' + latest.fareClass + '<br>' +
             'Out: ' + latest.outDeparture + '–' + latest.outArrival + ' (' + latest.outDuration + ', ' + latest.outStops + ')<br>' +
             'Back: ' + latest.retDeparture + '–' + latest.retArrival + ' (' + latest.retDuration + ', ' + latest.retStops + ')<br>' +
@@ -3279,7 +2885,8 @@
             (isFrozen ? ' &mdash; <span class="frozen-note">not seen since (frozen)</span>' : '') + '<br>' +
             deltaHtml +
           '</div>' +
-          (droppedBelowPaid ? '<div class="price-drop-callout">💰 ' + fmt(dropAmount) + ' below what you paid (' + fmt(paidPrice) + ') — this is a refundable fare, might be worth rebooking.</div>' : '');
+          (droppedBelowPaid ? '<div class="price-drop-callout">💰 ' + fmt(dropAmount) + ' below what you paid (' + fmt(paidPrice) + ') — this is a refundable fare, might be worth rebooking.</div>' : '') +
+          (beatsBooked ? '<div class="price-drop-callout">✈️ ' + fmt(beatsBookedAmount) + ' cheaper than the ' + fmt(itinBookedInfo.paid) + ' paid for the booked flight — worth a look.</div>' : '');
         cardsWrap.appendChild(card);
       });
     }
@@ -3287,10 +2894,12 @@
     itinSectionsEl.appendChild(section);
   });
 
-  // ---- Price-drop banner: surfaces at the top of the page if any booked flight's
-  // latest tracked price has fallen below what was actually paid for it. ----
+  // ---- Price-drop banner: surfaces at the top of the page if a booked flight's own price
+  // has fallen below what was paid, OR if a different (non-booked) flight on the same
+  // itinerary is now cheaper than what was paid for the booked one. ----
   var dropBannerEl = document.getElementById('dropBanner');
   var dropMessages = [];
+
   Object.keys(bookedPrices).forEach(function (fid) {
     var rows = allByFlight[fid];
     if (!rows || !rows.length) return;
@@ -3299,14 +2908,32 @@
     if (latest.totalPrice < paid) {
       var itinLabel = (itinMeta[latest.itineraryId] || {}).label || latest.itineraryId;
       dropMessages.push(
-        '<div>💰 <strong>' + itinLabel + '</strong> (' + latest.airline + ') is now ' + fmt(paid - latest.totalPrice) +
-        ' cheaper than the ' + fmt(paid) + ' paid — now ' + fmt(latest.totalPrice) + ' as of ' + latest.date + '.</div>'
+        '<div>💰 <strong>' + itinLabel + '</strong> — your booked ' + latest.airline + ' flight is now ' + fmt(paid - latest.totalPrice) +
+        ' cheaper than the ' + fmt(paid) + ' you paid — now ' + fmt(latest.totalPrice) + ' as of ' + latest.date + '.</div>'
       );
     }
   });
+
+  Object.keys(bookedByItinerary).forEach(function (itinId) {
+    var info = bookedByItinerary[itinId];
+    var itinLabel = (itinMeta[itinId] || {}).label || itinId;
+    flightIds
+      .filter(function (fid) { return allByFlight[fid][0].itineraryId === itinId && fid !== info.fid; })
+      .forEach(function (fid) {
+        var rows = allByFlight[fid];
+        var latest = rows[rows.length - 1];
+        if (latest.date === globalMaxDate && latest.totalPrice < info.paid) {
+          dropMessages.push(
+            '<div>✈️ <strong>' + itinLabel + '</strong> — ' + latest.airline + ' (' + flightShort(latest) + ') is now ' + fmt(info.paid - latest.totalPrice) +
+            ' cheaper than the ' + fmt(info.paid) + ' you paid for the booked flight — now ' + fmt(latest.totalPrice) + '.</div>'
+          );
+        }
+      });
+  });
+
   if (dropMessages.length) {
     dropBannerEl.className = 'alert-banner';
-    dropBannerEl.innerHTML = '<div><strong>Price drop alert:</strong> a booked flight is now cheaper than what you paid.</div>' + dropMessages.join('');
+    dropBannerEl.innerHTML = '<div><strong>Price drop alert:</strong> a tracked flight is now cheaper than what you paid.</div>' + dropMessages.join('');
   } else {
     dropBannerEl.innerHTML = '';
     dropBannerEl.className = '';
