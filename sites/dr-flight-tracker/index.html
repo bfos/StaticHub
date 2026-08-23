@@ -336,14 +336,24 @@ details.notes[open] summary::after{transform:rotate(225deg)}
       return;
     }
 
+    // Each group carries its own delta against its own paid price, so the row
+    // reads the same way across all three money columns.
+    var paidA = D.booked.paid[D.booked.itineraries.A.booked];
+    var paidB = D.booked.paid[D.booked.itineraries.B.booked];
+
+    function cell(total, paid, bold) {
+      var delta = total - paid;
+      return '<td class="num">' + (bold ? '<b>' + money(total) + '</b>' : money(total))
+        + '<br><span class="dl' + (delta < 0 ? ' under' : '') + '">' + signed(delta) + '</span></td>';
+    }
+
     var rows = c.pairs.map(function (p) {
-      var d = p.total - D.booked.paidTotal;
       return '<tr class="' + (p === c.best ? 'win' : '') + '">'
         + '<td>' + p.a.air + '<br><span class="times">' + p.a.od + '–' + p.a.oa + ' outbound</span></td>'
-        + '<td class="num">' + money(p.a.total) + '</td>'
-        + '<td class="num">' + money(p.b.total) + '</td>'
-        + '<td class="num"><b>' + money(p.total) + '</b><br><span class="dl' + (d < 0 ? ' under' : '') + '">'
-        + signed(d) + '</span></td></tr>';
+        + cell(p.a.total, paidA, false)
+        + cell(p.b.total, paidB, false)
+        + cell(p.total, D.booked.paidTotal, true)
+        + '</tr>';
     }).join('');
 
     el.className = 'verdict' + (act ? ' is-act' : '');
@@ -359,7 +369,7 @@ details.notes[open] summary::after{transform:rotate(225deg)}
         : 'The cheapest way to keep everyone on one outbound flight is <b>' + c.best.a.air + ' ' + c.best.a.od
           + '</b> at ' + money(c.best.total) + ' for all four, ' + money(c.margin) + ' more than was paid. Nothing to do.')
       + '</p>'
-      + '<table class="pairs"><caption>Outbound flights available to both groups</caption>'
+      + '<table class="pairs"><caption>Outbound flights available to both groups &mdash; each column vs what was paid</caption>'
       + '<thead><tr><th>Outbound</th><th class="num">Girls</th><th class="num">Jen/<br>Brian</th>'
       + '<th class="num">Together</th></tr></thead><tbody>' + rows + '</tbody></table>';
   }
