@@ -543,8 +543,8 @@ details.notes[open] summary::after{transform:rotate(225deg)}
     // run, so a steady state of clean deterministic runs reads $0.00.
     var c = D.cost || { last30: 0, allTime: 0, agentDays: 0 };
     document.getElementById('cost').textContent = c.agentDays === 0
-      ? 'Operating cost: $0.00 — every run so far has been fully automated.'
-      : 'Operating cost: $' + c.last30.toFixed(2) + ' in the last 30 days, $'
+      ? 'Pipeline cost: $0.00 — no run has needed an agent. Covers this pipeline only.'
+      : 'Pipeline cost: $' + c.last30.toFixed(2) + ' in the last 30 days, $'
         + c.allTime.toFixed(2) + ' all time, across ' + c.agentDays
         + (c.agentDays === 1 ? ' day' : ' days') + ' that needed an agent.';
   }
