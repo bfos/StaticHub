@@ -123,6 +123,18 @@ header h1{margin:0;font-size:1.22rem;font-weight:600;letter-spacing:-.015em;text
 .panel-verdict .amt.act{color:var(--act)}
 .panel-verdict .lbl{font-size:.78rem;color:var(--fg-2)}
 
+/* The range toggle sits with the chart, not with the threshold slider: it
+   changes what the chart shows, not what it is measured against. */
+.rng-set{display:flex;gap:4px;padding:2px 16px 0}
+.rng{
+  font:inherit;font-size:.7rem;font-weight:600;letter-spacing:.02em;
+  background:none;border:1px solid var(--line);border-radius:5px;
+  color:var(--fg-3);cursor:pointer;padding:2px 9px;
+}
+.rng.on{border-color:var(--brand);color:var(--brand);background:color-mix(in srgb,var(--brand) 8%,transparent)}
+.rng:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
+
+.chart-empty{margin:0;padding:16px;font-size:.78rem;color:var(--fg-3)}
 .chart{padding:0 10px 6px}
 .chart svg{display:block;width:100%;height:auto;overflow:visible}
 .chart text{font-family:"Inter";font-variant-numeric:tabular-nums}
@@ -252,36 +264,68 @@ details.notes[open] summary::after{transform:rotate(225deg)}
   <p class="cost" id="cost"></p>
 
 </div>
-<script type="application/json" id="tracker-data">{"dates":["2026-07-13","2026-07-14","2026-07-15","2026-07-16","2026-07-17","2026-07-18","2026-07-19","2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-25","2026-07-26","2026-07-27","2026-07-28","2026-07-29","2026-07-30","2026-08-03","2026-08-04","2026-08-05","2026-08-07","2026-08-08","2026-08-09","2026-08-10","2026-08-11","2026-08-12","2026-08-13","2026-08-14","2026-08-15","2026-08-16","2026-08-18","2026-08-19","2026-08-20","2026-08-21","2026-08-22","2026-08-23","2026-08-24","2026-08-25"],"flights":{"A1":{"it":"A","air":"American Airlines","od":"5:00 AM","oa":"1:18 PM","odur":"7 hr 18 min","ost":"1 stop, MIA","rd":"2:25 PM","ra":"10:21 PM","rdur":"8 hr 56 min","rst":"1 stop, MIA","fare":"Main Cabin"},"B1":{"it":"B","air":"American Airlines","od":"5:00 AM","oa":"1:18 PM","odur":"7 hr 18 min","ost":"1 stop, MIA","rd":"2:25 PM","ra":"10:21 PM","rdur":"8 hr 56 min","rst":"1 stop, MIA","fare":"Main Cabin"},"A2":{"it":"A","air":"Delta","od":"5:40 AM","oa":"1:30 PM","odur":"6h 50m","ost":"1 stop, ATL","rd":"2:55 PM","ra":"10:26 PM","rdur":"8h 31m","rst":"1 stop, ATL","fare":"Delta Main Classic"},"B2":{"it":"B","air":"Delta","od":"5:40 AM","oa":"1:30 PM","odur":"6h 50m","ost":"1 stop, ATL","rd":"2:55 PM","ra":"10:26 PM","rdur":"8h 31m","rst":"1 stop, ATL","fare":"Delta Main Classic"},"B3":{"it":"B","air":"Delta","od":"5:40 AM","oa":"1:30 PM","odur":"6 hr 50 min","ost":"1 stop, ATL","rd":"2:55 PM","ra":"11:58 PM","rdur":"10 hr 3 min","rst":"1 stop, ATL","fare":"Delta Main Classic"},"A3":{"it":"A","air":"Delta","od":"5:40 AM","oa":"1:30 PM","odur":"6h 50m","ost":"1 stop, ATL","rd":"2:55 PM","ra":"11:58 PM","rdur":"10h 03m","rst":"1 stop, ATL","fare":"Delta Main Classic"},"A4":{"it":"A","air":"American Airlines","od":"5:00 AM","oa":"1:18 PM","odur":"7h 18m","ost":"1 stop, MIA","rd":"2:25 PM","ra":"11:59 PM","rdur":"10h 34m","rst":"2 stops, MIA, ORD","fare":"Main Cabin"}},"booked":{"paid":{"A1":1670,"B1":1560},"paidTotal":3230,"pax":2,"depart":"2027-05-13","route":"MCI-SDQ","itineraries":{"A":{"label":"Girls","ret":"2027-05-16","retShort":"May 16","booked":"A1"},"B":{"label":"Jen/Brian","ret":"2027-05-20","retShort":"May 20","booked":"B1"}}},"obs":[[0,"A1",1690,1690,null],[0,"B1",1580,1580,null],[1,"A1",1690,1690,null],[1,"A2",2046,null,2046],[1,"B1",1580,1580,null],[1,"B2",1660,null,1660],[2,"A1",1670,1670,null],[2,"A2",1850,1850,null],[2,"B1",1560,1560,null],[2,"B2",1660,1660,null],[2,"B3",1660,null,1660],[3,"A1",1670,1670,null],[3,"A3",1850,1850,null],[3,"A2",2046,2046,null],[3,"A4",2001,2001,null],[3,"B1",1560,1560,null],[3,"B2",1580,1580,null],[3,"B3",1580,1580,null],[4,"A1",1670,1670,null],[4,"A2",1850,1850,null],[4,"A3",1850,1850,null],[4,"A4",2001,2001,null],[4,"B1",1560,1560,null],[4,"B2",1580,1580,null],[4,"B3",1580,1580,null],[5,"A1",1670,1670,null],[5,"A2",1850,1850,null],[5,"A3",1850,1850,null],[5,"A4",2001,2001,null],[5,"B1",1560,1560,null],[5,"B2",1560,1560,null],[5,"B3",1560,1560,null],[6,"A1",1670,1670,null],[6,"A2",1850,1850,null],[6,"A3",1850,1850,null],[6,"A4",2001,2001,null],[6,"B1",1560,1560,null],[6,"B2",1560,1560,null],[6,"B3",1560,1560,null],[7,"A1",1868,null,1868],[7,"A2",1850,1850,null],[7,"A3",1850,1850,null],[7,"A4",2159,2159,null],[7,"B1",1758,1758,null],[7,"B2",1560,1560,null],[7,"B3",1560,1560,null],[8,"A1",1868,null,1868],[8,"A2",1850,1850,null],[8,"A3",1850,1850,null],[8,"A4",2159,2159,null],[8,"B1",1738,1738,null],[8,"B2",1560,1560,null],[8,"B3",1560,1560,null],[9,"A1",1848,null,1848],[9,"A2",2100,2100,null],[9,"A3",2100,2100,null],[9,"A4",2471,2471,null],[9,"B1",1718,1718,null],[9,"B2",1770,1770,null],[9,"B3",1770,1770,null],[10,"A1",1770,null,1770],[10,"A2",1890,1890,null],[10,"A3",1890,1890,null],[10,"A4",2107,2107,null],[10,"B1",1640,null,1640],[10,"B2",1560,1560,null],[10,"B3",1560,1560,null],[11,"A1",1770,null,1770],[11,"A2",2080,2080,null],[11,"A3",2080,2080,null],[11,"B1",1718,1718,null],[11,"B2",1760,1760,null],[11,"B3",1760,1760,null],[12,"A1",1770,null,1770],[12,"A3",1880,1880,null],[12,"A2",2046,2046,null],[12,"B3",1560,1560,null],[12,"B1",1640,null,1640],[12,"B2",1660,1660,null],[13,"A1",1848,null,1848],[13,"A3",2080,2080,null],[13,"A2",2246,2246,null],[13,"B1",1718,1718,null],[13,"B3",1760,1760,null],[13,"B2",1860,1860,null],[14,"A1",1770,null,1770],[14,"A3",2080,2080,null],[14,"A4",2115,2115,null],[14,"A2",2246,2246,null],[14,"B1",1640,null,1640],[14,"B3",1760,1760,null],[14,"B2",1860,1860,null],[15,"A1",1848,null,1848],[15,"A2",2046,2046,null],[15,"A3",2046,2046,null],[15,"B1",1718,1718,null],[15,"B2",1660,1660,null],[15,"B3",1660,1660,null],[16,"A1",1848,null,1848],[16,"A2",2006,2006,null],[16,"A3",1840,1840,null],[16,"B1",1718,1718,null],[16,"B2",1620,1620,null],[16,"B3",1520,1520,null],[17,"A1",1790,null,1790],[17,"A3",1920,1920,null],[17,"A2",2086,2086,null],[17,"B3",1600,1600,null],[17,"B1",1660,null,1660],[17,"B2",1700,1700,null],[18,"A1",1810,null,1810],[18,"A3",1918,1918,null],[18,"A2",2066,2066,null],[18,"B3",1580,1580,null],[18,"B1",1660,null,1660],[18,"B2",1680,1680,null],[19,"A1",1810,null,1810],[19,"A2",1918,1918,null],[19,"A3",1918,1918,null],[19,"B1",1660,null,1660],[19,"B2",1880,1880,null],[19,"B3",1680,1680,null],[20,"A1",1810,null,1810],[20,"A2",2076,2076,null],[20,"A3",2076,2076,null],[20,"B1",1660,null,1660],[20,"B2",1890,1890,null],[20,"B3",1680,1680,null],[21,"A1",1810,null,1810],[21,"A2",2076,2076,null],[21,"A3",2076,2076,null],[21,"B1",1660,null,1660],[21,"B3",1890,1890,null],[21,"B2",2060,2060,null],[22,"A1",1810,null,1810],[22,"A3",1928,1928,null],[22,"A2",2076,2076,null],[22,"B3",1580,1580,null],[22,"B1",1660,null,1660],[22,"B2",1890,1890,null],[23,"A1",1810,null,1810],[23,"A2",2076,2076,null],[23,"A3",2076,2076,null],[23,"B1",1660,null,1660],[23,"B3",1680,1680,null],[23,"B2",1890,1890,null],[24,"A1",1810,null,1810],[24,"A2",2076,2076,null],[24,"A3",2076,2076,null],[24,"B1",1660,null,1660],[24,"B2",1890,1890,null],[24,"B3",1680,1680,null],[25,"A1",1810,null,1810],[25,"A2",2076,2076,null],[25,"A3",2076,2076,null],[25,"B1",1660,null,1660],[25,"B2",1680,1680,null],[25,"B3",1580,1580,null],[26,"A1",1810,null,1810],[26,"A2",1928,1928,null],[26,"A3",1928,1928,null],[26,"B1",1660,null,1660],[26,"B2",1898,1898,null],[26,"B3",1680,1680,null],[27,"A1",1800,null,1800],[27,"A2",2324,2324,null],[27,"A3",2324,2324,null],[27,"B1",1660,null,1660],[27,"B3",1928,1928,null],[27,"B2",2126,2126,null],[28,"A1",1840,null,1840],[28,"A2",1870,1870,null],[28,"A3",1870,1870,null],[28,"B1",1684,1684,null],[28,"B2",1690,1690,null],[28,"B3",1610,1610,null],[29,"A1",1840,null,1840],[29,"A2",2086,2086,null],[29,"A3",2086,2086,null],[29,"B1",1684,1684,null],[29,"B2",1690,1690,null],[29,"B3",1610,1610,null],[30,"A1",1840,null,1840],[30,"A2",2086,2086,null],[30,"A3",2086,2086,null],[30,"B1",1684,1684,null],[30,"B2",1690,1690,null],[30,"B3",1610,1610,null],[31,"A1",1840,null,1840],[31,"A2",2086,2086,null],[31,"A3",2086,2086,null],[31,"B1",1664,1664,null],[31,"B2",1690,1690,null],[31,"B3",1680,1680,null],[32,"A1",1840,null,1840],[32,"A2",2084,2084,null],[32,"A3",2084,2084,null],[32,"B1",1664,1664,null],[32,"B2",1870,1870,null],[32,"B3",1690,1690,null],[33,"A1",1840,null,1840],[33,"A2",2216,2216,null],[33,"A3",2216,2216,null],[33,"B1",1664,1664,null],[33,"B2",1820,1820,null],[33,"B3",1720,1720,null],[34,"A1",1840,null,1840],[34,"A2",2086,2086,null],[34,"A3",2086,2086,null],[34,"B1",1664,1664,null],[34,"B2",1690,1690,null],[34,"B3",1870,1870,null],[35,"A1",1840,null,1840],[35,"A2",2216,2216,null],[35,"A3",2216,2216,null],[35,"B1",1664,1664,null],[35,"B2",1820,1820,null],[35,"B3",2200,2200,null],[36,"A1",1840,null,1840],[36,"A2",2216,2216,null],[36,"A3",2216,2216,null],[36,"B1",1664,1664,null],[36,"B2",2000,2000,null],[36,"B3",2200,2200,null],[37,"A1",1840,null,1840],[37,"A2",2216,2216,2216],[37,"A3",2216,2216,2216],[37,"B1",1664,null,1664],[37,"B2",1820,1820,1820],[37,"B3",2200,2200,2200],[38,"A1",1840,null,1840],[38,"A2",2000,2000,2086],[38,"A3",2000,2000,2086],[38,"B1",1664,null,1664],[38,"B2",1820,1820,1870],[38,"B3",2070,2200,2070]],"cost":{"last30":0,"allTime":0,"agentDays":0}}</script>
+<script type="application/json" id="tracker-data">{"days":["2026-07-13","2026-07-14","2026-07-15","2026-07-16","2026-07-17","2026-07-18","2026-07-19","2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-25","2026-07-26","2026-07-27","2026-07-28","2026-07-29","2026-07-30","2026-08-03","2026-08-04","2026-08-05","2026-08-07","2026-08-08","2026-08-09","2026-08-10","2026-08-11","2026-08-12","2026-08-13","2026-08-14","2026-08-15","2026-08-16","2026-08-18","2026-08-19","2026-08-20","2026-08-21","2026-08-22","2026-08-23","2026-08-24","2026-08-25"],"flights":{"A1":{"it":"A","air":"American Airlines","od":"5:00 AM","oa":"1:18 PM","odur":"7 hr 18 min","ost":"1 stop, MIA","rd":"2:25 PM","ra":"10:21 PM","rdur":"8 hr 56 min","rst":"1 stop, MIA","fare":"Main Cabin"},"B1":{"it":"B","air":"American Airlines","od":"5:00 AM","oa":"1:18 PM","odur":"7 hr 18 min","ost":"1 stop, MIA","rd":"2:25 PM","ra":"10:21 PM","rdur":"8 hr 56 min","rst":"1 stop, MIA","fare":"Main Cabin"},"A2":{"it":"A","air":"Delta","od":"5:40 AM","oa":"1:30 PM","odur":"6h 50m","ost":"1 stop, ATL","rd":"2:55 PM","ra":"10:26 PM","rdur":"8h 31m","rst":"1 stop, ATL","fare":"Delta Main Classic"},"B2":{"it":"B","air":"Delta","od":"5:40 AM","oa":"1:30 PM","odur":"6h 50m","ost":"1 stop, ATL","rd":"2:55 PM","ra":"10:26 PM","rdur":"8h 31m","rst":"1 stop, ATL","fare":"Delta Main Classic"},"B3":{"it":"B","air":"Delta","od":"5:40 AM","oa":"1:30 PM","odur":"6h 50m","ost":"1 stop, ATL","rd":"2:55 PM","ra":"11:58 PM","rdur":"10h 03m","rst":"1 stop, ATL","fare":"Delta Main Classic"},"A3":{"it":"A","air":"Delta","od":"5:40 AM","oa":"1:30 PM","odur":"6h 50m","ost":"1 stop, ATL","rd":"2:55 PM","ra":"11:58 PM","rdur":"10h 03m","rst":"1 stop, ATL","fare":"Delta Main Classic"},"A4":{"it":"A","air":"American Airlines","od":"5:00 AM","oa":"1:18 PM","odur":"7h 18m","ost":"1 stop, MIA","rd":"2:25 PM","ra":"11:59 PM","rdur":"10h 34m","rst":"2 stops, MIA, ORD","fare":"Main Cabin"}},"booked":{"paid":{"A1":1670,"B1":1560},"paidTotal":3230,"pax":2,"depart":"2027-05-13","route":"MCI-SDQ","itineraries":{"A":{"label":"Girls","ret":"2027-05-16","retShort":"May 16","booked":"A1"},"B":{"label":"Jen/Brian","ret":"2027-05-20","retShort":"May 20","booked":"B1"}}},"daily":{"A1":[[0,1690,1690,1690,1],[1,1690,1690,1690,1],[2,1670,1670,1670,1],[3,1670,1670,1670,1],[4,1670,1670,1670,1],[5,1670,1670,1670,1],[6,1670,1670,1670,1],[7,1868,1868,1868,1],[8,1868,1868,1868,1],[9,1848,1848,1848,1],[10,1770,1770,1770,1],[11,1770,1770,1770,1],[12,1770,1770,1770,1],[13,1848,1848,1848,1],[14,1770,1770,1770,1],[15,1848,1848,1848,1],[16,1848,1848,1848,1],[17,1790,1790,1790,1],[18,1810,1810,1810,1],[19,1810,1810,1810,1],[20,1810,1810,1810,1],[21,1810,1810,1810,1],[22,1810,1810,1810,1],[23,1810,1810,1810,1],[24,1810,1810,1810,1],[25,1810,1810,1810,1],[26,1810,1810,1810,1],[27,1800,1800,1800,1],[28,1840,1840,1840,1],[29,1840,1840,1840,1],[30,1840,1840,1840,1],[31,1840,1840,1840,1],[32,1840,1840,1840,1],[33,1840,1840,1840,1],[34,1840,1840,1840,1],[35,1840,1840,1840,1],[36,1840,1840,1840,1],[37,1840,1840,1840,1],[38,1840,1840,1840,2]],"B1":[[0,1580,1580,1580,1],[1,1580,1580,1580,1],[2,1560,1560,1560,1],[3,1560,1560,1560,1],[4,1560,1560,1560,1],[5,1560,1560,1560,1],[6,1560,1560,1560,1],[7,1758,1758,1758,1],[8,1738,1738,1738,1],[9,1718,1718,1718,1],[10,1640,1640,1640,1],[11,1718,1718,1718,1],[12,1640,1640,1640,1],[13,1718,1718,1718,1],[14,1640,1640,1640,1],[15,1718,1718,1718,1],[16,1718,1718,1718,1],[17,1660,1660,1660,1],[18,1660,1660,1660,1],[19,1660,1660,1660,1],[20,1660,1660,1660,1],[21,1660,1660,1660,1],[22,1660,1660,1660,1],[23,1660,1660,1660,1],[24,1660,1660,1660,1],[25,1660,1660,1660,1],[26,1660,1660,1660,1],[27,1660,1660,1660,1],[28,1684,1684,1684,1],[29,1684,1684,1684,1],[30,1684,1684,1684,1],[31,1664,1664,1664,1],[32,1664,1664,1664,1],[33,1664,1664,1664,1],[34,1664,1664,1664,1],[35,1664,1664,1664,1],[36,1664,1664,1664,1],[37,1664,1664,1664,1],[38,1664,1664,1664,2]],"A2":[[1,2046,2046,2046,1],[2,1850,1850,1850,1],[3,2046,2046,2046,1],[4,1850,1850,1850,1],[5,1850,1850,1850,1],[6,1850,1850,1850,1],[7,1850,1850,1850,1],[8,1850,1850,1850,1],[9,2100,2100,2100,1],[10,1890,1890,1890,1],[11,2080,2080,2080,1],[12,2046,2046,2046,1],[13,2246,2246,2246,1],[14,2246,2246,2246,1],[15,2046,2046,2046,1],[16,2006,2006,2006,1],[17,2086,2086,2086,1],[18,2066,2066,2066,1],[19,1918,1918,1918,1],[20,2076,2076,2076,1],[21,2076,2076,2076,1],[22,2076,2076,2076,1],[23,2076,2076,2076,1],[24,2076,2076,2076,1],[25,2076,2076,2076,1],[26,1928,1928,1928,1],[27,2324,2324,2324,1],[28,1870,1870,1870,1],[29,2086,2086,2086,1],[30,2086,2086,2086,1],[31,2086,2086,2086,1],[32,2084,2084,2084,1],[33,2216,2216,2216,1],[34,2086,2086,2086,1],[35,2216,2216,2216,1],[36,2216,2216,2216,1],[37,2216,2216,2216,1],[38,2000,2086,2086,2]],"B2":[[1,1660,1660,1660,1],[2,1660,1660,1660,1],[3,1580,1580,1580,1],[4,1580,1580,1580,1],[5,1560,1560,1560,1],[6,1560,1560,1560,1],[7,1560,1560,1560,1],[8,1560,1560,1560,1],[9,1770,1770,1770,1],[10,1560,1560,1560,1],[11,1760,1760,1760,1],[12,1660,1660,1660,1],[13,1860,1860,1860,1],[14,1860,1860,1860,1],[15,1660,1660,1660,1],[16,1620,1620,1620,1],[17,1700,1700,1700,1],[18,1680,1680,1680,1],[19,1880,1880,1880,1],[20,1890,1890,1890,1],[21,2060,2060,2060,1],[22,1890,1890,1890,1],[23,1890,1890,1890,1],[24,1890,1890,1890,1],[25,1680,1680,1680,1],[26,1898,1898,1898,1],[27,2126,2126,2126,1],[28,1690,1690,1690,1],[29,1690,1690,1690,1],[30,1690,1690,1690,1],[31,1690,1690,1690,1],[32,1870,1870,1870,1],[33,1820,1820,1820,1],[34,1690,1690,1690,1],[35,1820,1820,1820,1],[36,2000,2000,2000,1],[37,1820,1820,1820,1],[38,1820,1870,1870,2]],"B3":[[2,1660,1660,1660,1],[3,1580,1580,1580,1],[4,1580,1580,1580,1],[5,1560,1560,1560,1],[6,1560,1560,1560,1],[7,1560,1560,1560,1],[8,1560,1560,1560,1],[9,1770,1770,1770,1],[10,1560,1560,1560,1],[11,1760,1760,1760,1],[12,1560,1560,1560,1],[13,1760,1760,1760,1],[14,1760,1760,1760,1],[15,1660,1660,1660,1],[16,1520,1520,1520,1],[17,1600,1600,1600,1],[18,1580,1580,1580,1],[19,1680,1680,1680,1],[20,1680,1680,1680,1],[21,1890,1890,1890,1],[22,1580,1580,1580,1],[23,1680,1680,1680,1],[24,1680,1680,1680,1],[25,1580,1580,1580,1],[26,1680,1680,1680,1],[27,1928,1928,1928,1],[28,1610,1610,1610,1],[29,1610,1610,1610,1],[30,1610,1610,1610,1],[31,1680,1680,1680,1],[32,1690,1690,1690,1],[33,1720,1720,1720,1],[34,1870,1870,1870,1],[35,2200,2200,2200,1],[36,2200,2200,2200,1],[37,2200,2200,2200,1],[38,2070,2070,2070,2]],"A3":[[3,1850,1850,1850,1],[4,1850,1850,1850,1],[5,1850,1850,1850,1],[6,1850,1850,1850,1],[7,1850,1850,1850,1],[8,1850,1850,1850,1],[9,2100,2100,2100,1],[10,1890,1890,1890,1],[11,2080,2080,2080,1],[12,1880,1880,1880,1],[13,2080,2080,2080,1],[14,2080,2080,2080,1],[15,2046,2046,2046,1],[16,1840,1840,1840,1],[17,1920,1920,1920,1],[18,1918,1918,1918,1],[19,1918,1918,1918,1],[20,2076,2076,2076,1],[21,2076,2076,2076,1],[22,1928,1928,1928,1],[23,2076,2076,2076,1],[24,2076,2076,2076,1],[25,2076,2076,2076,1],[26,1928,1928,1928,1],[27,2324,2324,2324,1],[28,1870,1870,1870,1],[29,2086,2086,2086,1],[30,2086,2086,2086,1],[31,2086,2086,2086,1],[32,2084,2084,2084,1],[33,2216,2216,2216,1],[34,2086,2086,2086,1],[35,2216,2216,2216,1],[36,2216,2216,2216,1],[37,2216,2216,2216,1],[38,2000,2086,2086,2]],"A4":[[3,2001,2001,2001,1],[4,2001,2001,2001,1],[5,2001,2001,2001,1],[6,2001,2001,2001,1],[7,2159,2159,2159,1],[8,2159,2159,2159,1],[9,2471,2471,2471,1],[10,2107,2107,2107,1],[14,2115,2115,2115,1]]},"lastSeen":{"A1":1787696102000,"B1":1787696102000,"A2":1787696102000,"B2":1787696102000,"B3":1787696102000,"A3":1787696102000,"A4":1785150000000},"newest":1787696102000,"runs":40,"recent":[[1787137200000,"A1",1840],[1787137200000,"A2",2084],[1787137200000,"A3",2084],[1787137200000,"B1",1664],[1787137200000,"B2",1870],[1787137200000,"B3",1690],[1787223600000,"A1",1840],[1787223600000,"A2",2216],[1787223600000,"A3",2216],[1787223600000,"B1",1664],[1787223600000,"B2",1820],[1787223600000,"B3",1720],[1787310000000,"A1",1840],[1787310000000,"A2",2086],[1787310000000,"A3",2086],[1787310000000,"B1",1664],[1787310000000,"B2",1690],[1787310000000,"B3",1870],[1787396400000,"A1",1840],[1787396400000,"A2",2216],[1787396400000,"A3",2216],[1787396400000,"B1",1664],[1787396400000,"B2",1820],[1787396400000,"B3",2200],[1787482800000,"A1",1840],[1787482800000,"A2",2216],[1787482800000,"A3",2216],[1787482800000,"B1",1664],[1787482800000,"B2",2000],[1787482800000,"B3",2200],[1787569200000,"A1",1840],[1787569200000,"A2",2216],[1787569200000,"A3",2216],[1787569200000,"B1",1664],[1787569200000,"B2",1820],[1787569200000,"B3",2200],[1787655600000,"A1",1840],[1787655600000,"A2",2000],[1787655600000,"A3",2000],[1787655600000,"B1",1664],[1787655600000,"B2",1820],[1787655600000,"B3",2070],[1787696102000,"A1",1840],[1787696102000,"A2",2086],[1787696102000,"A3",2086],[1787696102000,"B1",1664],[1787696102000,"B2",1870],[1787696102000,"B3",2070]],"cost":{"last30":0,"allTime":0,"agentDays":0}}</script>
 <script>
 (function () {
   var D = JSON.parse(document.getElementById('tracker-data').textContent);
   var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  var CUT = D.dates.length - 1;
+  var DAY = 86400000;
+  var WEEK = 7 * DAY;
+  var CUT = D.days.length - 1;
 
-  // Per-itinerary threshold overrides, and the currently selected flight line.
+  // Days are positions on a real time axis now, not slots in a list. A gap in
+  // the record has to read as a gap.
+  var DAY_TS = D.days.map(function (s) {
+    var p = s.split('-');
+    return new Date(+p[0], +p[1] - 1, +p[2]).getTime();
+  });
+
+  // Per-itinerary threshold overrides and chart range, and the selected line.
   var thresholds = {};
+  var ranges = {};
   var selectedFid = null;
 
   function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
   function signed(n) { return (n >= 0 ? '+' : '−') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US'); }
   function fmt(iso) { var p = iso.split('-'); return (+p[2]) + ' ' + MON[+p[1] - 1] + ' ' + p[0]; }
-  function shortDate(i) { var p = D.dates[i].split('-'); return (+p[2]) + ' ' + MON[+p[1] - 1]; }
+  function dayLabel(ts) { var d = new Date(ts); return d.getDate() + ' ' + MON[d.getMonth()]; }
 
-  // obs tuples: [dateIndex, flightId, total, kayak, google]
-  function seriesFor(itin) {
+  function clockLabel(ts) {
+    var d = new Date(ts);
+    var h = d.getHours();
+    var m = d.getMinutes();
+    return ((h % 12) || 12) + ':' + (m < 10 ? '0' : '') + m + ' ' + (h < 12 ? 'AM' : 'PM');
+  }
+
+  /* Stale is a fact about time, not about position: a flight missing from one
+     of the day's runs has not gone anywhere. Same 24h rule as lib/derive.mjs,
+     applied to the instants the build ships. */
+  function isStale(fid) { return D.newest - D.lastSeen[fid] >= DAY; }
+
+  // daily tuples: [dayIndex, lo, hi, close, checks]
+  function dailyFor(itin) {
     var out = {};
-    for (var i = 0; i < D.obs.length; i++) {
-      var o = D.obs[i];
-      var f = D.flights[o[1]];
+    Object.keys(D.daily).forEach(function (fid) {
+      var f = D.flights[fid];
+      if (f && f.it === itin) out[fid] = D.daily[fid];
+    });
+    return out;
+  }
+
+  // recent tuples: [timestamp, flightId, total] — already in time order.
+  function recentFor(itin) {
+    var out = {};
+    for (var i = 0; i < D.recent.length; i++) {
+      var r = D.recent[i];
+      var f = D.flights[r[1]];
       if (!f || f.it !== itin) continue;
-      (out[o[1]] = out[o[1]] || []).push({ di: o[0], total: o[2] });
+      (out[r[1]] = out[r[1]] || []).push({ ts: r[0], total: r[2] });
     }
     return out;
   }
 
   function latestFor(itin) {
-    var s = seriesFor(itin);
+    var s = dailyFor(itin);
     var rows = Object.keys(s).map(function (fid) {
       var a = s[fid];
       var last = a[a.length - 1];
@@ -289,7 +333,7 @@ details.notes[open] summary::after{transform:rotate(225deg)}
       return {
         flightId: fid, it: f.it, air: f.air, od: f.od, oa: f.oa, rd: f.rd, ra: f.ra,
         odur: f.odur, rdur: f.rdur, ost: f.ost, rst: f.rst, fare: f.fare,
-        total: last.total, di: last.di, stale: last.di < CUT
+        total: last[3], lastTs: D.lastSeen[fid], stale: isStale(fid)
       };
     });
     rows.sort(function (a, b) { return a.total - b.total; });
@@ -410,15 +454,23 @@ details.notes[open] summary::after{transform:rotate(225deg)}
     // replacing the input mid-drag would break pointer capture.
     function paint() {
       var thr = thresholds[itin] == null ? paid : thresholds[itin];
+      var range = ranges[itin] || 'all';
       var d = best ? best.total - thr : null;
       var act = d !== null && d < 0;
+
+      function rangeBtn(key, label) {
+        return '<button type="button" class="rng' + (range === key ? ' on' : '') + '"'
+          + ' data-range="' + key + '" aria-pressed="' + (range === key) + '">' + label + '</button>';
+      }
 
       top.innerHTML = '<div class="panel-verdict">'
         + '<span class="amt' + (act ? ' act' : '') + '">' + (d === null ? '—' : signed(d)) + '</span>'
         + '<span class="lbl">' + (best
           ? (act ? 'below ' : 'above ') + money(thr) + ' · cheapest is ' + best.air + ' at ' + money(best.total)
           : 'no qualifying flight') + '</span></div>'
-        + '<div class="chart">' + chart(itin, thr, paid) + '</div>';
+        + '<div class="rng-set" role="group" aria-label="Chart range">'
+        + rangeBtn('all', 'All') + rangeBtn('week', 'Week') + '</div>'
+        + '<div class="chart">' + chart(itin, thr, paid, range) + '</div>';
 
       ctl.querySelector('output').textContent = money(thr);
       reset.hidden = (thr === paid);
@@ -427,6 +479,14 @@ details.notes[open] summary::after{transform:rotate(225deg)}
 
     input.addEventListener('input', function (e) {
       thresholds[itin] = +e.target.value;
+      paint();
+    });
+
+    // Delegated, because paint() rebuilds these buttons every repaint.
+    top.addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-range]');
+      if (!btn) return;
+      ranges[itin] = btn.dataset.range;
       paint();
     });
     reset.addEventListener('click', function () {
@@ -475,27 +535,87 @@ details.notes[open] summary::after{transform:rotate(225deg)}
       + '<thead><tr><th>Flight</th><th>Total / vs threshold</th></tr></thead><tbody>' + body + '</tbody></table>';
   }
 
+  /* One flight's marks for the long view: a line through each day's closing
+     price, and a hairline showing the range it traded in that day. The range
+     is the part that earns its place now that the check runs every four hours
+     — a fare that appeared at 2pm and was gone by 6pm is a whisker below the
+     line, not a point that never existed.
+
+     Deliberately not a candlestick. A candle body is filled by direction, and
+     on this page colour already means one thing: green is a rebook you can
+     act on. A green candle for "the price went up" would say act about bad
+     news. The open is not an event here either — only whichever run fired
+     first that day. */
+  function dailyMarks(pts, x, y, colour, opacity, dash, width) {
+    var o = '';
+    var wicks = '';
+    for (var i = 0; i < pts.length; i++) {
+      var p = pts[i];
+      if (p[1] === p[2]) continue;
+      wicks += 'M' + x(DAY_TS[p[0]]) + ' ' + y(p[1]) + 'V' + y(p[2]);
+    }
+    if (wicks) {
+      o += '<path d="' + wicks + '" stroke="' + colour + '" stroke-width="1" fill="none" opacity="'
+        + (opacity * 0.45) + '" stroke-linecap="round"/>';
+    }
+    var d = pts.map(function (p, i) {
+      return (i ? 'L' : 'M') + x(DAY_TS[p[0]]) + ' ' + y(p[3]);
+    }).join(' ');
+    o += '<path d="' + d + '" fill="none" stroke="' + colour + '" stroke-width="' + width
+      + '" stroke-dasharray="' + dash + '" opacity="' + opacity
+      + '" stroke-linejoin="round" stroke-linecap="round"/>';
+    return o;
+  }
+
   // Three codes, each meaning exactly one thing:
   // weight = booked vs candidate, dash = stale, colour = below the threshold.
-  function chart(itin, thr, paid) {
+  function chart(itin, thr, paid, range) {
     var W = 360, H = 148, L = 6, R = 46, T = 10, B = 18;
-    var s = seriesFor(itin);
+    var week = range === 'week';
+    var s = week ? recentFor(itin) : dailyFor(itin);
     var fids = Object.keys(s).sort();
-    if (!fids.length) return '';
+    if (!fids.length) {
+      return '<p class="chart-empty">No checks in the last 7 days.</p>';
+    }
+
+    /* The x axis is real time, not a row of evenly spaced slots. That is the
+       whole point: five runs a day and a week with no runs at all have to
+       occupy the width they actually took. */
+    var t0 = week ? D.newest - WEEK : DAY_TS[0];
+    var t1 = D.newest;
+    var span = Math.max(1, t1 - t0);
 
     var vals = [];
-    fids.forEach(function (f) { s[f].forEach(function (p) { vals.push(p.total); }); });
+    fids.forEach(function (f) {
+      s[f].forEach(function (p) {
+        if (week) vals.push(p.total);
+        else { vals.push(p[1]); vals.push(p[2]); }
+      });
+    });
     var lo = Math.min.apply(null, vals.concat([thr - 60]));
     var hi = Math.max.apply(null, vals.concat([thr + 40]));
     var pad = (hi - lo) * 0.1;
     lo -= pad; hi += pad;
 
-    var x = function (di) { return L + (di / (CUT || 1)) * (W - L - R); };
+    var x = function (ts) { return L + ((ts - t0) / span) * (W - L - R); };
     var y = function (v) { return T + (1 - (v - lo) / (hi - lo)) * (H - T - B); };
     var yThr = y(thr);
     var booked = D.booked.itineraries[itin].booked;
 
-    var o = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Total price over time against the threshold">';
+    var o = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="'
+      + (week ? 'Total price for each check over the last 7 days' : 'Daily price range and close over time')
+      + ', against the threshold">';
+
+    // Midnight rules, so a time-of-day pattern has something to read against.
+    if (week) {
+      var mid = new Date(t0);
+      mid.setHours(24, 0, 0, 0);
+      for (var m = mid.getTime(); m < t1; m += DAY) {
+        o += '<line x1="' + x(m) + '" y1="' + T + '" x2="' + x(m) + '" y2="' + (H - B)
+          + '" stroke="var(--fg-3)" stroke-width=".5" opacity=".18"/>';
+      }
+    }
+
     o += '<rect x="' + L + '" y="' + yThr + '" width="' + (W - L - R) + '" height="' + Math.max(0, H - B - yThr)
       + '" fill="var(--act)" opacity=".07"/>';
     o += '<line x1="' + L + '" y1="' + yThr + '" x2="' + (W - R) + '" y2="' + yThr
@@ -508,37 +628,53 @@ details.notes[open] summary::after{transform:rotate(225deg)}
     fids.forEach(function (fid) {
       var pts = s[fid];
       var last = pts[pts.length - 1];
+      var lastTotal = week ? last.total : last[3];
+      var lastTs = week ? last.ts : DAY_TS[last[0]];
       var isBooked = fid === booked;
-      var stale = last.di < CUT;
-      var under = last.total < thr && !stale;
+      var stale = isStale(fid);
+      var under = lastTotal < thr && !stale;
       var isSel = fid === selectedFid;
       var dimmed = selectedFid && !isSel;
 
       var colour = under ? 'var(--act)' : (isBooked ? 'var(--gold)' : 'var(--brand)');
       var width = isSel ? 2.6 : (isBooked ? 1.9 : 1.1);
       var opacity = dimmed ? 0.18 : (stale ? 0.35 : (isBooked || isSel ? 1 : 0.62));
+      var dash = stale ? '3 2.2' : '';
 
-      var dpath = pts.map(function (p, i) { return (i ? 'L' : 'M') + x(p.di) + ' ' + y(p.total); }).join(' ');
-      o += '<path d="' + dpath + '" fill="none" stroke="' + colour + '" stroke-width="' + width
-        + '" stroke-dasharray="' + (stale ? '3 2.2' : '') + '" opacity="' + opacity
-        + '" stroke-linejoin="round" stroke-linecap="round"/>';
-      o += '<circle cx="' + x(last.di) + '" cy="' + y(last.total) + '" r="' + (isSel ? 3.1 : (isBooked ? 2.6 : 1.9))
+      if (week) {
+        var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + x(p.ts) + ' ' + y(p.total); }).join(' ');
+        o += '<path d="' + d + '" fill="none" stroke="' + colour + '" stroke-width="' + width
+          + '" stroke-dasharray="' + dash + '" opacity="' + opacity
+          + '" stroke-linejoin="round" stroke-linecap="round"/>';
+        // Every check is a real reading, so in this view each one is a mark.
+        pts.forEach(function (p) {
+          o += '<circle cx="' + x(p.ts) + '" cy="' + y(p.total) + '" r="1.5" fill="' + colour
+            + '" opacity="' + opacity + '"/>';
+        });
+      } else {
+        o += dailyMarks(pts, x, y, colour, opacity, dash, width);
+      }
+
+      o += '<circle cx="' + x(lastTs) + '" cy="' + y(lastTotal) + '" r="' + (isSel ? 3.1 : (isBooked ? 2.6 : 1.9))
         + '" fill="' + colour + '" opacity="' + opacity + '"/>';
       if (isSel) {
-        o += '<text x="' + (x(last.di) - 5) + '" y="' + (y(last.total) - 6) + '" font-size="8" font-weight="600"'
+        o += '<text x="' + (x(lastTs) - 5) + '" y="' + (y(lastTotal) - 6) + '" font-size="8" font-weight="600"'
           + ' text-anchor="end" fill="' + colour + '">' + fid + '</text>';
       }
     });
 
-    o += '<text x="' + L + '" y="' + (H - 5) + '" font-size="7" fill="var(--fg-3)">' + shortDate(0) + '</text>';
+    o += '<text x="' + L + '" y="' + (H - 5) + '" font-size="7" fill="var(--fg-3)">' + dayLabel(t0) + '</text>';
     o += '<text x="' + (W - R) + '" y="' + (H - 5) + '" font-size="7" text-anchor="end" fill="var(--fg-3)">'
-      + shortDate(CUT) + '</text>';
+      + dayLabel(t1) + '</text>';
     return o + '</svg>';
   }
 
   function renderMeta() {
+    // The check runs every four hours now, so "last checked" needs a clock on
+    // it — a date alone would read as this morning's number all evening.
     document.getElementById('sub').textContent = '2 adults per group · depart 13 May 2027 · '
-      + D.dates.length + ' checks · last checked ' + fmt(D.dates[CUT]);
+      + D.runs + ' checks over ' + D.days.length + ' days · last checked '
+      + fmt(D.days[CUT]) + ', ' + clockLabel(D.newest);
     // An agent invocation is the only part of this system that costs money per
     // run, so a steady state of clean deterministic runs reads $0.00.
     var c = D.cost || { last30: 0, allTime: 0, agentDays: 0 };
