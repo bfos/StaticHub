@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Sourcing guide for a Hades-from-Hadestown 'funky formal' wedding outfit.">
+<title>The Hades Build</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+
+<style>
+:root{
+  --ground:#E9E9E6;
+  --surface:#F6F6F3;
+  --surface-2:#DEDFDA;
+  --ink:#16181C;
+  --muted:#5A6069;
+  --line:#C7CAC5;
+  --line-soft:#D8DAD5;
+  --accent:#A8232E;
+  --accent-soft:#8E2029;
+  --silver:#6F7883;
+  --stripe:rgba(22,24,28,.10);
+  --shadow:0 1px 0 rgba(22,24,28,.06), 0 8px 24px -18px rgba(22,24,28,.5);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#101216;
+    --surface:#171A1F;
+    --surface-2:#1E2229;
+    --ink:#E9EBEE;
+    --muted:#98A0AA;
+    --line:#2B2F37;
+    --line-soft:#22262C;
+    --accent:#E0555F;
+    --accent-soft:#F07C84;
+    --silver:#9AA3AE;
+    --stripe:rgba(233,235,238,.13);
+    --shadow:0 1px 0 rgba(0,0,0,.4), 0 10px 30px -20px #000;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#101216;
+  --surface:#171A1F;
+  --surface-2:#1E2229;
+  --ink:#E9EBEE;
+  --muted:#98A0AA;
+  --line:#2B2F37;
+  --line-soft:#22262C;
+  --accent:#E0555F;
+  --accent-soft:#F07C84;
+  --silver:#9AA3AE;
+  --stripe:rgba(233,235,238,.13);
+  --shadow:0 1px 0 rgba(0,0,0,.4), 0 10px 30px -20px #000;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:"Newsreader",Georgia,"Times New Roman",serif;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:940px;margin:0 auto;padding:0 22px}
+.prose{max-width:64ch}
+
+h1,h2,h3,.disp{
+  font-family:"Big Shoulders Display","Haettenschweiler","Arial Narrow",sans-serif;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.005em;
+  text-wrap:balance;
+  margin:0;
+}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--silver);
+}
+
+/* ---------- masthead ---------- */
+.mast{
+  position:relative;
+  border-bottom:1px solid var(--line);
+  background:var(--surface);
+  overflow:hidden;
+}
+.mast::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(
+    90deg,
+    var(--stripe) 0 1.5px,
+    transparent 1.5px 13px
+  );
+  pointer-events:none;
+}
+.mast .wrap{position:relative;z-index:1;padding-top:44px;padding-bottom:34px}
+.mast h1{
+  font-size:clamp(52px,11vw,104px);
+  line-height:.86;
+  margin:14px 0 0;
+}
+.mast h1 .thin{font-weight:600;color:var(--silver)}
+.deck{
+  margin:18px 0 0;
+  font-size:19px;
+  color:var(--muted);
+  max-width:56ch;
+}
+.deck em{color:var(--ink);font-style:italic}
+.flag{
+  display:flex;flex-wrap:wrap;gap:10px 26px;
+  margin-top:26px;padding-top:16px;
+  border-top:1px solid var(--line-soft);
+}
+.flag div{display:flex;flex-direction:column;gap:2px}
+.flag b{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:14px}
+
+/* ---------- sections ---------- */
+section{padding:52px 0}
+section + section{border-top:1px solid var(--line-soft)}
+.shead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+.shead h2{font-size:clamp(28px,4.4vw,40px);line-height:1}
+.shead .eyebrow{transform:translateY(-2px)}
+.lede{color:var(--muted);margin:10px 0 0;max-width:62ch}
+.lede strong{color:var(--ink);font-weight:500}
+
+/* ---------- reference strip ---------- */
+.ref{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+  gap:0;
+  margin-top:28px;
+  border-top:1px solid var(--line);
+  border-left:1px solid var(--line);
+}
+.ref > div{
+  border-right:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:16px 18px 18px;
+  background:var(--surface);
+}
+.ref h3{font-size:19px;margin-bottom:4px;color:var(--ink)}
+.ref p{margin:0;font-size:15px;line-height:1.5;color:var(--muted)}
+
+/* ---------- option list ---------- */
+.opts{list-style:none;margin:28px 0 0;padding:0;display:flex;flex-direction:column;gap:0}
+.opts li{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:6px 24px;
+  padding:20px 0;
+  border-top:1px solid var(--line-soft);
+  align-items:start;
+}
+.opts li:last-child{border-bottom:1px solid var(--line-soft)}
+.opt-name{grid-column:1;font-size:19px;line-height:1.2;margin:0}
+.opt-name a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:1px}
+.opt-name a:hover,.opt-name a:focus-visible{color:var(--accent)}
+.opt-price{
+  grid-column:2;grid-row:1;
+  font-family:"IBM Plex Mono",monospace;
+  font-size:16px;font-weight:500;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  text-align:right;
+}
+.opt-meta{
+  grid-column:1 / -1;
+  display:flex;flex-wrap:wrap;gap:6px 10px;
+  margin-top:2px;
+}
+.tag{
+  font-family:"IBM Plex Mono",monospace;
+  font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--silver);
+  border:1px solid var(--line);
+  border-radius:2px;
+  padding:2px 7px;
+}
+.tag.hot{color:var(--accent);border-color:var(--accent)}
+.opt-why{grid-column:1 / -1;margin:6px 0 0;font-size:16px;color:var(--muted);max-width:66ch}
+.opt-why b{color:var(--ink);font-weight:500}
+
+/* ---------- builds ---------- */
+.builds{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:30px}
+.build{
+  background:var(--surface);
+  border:1px solid var(--line);
+  padding:24px 22px 20px;
+  display:flex;flex-direction:column;
+  box-shadow:var(--shadow);
+}
+.build.pick{border-color:var(--accent);border-width:1px}
+.build .badge{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:10px;
+}
+.build h3{font-size:27px;line-height:1;margin-bottom:8px}
+.build .sub{font-size:15px;color:var(--muted);margin:0 0 18px}
+.build table{width:100%;border-collapse:collapse;font-size:15px}
+.build td{padding:7px 0;border-bottom:1px dotted var(--line);vertical-align:top}
+.build td a{
+  color:var(--ink);
+  text-decoration:none;
+  border-bottom:1px solid var(--accent);
+  padding-bottom:1px;
+}
+.build td a:hover,.build td a:focus-visible{color:var(--accent)}
+.build td .nolink{color:var(--muted)}
+.build td:last-child{
+  text-align:right;white-space:nowrap;
+  font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums;
+}
+.build tr.total td{
+  border-bottom:none;border-top:1px solid var(--ink);
+  padding-top:10px;font-weight:500;
+  font-family:"Big Shoulders Display",sans-serif;text-transform:uppercase;
+  font-size:20px;letter-spacing:.02em;
+}
+.build tr.total td:last-child{font-family:"IBM Plex Mono",monospace;font-size:17px}
+.build .foot{margin:16px 0 0;font-size:15px;color:var(--muted)}
+
+/* ---------- fit notes ---------- */
+.notes{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:2px 34px;margin-top:26px}
+.note{padding:18px 0;border-top:1px solid var(--line-soft)}
+.note h3{font-size:18px;margin-bottom:5px}
+.note p{margin:0;font-size:16px;color:var(--muted)}
+.note p b{color:var(--ink);font-weight:500}
+
+/* ---------- timeline ---------- */
+.tl{margin-top:28px;border-left:2px solid var(--line);padding-left:0;list-style:none}
+.tl li{position:relative;padding:0 0 26px 26px}
+.tl li::before{
+  content:"";position:absolute;left:-5px;top:9px;
+  width:8px;height:8px;background:var(--ground);
+  border:2px solid var(--silver);border-radius:50%;
+}
+.tl li.now::before{background:var(--accent);border-color:var(--accent)}
+.tl .when{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--silver);display:block;
+}
+.tl li.now .when{color:var(--accent)}
+.tl .what{font-size:17px;margin:2px 0 0}
+.tl .what b{font-weight:500}
+.tl .what span{color:var(--muted)}
+
+/* ---------- sources ---------- */
+.src{padding:34px 0 60px;border-top:1px solid var(--line-soft);font-size:15px;color:var(--muted)}
+.src h3{font-size:17px;margin-bottom:10px;color:var(--ink)}
+.src ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px}
+.src a{color:var(--muted);text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line)}
+.src a:hover,.src a:focus-visible{color:var(--accent)}
+.stamp{margin-top:18px;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--silver)}
+
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:1px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:560px){
+  body{font-size:16px}
+  .opts li{grid-template-columns:1fr}
+  .opt-price{grid-column:1;grid-row:auto;text-align:left}
+}
+</style>
+<style>
+  html{color-scheme:light dark}
+  body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap">
+    <p class="eyebrow">Funky formal · outfit sourcing · Sept 2026</p>
+    <h1>The Hades<br><span class="thin">Build</span></h1>
+    <p class="deck">Pinstriped trousers, a vest, arm belts, an open shirt — the Act&nbsp;II Hades silhouette, sourced from things you can actually order. <em>Bold, but it still reads as a wedding guest.</em></p>
+    <div class="flag">
+      <div><span class="eyebrow">Budget</span><b>$250–500</b></div>
+      <div><span class="eyebrow">Window</span><b>3–6 weeks</b></div>
+      <div><span class="eyebrow">Dial</span><b>Bold, not costume</b></div>
+      <div><span class="eyebrow">Pieces</span><b>4</b></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<section>
+  <div class="shead">
+    <span class="eyebrow">01</span>
+    <h2>What Hades is actually wearing</h2>
+  </div>
+  <p class="lede">Worth pinning down before shopping, because two details usually get remembered wrong — and both change what you buy.</p>
+  <div class="ref">
+    <div>
+      <h3>Black, not grey</h3>
+      <p>Designer Michael Krass used black cloth with <b>silver threading in the stripes</b> — the shine is doing half the work. A matte black-and-white pinstripe reads as a banker; the lustre is what reads as underworld.</p>
+    </div>
+    <div>
+      <h3>Huey Long, not Capone</h3>
+      <p>Krass has said the reference was a photo of the Depression-era Louisiana politician in pinstripes. Power dressing, not gangster cosplay — a useful line to stay on at a wedding.</p>
+    </div>
+    <div>
+      <h3>Sleeve garters</h3>
+      <p>Your "arm belts." Patrick Page suggested them, to say <b>working-class man who made it</b>. They sit at mid-bicep <em>over</em> the shirt sleeve, and there are two of them.</p>
+    </div>
+    <div>
+      <h3>Silver shirt, red flower</h3>
+      <p>The shirt under the vest is silver, not white. In Act II a red carnation goes in the vest pocket — a one-item detail that will do more for the reference than anything else on this page.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="eyebrow">02</span>
+    <h2>The pinstripes</h2>
+  </div>
+  <p class="lede">The vest and trousers are the whole outfit; everything else is trim. Two honest routes: <strong>made-to-measure real wool</strong>, or <strong>cheap off-the-rack plus a tailor</strong>. Buying a three-piece and leaving the jacket at home is a legitimate move — it's often the only way to get a vest in the same cloth.</p>
+
+  <ul class="opts">
+    <li>
+      <p class="opt-name"><a href="https://www.studiosuits.com/products/gray-pinstripe-waist-coat">StudioSuits — Gray Pinstripe Waistcoat + matching Pants</a></p>
+      <p class="opt-price">$108 + $131</p>
+      <div class="opt-meta">
+        <span class="tag hot">Best fit for the brief</span>
+        <span class="tag">Made to measure</span>
+        <span class="tag">70% wool / 30% poly</span>
+        <span class="tag">265–275 gsm</span>
+        <span class="tag">2–3 weeks</span>
+      </div>
+      <p class="opt-why">The only place I found where the <b>vest and trousers are sold separately in the same cloth</b> — so you buy exactly the two pieces you want, cut to your measurements, for $239. Grey ground with crisp white stripes rather than black with silver, so it's a half-step softer than the costume; that's arguably the right call for a wedding. Pants are <a href="https://www.studiosuits.com/products/gray-pinstripe-pants">here</a>.</p>
+    </li>
+
+    <li>
+      <p class="opt-name"><a href="https://www.studiosuits.com/products/bristol-black-rope-stripe-pants">StudioSuits — Bristol Black Rope Stripe Pants</a></p>
+      <p class="opt-price">$175</p>
+      <div class="opt-meta">
+        <span class="tag hot">Closest cloth to the costume</span>
+        <span class="tag">100% wool</span>
+        <span class="tag">280 g, Huddersfield</span>
+        <span class="tag">No standalone vest</span>
+      </div>
+      <p class="opt-why">Broad white rope stripe on black, pure English wool — this <em>is</em> the Hades fabric. The catch: there's no matching waistcoat sold on its own. Either buy the <a href="https://www.studiosuits.com/products/bristol-black-rope-stripe-suit">full suit at $450</a> and use its "Add a Vest" option, or email them and ask for a waistcoat cut in the Bristol cloth — a made-to-measure shop will usually say yes, and their standalone vests run $108–109.</p>
+    </li>
+
+    <li>
+      <p class="opt-name"><a href="https://www.studiosuits.com/products/napolean-wide-stripe-black-wool-suit">StudioSuits — Napolean Wide Stripe Black Wool Suit</a></p>
+      <p class="opt-price">$395 + vest</p>
+      <div class="opt-meta">
+        <span class="tag">Made to measure</span>
+        <span class="tag">Wool</span>
+        <span class="tag">Add-a-vest option on page</span>
+      </div>
+      <p class="opt-why">Black ground, wide stripe, and the product page carries an <b>Add a Vest</b> configurator, so you get all three pieces in one cloth without negotiating. Add-on price isn't shown until you configure; their standalone vests are ~$109, so budget around <b>$495–505</b>. Stretch option, and you end up owning a real wool three-piece.</p>
+    </li>
+
+    <li>
+      <p class="opt-name"><a href="https://www.mensusa.com/products/classic-3pc-vested-2-button-jet-black-chalk-white-pinstripe-suit-super-150s-extra-fine-italian-fabric-three-piece-suit">MensUSA — 3-Piece Jet Black / Chalk White Pinstripe</a></p>
+      <p class="opt-price">$189</p>
+      <div class="opt-meta">
+        <span class="tag hot">Fastest</span>
+        <span class="tag">Ships 3–5 days</span>
+        <span class="tag">36R–58R in stock</span>
+        <span class="tag">Fiber content not disclosed</span>
+      </div>
+      <p class="opt-why">Exactly the right look — jet black, chalk-width white stripe, vest included — at a price that leaves real room for tailoring. Be clear-eyed about it: the page claims "Super 150s Italian fabric" but <b>lists no fiber percentages</b>, which in this corner of the market almost always means a wool-poly or all-poly blend. That's not fatal for one night, and a poly blend actually holds a sharper stripe. Budget <b>$60–100</b> to have the vest and trousers taken in — an off-the-rack vest that fits badly will sink the outfit faster than the cloth will.</p>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="eyebrow">03</span>
+    <h2>The shirt</h2>
+  </div>
+  <p class="lede">This is where most attempts at this look fall apart, and it's a construction problem, not a taste problem. <strong>A soft point or spread collar collapses when you unbutton it</strong> — it has nothing holding it up, so it lies flat against your chest and reads as "forgot to finish getting dressed." You need either a camp collar, which is cut to sit open, or a stiffer collar in a fabric with body. Satin drapes beautifully and flops worst of all.</p>
+
+  <ul class="opts">
+    <li>
+      <p class="opt-name"><a href="https://www.studiosuits.com/products/thomas-mason-silver-shirt">StudioSuits — Thomas Mason Silver Shirt</a></p>
+      <p class="opt-price">$138</p>
+      <div class="opt-meta">
+        <span class="tag hot">The literal reference</span>
+        <span class="tag">Made to measure</span>
+        <span class="tag">Thomas Mason, Italy</span>
+      </div>
+      <p class="opt-why">Thomas Mason is a genuinely serious shirting mill, and this is the silver shirt the costume actually uses. Made to measure means you can <b>specify a cutaway or spread collar and a fuller sleeve</b> in the same order as the vest and trousers — one shipment, one set of measurements. Their <a href="https://www.studiosuits.com/search?q=Thomas+Mason+black">black</a> is the same price if you'd rather the shirt disappear under the vest.</p>
+    </li>
+    <li>
+      <p class="opt-name"><a href="https://www.toddsnyder.com/products/diamond-geo-silk-ss-camp-collardark-graphite">Todd Snyder — Silk Geo Camp Collar, Dark Graphite</a></p>
+      <p class="opt-price">$134 <span class="mono" style="color:var(--silver)">(from $228)</span></p>
+      <div class="opt-meta">
+        <span class="tag">67% silk / 33% cotton</span>
+        <span class="tag">Camp collar</span>
+        <span class="tag">Short sleeve</span>
+        <span class="tag">S &amp; M sold out</span>
+      </div>
+      <p class="opt-why">Solves the open-collar problem by design, and the graphite foulard print is a nice funky-formal wink. Two caveats: it's <b>short-sleeved and cut cropped/boxy</b>, so no sleeve garters and you'd be leaning on the vest to cover the hem. Good if you decide the arm belts aren't the hill.</p>
+    </li>
+    <li>
+      <p class="opt-name"><a href="https://www.studiosuits.com/search?q=graphite+shirt">StudioSuits — Graphite Stretch Poplene Shirt</a></p>
+      <p class="opt-price">$43</p>
+      <div class="opt-meta">
+        <span class="tag">Budget</span>
+        <span class="tag">Made to measure</span>
+        <span class="tag">Poplin body</span>
+      </div>
+      <p class="opt-why">If the money is better spent on the vest. Poplin has enough starch in it to hold a collar open, which is the only thing that actually matters here. Dark graphite instead of silver — reads moodier, less stage-lit.</p>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="eyebrow">04</span>
+    <h2>The arm belts</h2>
+  </div>
+  <p class="lede">Real sleeve garters, worn as a pair at mid-bicep. Mechanically they exist to <strong>pull excess sleeve up and blouse it above the elbow</strong> — which is exactly the silhouette you're after, and which means they only work over a shirt with sleeve fabric to spare. On a slim-fit shirt there's nothing to gather and they just look like straps.</p>
+
+  <ul class="opts">
+    <li>
+      <p class="opt-name"><a href="https://www.etsy.com/listing/901274785/handcrafted-leather-sleeve-garters">JuliaFilippova — Handcrafted Leather Sleeve Garters</a></p>
+      <p class="opt-price">$41 + $11 ship</p>
+      <div class="opt-meta">
+        <span class="tag hot">Pick</span>
+        <span class="tag">Veg-tan Crazy Horse</span>
+        <span class="tag">Black + silver hardware</span>
+        <span class="tag">11 sizes, 9″–19″</span>
+        <span class="tag">Ships from UK</span>
+      </div>
+      <p class="opt-why">Hand-stitched with waxed thread, and crucially they offer <b>black leather with silver hardware</b> — the exact metal note the costume's silver-threaded stripe is playing against. Made to order but the shop's stated window lands inside two weeks, and the 11-size range means you can measure your actual bicep instead of guessing at S/M/L.</p>
+    </li>
+    <li>
+      <p class="opt-name"><a href="https://www.etsy.com/listing/1419836836/personalized-sleeve-garters-men-leather">MazovaStore — Personalized Leather Sleeve Garters</a></p>
+      <p class="opt-price">$39.89</p>
+      <div class="opt-meta">
+        <span class="tag">Free shipping</span>
+        <span class="tag">13 colors incl. black</span>
+        <span class="tag">S–XL (8″–20″)</span>
+        <span class="tag">Longer window</span>
+      </div>
+      <p class="opt-why">Cheaper delivered, and they'll engrave them. Ships from Ukraine and the stated arrival window runs several weeks wide — <b>fine if you order this week, risky if you wait.</b></p>
+    </li>
+    <li>
+      <p class="opt-name"><a href="https://www.amazon.com/WRITWAA-Armband-Adjustable-Leather-Performance/dp/B0DM1CLPNJ">WRITWAA — Adjustable Leather Sleeve Garter</a></p>
+      <p class="opt-price">~$15</p>
+      <div class="opt-meta">
+        <span class="tag">Backup</span>
+        <span class="tag">Two-day shipping</span>
+        <span class="tag">Faux/thin leather</span>
+      </div>
+      <p class="opt-why">Not the quality you asked for, but worth knowing it exists as a <b>safety net if the Etsy order slips</b>. Order the good ones now and this is irrelevant.</p>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="eyebrow">05</span>
+    <h2>Two ways to build it</h2>
+  </div>
+  <p class="lede">Both land inside your range. The difference is where the money goes: into cloth and fit, or into the tailor and the leather.</p>
+
+  <div class="builds">
+    <div class="build pick">
+      <p class="badge">Build A — everything measured</p>
+      <h3>The Real Thing</h3>
+      <p class="sub">One StudioSuits order covers three of the four pieces, all cut to you. Nothing needs a tailor afterward.</p>
+      <table>
+        <tr><td><a href="https://www.studiosuits.com/products/gray-pinstripe-waist-coat">Gray pinstripe waistcoat</a></td><td>$108</td></tr>
+        <tr><td><a href="https://www.studiosuits.com/products/gray-pinstripe-pants">Matching pinstripe trousers</a></td><td>$131</td></tr>
+        <tr><td><a href="https://www.studiosuits.com/products/thomas-mason-silver-shirt">Thomas Mason silver shirt</a></td><td>$138</td></tr>
+        <tr><td><a href="https://www.etsy.com/listing/901274785/handcrafted-leather-sleeve-garters">Leather sleeve garters, shipped</a></td><td>$52</td></tr>
+        <tr class="total"><td>Total</td><td>$429</td></tr>
+      </table>
+      <p class="foot">Trade-off: grey-and-white rather than black-and-silver, so the Hades read is a shade quieter. Everything fits perfectly, which at a wedding buys you more than the exact hue does.</p>
+    </div>
+
+    <div class="build">
+      <p class="badge">Build B — loud and fast</p>
+      <h3>Jet Black, Tailored</h3>
+      <p class="sub">Buy the cheap three-piece for its cloth and its vest, then spend the savings making it fit and hanging good leather on it.</p>
+      <table>
+        <tr><td><a href="https://www.mensusa.com/products/classic-3pc-vested-2-button-jet-black-chalk-white-pinstripe-suit-super-150s-extra-fine-italian-fabric-three-piece-suit">MensUSA 3-piece, jet black chalk stripe</a></td><td>$189</td></tr>
+        <tr><td><span class="nolink">Tailoring — vest &amp; trousers (local)</span></td><td>~$80</td></tr>
+        <tr><td><a href="https://www.studiosuits.com/search?q=graphite+shirt">Graphite poplin shirt (MTM)</a></td><td>$43</td></tr>
+        <tr><td><a href="https://www.etsy.com/listing/901274785/handcrafted-leather-sleeve-garters">Leather sleeve garters, shipped</a></td><td>$52</td></tr>
+        <tr class="total"><td>Total</td><td>~$364</td></tr>
+      </table>
+      <p class="foot">You get the correct black-and-chalk-stripe look, a spare jacket, and change left over. The fabric is almost certainly a blend — for one night in October, that mostly costs you breathability.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="eyebrow">06</span>
+    <h2>Fit notes that decide this</h2>
+  </div>
+  <div class="notes">
+    <div class="note">
+      <h3>Ask for a full back on the vest</h3>
+      <p>Suit waistcoats usually have a satin back and a cinch buckle, because a jacket hides it. <b>You have no jacket.</b> People will see your back all night — specify the striped cloth on the back too, or accept that half your outfit is lining.</p>
+    </div>
+    <div class="note">
+      <h3>The vest must cover the waistband</h3>
+      <p>Jacketless, the vest hem is the outfit's visible waistline. A gap of shirt between vest and trousers is the single most common failure. <b>Err long,</b> and have the tailor check it seated.</p>
+    </div>
+    <div class="note">
+      <h3>Regular-fit sleeves, not slim</h3>
+      <p>Garters need slack to gather. If you order the shirt made-to-measure, ask for a <b>standard or generous sleeve</b> even if you take everything else trim.</p>
+    </div>
+    <div class="note">
+      <h3>Higher rise, gentle pleat</h3>
+      <p>Depression-era tailoring sat at the natural waist. A slightly higher rise reads period; a low flat-front reads office. It also means the vest meets the trousers without a fight.</p>
+    </div>
+    <div class="note">
+      <h3>Two buttons open, not four</h3>
+      <p>Hades is open at the collar, not to the sternum. Undo the top two, leave the rest — the vest frames the opening and does the work. This is the difference between bold and costume.</p>
+    </div>
+    <div class="note">
+      <h3>Boots, and skip the sunglasses</h3>
+      <p>The costume's white snakeskin cowboy boots are the fun part — a <b>black or grey snake-embossed boot</b> gets you there without a white shoe at a wedding. Sunglasses indoors is where "guest in a great outfit" becomes "guy doing a bit."</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="shead">
+    <span class="eyebrow">07</span>
+    <h2>Order sequence</h2>
+  </div>
+  <p class="lede">The long pole isn't shipping — it's the <strong>measurement confirmation email</strong> that made-to-measure shops send after you order. It stops the clock until you reply.</p>
+  <ol class="tl">
+    <li class="now">
+      <span class="when">This week</span>
+      <p class="what"><b>Order the leather garters first.</b> <span>Made to order, shipping internationally, and the cheapest thing to be early on.</span></p>
+    </li>
+    <li class="now">
+      <span class="when">This week</span>
+      <p class="what"><b>Place the pinstripe order.</b> <span>Measure a vest and a pair of trousers that already fit you and submit those numbers rather than body measurements — every StudioSuits reviewer who had a problem had measured their body.</span></p>
+    </li>
+    <li>
+      <span class="when">Days 2–5</span>
+      <p class="what"><b>Answer the confirmation email same-day.</b> <span>They query anything that looks off. Their 2–3 week clock is explicitly conditional on confirmed measurements.</span></p>
+    </li>
+    <li>
+      <span class="when">Week 2–3</span>
+      <p class="what"><b>Everything lands.</b> <span>Try the full stack on together — vest, shirt, garters — not piece by piece.</span></p>
+    </li>
+    <li>
+      <span class="when">Week 3–4</span>
+      <p class="what"><b>Tailor window.</b> <span>Only needed on Build B, or if a made-to-measure piece missed. Keep a week of slack here.</span></p>
+    </li>
+    <li>
+      <span class="when">Day before</span>
+      <p class="what"><b>Steam, don't press.</b> <span>A hot iron flattens the lustre out of a striped worsted and you lose the shine that makes the whole thing work. Buy the carnation the morning of.</span></p>
+    </li>
+  </ol>
+</section>
+
+<div class="src">
+  <h3>Where this came from</h3>
+  <ul>
+    <li>Costume design intent, Huey Long reference, sleeve garters and silver-lustre fabrics — <a href="https://playbill.com/article/how-michael-krass-used-fashion-to-make-hadestowns-players-into-singular-characters">Michael Krass interview, Playbill</a></li>
+    <li>Act I / Act II costume breakdown, silver shirt, red flower, vest construction — <a href="https://www.tumblr.com/roadtohadestown/186121164606/costume-references-broadwaylondon-hades">Road to Hadestown costume references</a></li>
+    <li>General garment list — <a href="https://carboncostume.com/hades-from-hadestown/">Carbon Costume: Hades</a></li>
+    <li>Pinstripe separates, shirts, fabric specs and lead times — <a href="https://www.studiosuits.com/collections/pinstripe-suit">StudioSuits</a></li>
+    <li>Three-piece chalk stripe — <a href="https://www.mensusa.com/collections/chalk-pinstripe-suit">MensUSA</a></li>
+    <li>Camp collar shirt — <a href="https://www.toddsnyder.com/collections/long-sleeve-camp-collars">Todd Snyder</a></li>
+  </ul>
+  <p class="stamp">Prices, stock and lead times checked 8 September 2026. Retail inventory moves — reconfirm before ordering.</p>
+</div>
+
+</div>
+</body>
+</html>
