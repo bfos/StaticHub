@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mexico Spring Break 2027 — Pools, Trailheads &amp; What It Actually Costs</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,560;9..144,640&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#241C17; --sand:#FBF6EE; --card:#FFFFFF;
+    --terra:#C2542D; --terra-deep:#9E3F1E;
+    --agave:#3E7A5E; --agave-deep:#2C5C46;
+    --gold:#A9791F; --sky:#2E6F8E;
+    --muted:#7A6A5C; --line:#E8DCCA; --line-soft:#F1E8DA;
+    --shadow:0 1px 2px rgba(36,28,23,.05), 0 8px 24px rgba(36,28,23,.07);
+    --display:'Fraunces',Georgia,serif; --body:'Inter',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+  body{margin:0;background:var(--sand);color:var(--ink);font-family:var(--body);line-height:1.5;
+    background-image:radial-gradient(1100px 460px at 85% -140px, rgba(194,84,45,.10), transparent 62%),
+                     radial-gradient(900px 400px at 5% 300px, rgba(62,122,94,.07), transparent 60%);}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px 80px}
+
+  /* ---------- Masthead ---------- */
+  header.masthead{padding:54px 0 28px;border-bottom:1px solid var(--line);margin-bottom:26px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--terra-deep);margin:0 0 14px}
+  h1{font-family:var(--display);font-weight:640;font-size:clamp(30px,5.2vw,52px);line-height:1.04;letter-spacing:-.012em;margin:0 0 16px;max-width:19ch}
+  h1 em{color:var(--agave-deep);font-style:italic;font-weight:560}
+  .lede{font-size:clamp(15px,2.2vw,18px);color:#3d3128;max-width:66ch;margin:0}
+  .lede b{color:var(--ink);font-weight:600}
+
+  /* ---------- Verdict ---------- */
+  .verdict{margin:26px 0 6px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--terra);
+    border-radius:14px;padding:20px 22px;box-shadow:var(--shadow)}
+  .verdict h2{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--terra-deep);margin:0 0 12px;font-weight:600}
+  .verdict ol{margin:0;padding-left:20px}
+  .verdict li{font-size:15px;margin-bottom:9px;color:#3d3128}
+  .verdict li:last-child{margin-bottom:0}
+  .verdict b{color:var(--ink)}
+
+  /* ---------- Section headings ---------- */
+  h2.sect{font-family:var(--display);font-weight:640;font-size:clamp(21px,3vw,29px);letter-spacing:-.01em;margin:52px 0 6px}
+  .sect-sub{font-size:14.5px;color:var(--muted);margin:0 0 20px;max-width:70ch}
+
+  /* ---------- Map ---------- */
+  .mapcard{position:relative;margin:26px 0 8px;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:#e6ded0}
+  #map{height:470px;width:100%;background:#ded4c4;font-family:var(--body)}
+  .map-cap{display:flex;flex-wrap:wrap;gap:9px 22px;align-items:center;padding:13px 16px;background:var(--card);border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+  .keydot{display:inline-flex;align-items:center;gap:7px;font-weight:500;color:var(--ink)}
+  .keydot i{width:13px;height:13px;border-radius:50%;display:inline-block;flex:none}
+  .keydot .l2{background:var(--agave)} .keydot .l3{background:var(--gold)} .keydot .l4{background:#B03030}
+  .keydot .ap{background:var(--sky);border-radius:2px}
+  .map-note{font-size:12.5px;color:var(--muted);margin:10px 2px 0;max-width:78ch}
+  .pin{display:flex;align-items:center;justify-content:center;width:29px;height:29px;border-radius:50% 50% 50% 2px;transform:rotate(45deg);box-shadow:0 2px 5px rgba(0,0,0,.3);border:2px solid #fff}
+  .pin span{transform:rotate(-45deg);font-family:var(--mono);font-weight:600;font-size:11.5px;color:#fff}
+  .pin.sq{border-radius:4px;transform:none;width:22px;height:22px}
+  .pin.sq span{transform:none;font-size:10px}
+  .leaflet-popup-content{font-family:var(--body);margin:11px 13px}
+  .leaflet-popup-content .pp-name{font-family:var(--display);font-weight:600;font-size:15px;display:block;margin-bottom:4px;line-height:1.2}
+  .leaflet-popup-content .pp-meta{font-family:var(--mono);font-size:11.5px;color:#6b5c50;display:block;margin-bottom:5px}
+  .leaflet-popup-content .pp-cost{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--terra-deep)}
+
+  /* ---------- Controls ---------- */
+  .controls{position:sticky;top:0;z-index:500;margin:26px 0 4px;background:rgba(251,246,238,.93);
+    backdrop-filter:saturate(160%) blur(9px);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow)}
+  .ctl-row{display:flex;flex-wrap:wrap;gap:16px 26px;align-items:center}
+  .ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .ctl-label{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--card)}
+  .seg button{appearance:none;border:0;background:transparent;font-family:var(--mono);font-size:13px;font-weight:600;
+    color:var(--muted);padding:7px 13px;cursor:pointer;border-right:1px solid var(--line-soft);transition:background .12s,color .12s}
+  .seg button:last-child{border-right:0}
+  .seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+  .seg button:hover:not([aria-pressed="true"]){background:var(--line-soft);color:var(--ink)}
+  .seg.wide button{font-family:var(--body);font-size:12.5px;padding:7px 12px}
+  .ctl-note{font-size:12.5px;color:var(--muted);margin-left:auto}
+  .ctl-note b{font-family:var(--mono);color:var(--ink)}
+
+  /* ---------- Group headers ---------- */
+  .group{margin:38px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .group h3{font-family:var(--display);font-weight:640;font-size:22px;margin:0 0 5px;letter-spacing:-.01em}
+  .group .gtag{font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--terra-deep);margin:0 0 8px}
+  .group p{font-size:14px;color:#4a3d34;margin:0;max-width:76ch}
+  .group p b{color:var(--ink);font-weight:600}
+
+  /* ---------- Cards ---------- */
+  .card{position:relative;display:grid;grid-template-columns:52px 1fr;gap:18px;background:var(--card);border:1px solid var(--line);
+    border-radius:14px;padding:18px 20px 18px 18px;margin-bottom:14px;box-shadow:var(--shadow);
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease}
+  .card:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(36,28,23,.07),0 16px 34px rgba(36,28,23,.12);border-color:#dbcdb6}
+  .card.pick{border-color:var(--terra);box-shadow:0 0 0 1px var(--terra), var(--shadow)}
+  .rank{font-family:var(--mono);font-weight:600;font-size:19px;color:#fff;background:var(--ink);border-radius:11px;height:52px;
+    display:flex;align-items:center;justify-content:center;letter-spacing:-.02em}
+  .card.pick .rank{background:var(--terra)}
+  .cbody h4{font-family:var(--display);font-weight:600;font-size:19.5px;margin:1px 0 3px;letter-spacing:-.01em;line-height:1.15}
+  .sub{font-size:12.5px;color:var(--muted);margin:0 0 11px;font-family:var(--mono);letter-spacing:.02em}
+  .badges{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 12px}
+  .badge{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;line-height:1.25;border:1px solid transparent}
+  .b-ai{background:rgba(62,122,94,.13);color:var(--agave-deep);border-color:rgba(62,122,94,.30)}
+  .b-room{background:rgba(46,111,142,.12);color:var(--sky);border-color:rgba(46,111,142,.28)}
+  .b-l2{background:rgba(62,122,94,.10);color:var(--agave-deep);border-color:rgba(62,122,94,.26);font-family:var(--mono);font-size:11px}
+  .b-l3{background:rgba(169,121,31,.13);color:var(--gold);border-color:rgba(169,121,31,.32);font-family:var(--mono);font-size:11px}
+  .b-pick{background:var(--terra);color:#fff}
+  .b-teen{background:rgba(194,84,45,.11);color:var(--terra-deep);border-color:rgba(194,84,45,.28)}
+  .summary{font-size:14.5px;color:#3d3128;margin:0 0 12px}
+
+  .facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:9px 20px;margin:0 0 13px;
+    padding:12px 0 2px;border-top:1px dashed var(--line)}
+  .fact{display:flex;gap:8px;font-size:13px;color:#4a3d34;align-items:baseline}
+  .fact b{color:var(--muted);font-weight:600;font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;
+    text-transform:uppercase;white-space:nowrap;flex:none;min-width:52px}
+  .fact span{min-width:0}
+
+  .costbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:12px 14px;border-radius:11px;
+    background:var(--sand);border:1px solid var(--line-soft);margin:0 0 11px}
+  .cost-main{font-family:var(--mono);font-size:19px;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
+  .cost-main small{font-size:11.5px;font-weight:500;color:var(--muted);letter-spacing:.04em;margin-left:3px}
+  .cost-tot{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verd{font-size:11.5px;font-weight:600;padding:4px 11px;border-radius:999px;font-family:var(--mono);letter-spacing:.04em;white-space:nowrap}
+  .v-under{background:rgba(62,122,94,.14);color:var(--agave-deep)}
+  .v-edge{background:rgba(169,121,31,.16);color:var(--gold)}
+  .v-over{background:rgba(176,48,48,.12);color:#9A2B2B}
+  .cost-break{font-family:var(--mono);font-size:11.5px;color:var(--muted);width:100%;margin:0;line-height:1.7}
+  .cost-break i{font-style:normal;color:#4a3d34}
+
+  .catch{font-size:13px;color:var(--muted);margin:0;display:flex;gap:8px;align-items:baseline}
+  .catch b{color:var(--terra-deep);font-weight:600;font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;
+    text-transform:uppercase;white-space:nowrap;flex:none}
+
+  /* ---------- Tables ---------- */
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:13px;background:var(--card);box-shadow:var(--shadow);margin:18px 0 8px}
+  table{border-collapse:collapse;width:100%;min-width:620px;font-size:13.5px}
+  th,td{text-align:left;padding:11px 15px;border-bottom:1px solid var(--line-soft)}
+  th{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
+    font-weight:600;background:var(--sand);border-bottom:1px solid var(--line);white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  td.num{font-family:var(--mono);white-space:nowrap}
+  td b{font-weight:600}
+  .tnote{font-size:12.5px;color:var(--muted);margin:10px 2px 0;max-width:78ch}
+
+  /* ---------- Ruled out ---------- */
+  .outgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:13px;margin-top:18px}
+  .out{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px 17px;box-shadow:var(--shadow)}
+  .out h4{font-family:var(--display);font-size:16.5px;font-weight:600;margin:0 0 3px;letter-spacing:-.005em}
+  .out .otag{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;margin:0 0 8px;font-weight:600}
+  .out.l4 .otag{color:#9A2B2B} .out.pref .otag{color:var(--muted)} .out.fit .otag{color:var(--gold)}
+  .out p{font-size:13.5px;color:#4a3d34;margin:0}
+
+  /* ---------- Next steps ---------- */
+  .steps{counter-reset:s;list-style:none;padding:0;margin:18px 0 0}
+  .steps li{counter-increment:s;position:relative;padding:0 0 0 40px;margin-bottom:15px;font-size:14.5px;color:#3d3128;max-width:74ch}
+  .steps li::before{content:counter(s);position:absolute;left:0;top:-1px;width:26px;height:26px;border-radius:50%;
+    background:var(--agave);color:#fff;font-family:var(--mono);font-size:12.5px;font-weight:600;
+    display:flex;align-items:center;justify-content:center}
+  .steps b{color:var(--ink)}
+
+  footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+  footer p{margin:0 0 10px;max-width:82ch}
+  footer b{color:#4a3d34}
+
+  a{color:var(--terra-deep)}
+  a.skip{position:absolute;left:-999px}
+  a.skip:focus{left:12px;top:12px;background:var(--ink);color:#fff;padding:8px 14px;border-radius:8px;z-index:9999}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto}}
+  @media (max-width:560px){
+    .card{grid-template-columns:42px 1fr;gap:13px;padding:16px 15px 16px 14px}
+    .rank{height:42px;font-size:17px;border-radius:9px}
+    .ctl-note{margin-left:0;width:100%}
+    .controls{position:static}
+  }
+  @media print{.controls,.mapcard{display:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#list">Skip to the ranked options</a>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">Mexico · March 13–21, 2027 · three travelers from MCI</p>
+    <h1>A great pool, real trailheads, and <em>nobody</em> asking you for a credit card.</h1>
+    <p class="lede">Thirteen options built around your four constraints — <b>a genuinely relaxing resort with good food</b>, <b>a pool worth spending all day at</b>, <b>half-day hiking within reach</b>, and <b>not Cancún or Cabo</b> — each priced all-in for three people, flights included, against your $3,000-per-person ceiling. Every property here has been checked for one thing that quietly disqualifies a lot of the obvious candidates: whether a 17-year-old is allowed to stay at all.</p>
+  </header>
+
+  <section class="verdict">
+    <h2>The short answer</h2>
+    <ol>
+      <li><b>Riviera Nayarit is the answer to your brief</b> — Punta de Mita and the Sayulita / San Pancho stretch. It is one stop from MCI into Puerto Vallarta, it is <b>not</b> Cabo or Cancún, the jungle hiking in the Sierra de Vallejo is genuinely good, and it is in Nayarit — a State Department <b>Level 2</b> state, while Puerto Vallarta itself sits in Level 3 Jalisco.</li>
+      <li><b>Marival Armony is the single best fit</b> for how your daughter described what she wants: a true all-inclusive with one- and two-bedroom suites, five pools, all-ages, and a real teen program — she gets her own bedroom and can get her own food without anyone paying for anything. Roughly <b>$2,270 per person</b> for six nights, all in.</li>
+      <li><b>Amomoxtli holds up better than a quick look suggests, with two caveats.</b> The pool faces the Tepozteco cliffs, the food is regional and genuinely good, and its 13+ policy means your daughter qualifies. But it is a quiet 42-room retreat with no other teenagers, no all-inclusive, and its rooms sleep two — so "her own room" means a second room at full price. Details in option 10.</li>
+    </ol>
+  </section>
+
+  <h2 class="sect" id="map-h">Where these actually are</h2>
+  <p class="sect-sub">Pins are colored by the current U.S. State Department advisory level for the state they sit in, which turned out to be a real discriminator — several otherwise-perfect resorts are in Level 4 states. Squares are the airports you'd fly into.</p>
+
+  <div class="mapcard">
+    <div id="map" role="img" aria-label="Map of Mexico showing thirteen resort options clustered in Riviera Nayarit and Puerto Vallarta, the Oaxacan coast at Huatulco, the highlands south and west of Mexico City, and Todos Santos in Baja California Sur."></div>
+    <div class="map-cap">
+      <span class="keydot"><i class="l2"></i> Level 2 state</span>
+      <span class="keydot"><i class="l3"></i> Level 3 state</span>
+      <span class="keydot"><i class="l4"></i> Level 4 — ruled out</span>
+      <span class="keydot"><i class="ap"></i> Airport</span>
+      <span style="margin-left:auto;font-size:12px">Click a pin for the option · scroll or pinch to zoom</span>
+    </div>
+  </div>
+  <p class="map-note">The clustering is not an accident. Almost everything that satisfies "great pool <em>and</em> good hiking <em>and</em> not a tourist strip" ends up in one of four places: the Nayarit coast north of Puerto Vallarta, the Sierra Madre behind it, the nine bays of Huatulco, or the pine highlands within a few hours of Mexico City.</p>
+
+  <h2 class="sect" id="list">The thirteen options</h2>
+  <p class="sect-sub">Ranked on fit to your brief, not on luxury. Move the two controls below and every cost on the page recalculates — the nights control is the lever you said you'd pull first if something good came in over budget.</p>
+
+  <div class="controls">
+    <div class="ctl-row">
+      <div class="ctl">
+        <span class="ctl-label">Nights</span>
+        <div class="seg" id="seg-nights" role="group" aria-label="Number of nights"></div>
+      </div>
+      <div class="ctl">
+        <span class="ctl-label">Rooming</span>
+        <div class="seg wide" id="seg-room" role="group" aria-label="Rooming configuration">
+          <button type="button" data-room="a" aria-pressed="true">Shared suite / villa</button>
+          <button type="button" data-room="b" aria-pressed="false">She gets her own room</button>
+        </div>
+      </div>
+      <p class="ctl-note">Budget line: <b>$3,000</b> per person, all in, for <b>3</b> people.</p>
+    </div>
+  </div>
+
+  <main id="cards"></main>
+
+  <h2 class="sect">Getting there from MCI</h2>
+  <p class="sect-sub">Kansas City has exactly two nonstop routes into Mexico — Cancún and Los Cabos — and you've excluded both destinations. So the real question is which one-stop connection is least painful, and the answer is that MCI connects well through DFW, IAH, ORD, PHX, DEN and LAX, which covers every airport below.</p>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr><th>Airport</th><th>Serves</th><th>Routing from MCI</th><th>Est. round trip / person</th><th>Travel day</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><b>PVR</b> Puerto Vallarta</td><td>Riviera Nayarit, PV, Sierra Madre</td><td>One stop — DFW, PHX, IAH, DEN, LAX or ORD. Many daily options.</td><td class="num">$550–750</td><td>~7–9 hrs</td></tr>
+        <tr><td><b>SJD</b> Los Cabos</td><td>Todos Santos, East Cape</td><td><b>Nonstop</b> — Southwest, Saturdays only. Out 10:40a, back 11:35a.</td><td class="num">$480–700</td><td>~3.5 hrs</td></tr>
+        <tr><td><b>MEX</b> Mexico City</td><td>Tepoztlán, Valle de Bravo</td><td>One stop — DFW, IAH, ORD, ATL or LAX.</td><td class="num">$500–750</td><td>~7–9 hrs</td></tr>
+        <tr><td><b>HUX</b> Huatulco</td><td>Oaxaca's Pacific coast</td><td>One stop via DFW — American flies DFW–HUX about 10× weekly in season.</td><td class="num">$650–900</td><td>~9–11 hrs</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="tnote">Those are modeled spring-break fares booked around six months out, not quotes. March 2027 schedules are published and bookable, but fares will move — set a Google Flights price alert on all four routes now and you'll know within a few weeks whether these bands hold. The Cabo nonstop is worth flagging separately: <b>Saturday March 13 out, Saturday March 20 back</b> is a clean seven-night trip with no connection in either direction, which is the single easiest travel day available to you anywhere in Mexico.</p>
+
+  <h2 class="sect">What we ruled out, and why</h2>
+  <p class="sect-sub">Some of these are genuinely painful exclusions — one of them would otherwise have been the best property on the list for a 17-year-old.</p>
+
+  <div class="outgrid">
+    <div class="out l4">
+      <p class="otag">Level 4 — do not travel</p>
+      <h4>Ixtapa &amp; Zihuatanejo</h4>
+      <p><b>The painful one.</b> Club Med Ixtapa Pacific is close to a perfect answer to your daughter's brief — all-inclusive, a teen club for ages 11–17 where she could come and go freely, trapeze, kayaking, several pools. Viceroy Zihuatanejo and the eco-resort Playa Viva are also excellent. All of them sit in Guerrero, which the State Department currently rates Level 4, Do Not Travel. Not a call we'd make for you, but you should make it knowingly.</p>
+    </div>
+    <div class="out l4">
+      <p class="otag">Level 4 — do not travel</p>
+      <h4>Manzanillo &amp; the southern Costalegre</h4>
+      <p>Colima is also Level 4. The Jalisco half of the Costalegre — Careyes, Las Alamandas — is technically available but is remote, very expensive, and a 2½–3 hour transfer from PVR for a coastline that isn't better than Nayarit's.</p>
+    </div>
+    <div class="out fit">
+      <p class="otag">Fails the age check</p>
+      <h4>Paradero Todos Santos</h4>
+      <p>On paper this is exactly your trip: an all-inclusive-style rate that bundles guided hiking and biking, a Michelin-recognized kitchen, and a spectacular pool in the Baja desert. It is <b>18+ to check in</b>, so it's out for another year. Hotel San Cristóbal Baja, the other obvious Todos Santos pick, is adults-only too.</p>
+    </div>
+    <div class="out fit">
+      <p class="otag">Weak on hiking</p>
+      <h4>San Miguel de Allende</h4>
+      <p>Live Aqua is a lovely hotel and the food scene is superb, but the "hiking" is really the Charco del Ingenio botanical garden and a canyon walk out at Cañada de la Virgen. Guanajuato is Level 3 as well. Great trip, wrong brief.</p>
+    </div>
+    <div class="out pref">
+      <p class="otag">Excluded by preference</p>
+      <h4>Cancún, Riviera Maya, Los Cabos</h4>
+      <p>You ruled these out and we'd agree independently: none of them has real hiking. The nearest thing on the Caribbean side is cenote swimming and the Cobá ruins, which is a fine day but not a trail.</p>
+    </div>
+    <div class="out fit">
+      <p class="otag">No resort to speak of</p>
+      <h4>Copper Canyon, Huasteca Potosina, Chiapas</h4>
+      <p>The three best hiking regions in Mexico, and none of them has a resort with a pool you'd want to spend a day beside. Huasteca Potosina in particular — turquoise rivers and waterfalls in a Level 2 state — is worth remembering for a future trip built around the hiking instead of the resort.</p>
+    </div>
+  </div>
+
+  <h2 class="sect">What we'd do next</h2>
+  <ol class="steps">
+    <li><b>Set fare alerts on all four airports this week.</b> Six months out is roughly the right booking window for spring break; the bands in the flights table will either firm up or move, and you'll want to know which before you commit to a region.</li>
+    <li><b>Email Marival Armony and Conrad Punta de Mita directly</b> for a March 14–20, 2027 quote for two adults and one 17-year-old, asking specifically for the one-bedroom suite rate <em>and</em> the two-connecting-rooms rate. Nearly every property on this list charges a 17-year-old as an adult, so the suite is usually the cheaper way to give her a door that closes.</li>
+    <li><b>Confirm Amomoxtli's age policy in writing</b> if it stays on the list. Sources describe it as 13+, but some booking channels list it as "adults only," which is how they flag 13+ properties — worth a direct email rather than a surprise at check-in.</li>
+    <li><b>Check the Grand Velas blackout.</b> Their published blackout runs March 20 – April 4, 2027, so a stay there has to end by the 19th. That is compatible with your window, but only if you book the front half of it.</li>
+    <li><b>Passports.</b> All three of you need one valid well past the travel dates. A 17-year-old traveling with both parents needs no notarized consent letter — that requirement only applies when a minor travels with one parent or neither.</li>
+  </ol>
+
+  <footer>
+    <p><b>How the costs were built.</b> Each option totals four things: modeled round-trip airfare from MCI for three, the nightly rate for the rooming configuration shown, food at a modeled daily rate where the property isn't all-inclusive, plus airport transfers and a per-trip allowance for guided hikes and excursions. Food for non-inclusive properties is modeled at resort-adjacent prices, which run well above town prices — mid-range restaurant dinners in Puerto Vallarta and Oaxaca run about $12–22 per person, but hotel restaurants at this tier run three to four times that.</p>
+    <p><b>These are estimates, not quotes.</b> March 2027 rates are bookable but will move, and none of the nightly rates below were retrieved from a live booking engine for your specific dates — they are built from published rate ranges and seasonal patterns, with a spring-break premium applied. Treat the rank order and the relative gaps as the useful output; treat any individual dollar figure as a starting point for a real quote.</p>
+    <p><b>Advisory levels</b> reflect U.S. State Department state-level ratings as reported in 2026. They are state-wide and blunt — Puerto Vallarta's resort zone has historically been treated as a carve-out inside Level 3 Jalisco — but they are the same yardstick applied consistently across every option here. Re-check before booking; they change.</p>
+    <p><b>One genuine seasonal note.</b> If Valle de Bravo appeals, the monarch butterflies at the Piedra Herrada sanctuary are a mid-November to mid-March phenomenon. March 13–21 is the very tail of that. You might catch the last of them in the first days of your window; by the 21st the sanctuary is likely closed or nearly empty. Don't build the trip around it.</p>
+    <p>Researched September 2026 for travel March 13–21, 2027.</p>
+  </footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* ------------------------------------------------------------------
+   Cost model
+   total = flightPP*3 + nights*(lodging + food) + transfers + extras
+   lodging is the whole-party nightly rate for the config shown.
+   'a' = shared suite/villa   'b' = she gets her own room
+------------------------------------------------------------------ */
+const PEOPLE = 3, BUDGET_PP = 3000;
+
+const OPTIONS = [
+  /* ---------------- Riviera Nayarit ---------------- */
+  {rank:1, group:"nayarit", pick:true, lat:20.7620, lng:-105.4700, level:2,
+   name:"Marival Armony Luxury Resort &amp; Spa", loc:"Punta de Mita, Nayarit · MGallery · all-inclusive",
+   badges:[["b-pick","Best overall fit"],["b-ai","True all-inclusive"],["b-room","1 &amp; 2-bedroom suites"],["b-teen","Teen program"],["b-l2","Level 2"]],
+   summary:"The closest thing to a purpose-built answer to your daughter's request. A genuine all-inclusive on Destiladeras Beach with 80-odd one- and two-bedroom suites, five pools, four restaurants, and programming that explicitly includes teenagers rather than treating them as oversized children. She gets a bedroom with a door and can order whatever she wants, whenever, without a transaction ever happening.",
+   flightPP:620, lodgingA:700, lodgingB:950, food:0, transfers:400, extras:350,
+   roomA:"One-bedroom oceanfront suite, all-inclusive for three", roomB:"Two-bedroom suite",
+   hike:"Monkey Mountain (Cerro del Mono) is a 4-hour round trip with a 360° summit; the Sayulita–San Pancho jungle traverse is a gentler half day. Both about 25 minutes up the coast.",
+   food_note:"Four restaurants, AAA Four Diamond. Good, not destination-grade — this is the trade you make for true all-inclusive.",
+   pool:"Five pools including a quiet adult section and a main pool with swim-up bar.",
+   catch:"It's a polished four-diamond all-inclusive, not a design-boutique property. Destiladeras has real surf, so the pool is where the day happens."},
+
+  {rank:2, group:"nayarit", lat:20.8022, lng:-105.4553, level:2,
+   name:"Conrad Punta de Mita", loc:"Higuera Blanca, Nayarit · charge-to-room",
+   badges:[["b-room","Oceanfront suites"],["b-teen","Works well for older kids"],["b-l2","Level 2"]],
+   summary:"The best food-plus-pool combination in the region that still takes a 17-year-old seriously. Seven restaurants, three pools with a separate adult pool, and a stretch of coast quiet enough that the resort feels like the whole destination. Not all-inclusive — but everything charges to the room, which by your daughter's own description is the part that actually matters to her.",
+   flightPP:620, lodgingA:780, lodgingB:1150, food:300, transfers:400, extras:350,
+   roomA:"Oceanfront suite for three", roomB:"Two connecting king rooms",
+   hike:"Same Sierra de Vallejo trail network as option 1 — Monkey Mountain and the San Pancho traverse, 20–30 minutes away. Guided jungle hikes bookable through WildMex or EcoHike in Sayulita.",
+   food_note:"Seven restaurants; Mesquite and Codex both draw specific praise in recent reviews. This is a step up from the all-inclusive tier.",
+   pool:"Three outdoor pools, one adults-only, on a private beach.",
+   catch:"Food is the big variable cost here — budget roughly $300 a day for three if you eat entirely on property. Driving into Sayulita or La Cruz for dinner cuts that by more than half."},
+
+  {rank:3, group:"nayarit", lat:20.7817, lng:-105.5133, level:2,
+   name:"Susurros del Corazón, Auberge Collection", loc:"Punta de Mita, Nayarit · charge-to-room",
+   badges:[["b-room","Suites available"],["b-teen","Teen activities"],["b-l2","Level 2"]],
+   summary:"The most beautiful property in the Nayarit set and the best food, with three cascading pools running down to a private white-sand beach. Auberge runs actual teen programming — beach volleyball, handball, tie-dye — and one recent review is titled, verbatim, that it impressed a teenager. If you want the trip to feel like a special occasion rather than a good vacation, this is where that happens.",
+   flightPP:620, lodgingA:850, lodgingB:1300, food:320, transfers:400, extras:350,
+   roomA:"One-bedroom suite for three", roomB:"Two king rooms",
+   hike:"Sierra de Vallejo trails 20 minutes north; the resort concierge arranges guided jungle hikes.",
+   food_note:"The strongest kitchen on this list outside of Grand Velas. Guests single out the food unprompted.",
+   pool:"Three cascading pools stepping down to the beach, with a large shallow family pool.",
+   catch:"At this nightly rate the budget only stretches to five nights, and the second-room configuration pushes it past your ceiling outright."},
+
+  {rank:4, group:"nayarit", lat:20.7052, lng:-105.2960, level:2,
+   name:"Grand Velas Riviera Nayarit", loc:"Nuevo Nayarit · all-suite, all-inclusive",
+   badges:[["b-ai","True all-inclusive"],["b-room","Every room is a suite"],["b-teen","Teens club"],["b-l2","Level 2"]],
+   summary:"The best food of any all-inclusive in Mexico, full stop — AAA Five Diamond, and the reason people who dislike all-inclusives make an exception for Velas. Every room is a suite with a balcony and ocean view, there's a three-tiered infinity pool with a swim-up bar, and there are separate kids' and teens' clubs. If \"very relaxing resort with good food\" is the sentence that matters most, this is the literal answer.",
+   flightPP:620, lodgingA:1250, lodgingB:1650, food:0, transfers:400, extras:350,
+   roomA:"Ambassador suite, all-inclusive for three", roomB:"Two suites",
+   hike:"The weakest hiking access of the Nayarit four — Nuevo Nayarit is flat and developed, so the Sierra de Vallejo trailheads are a 45–55 minute drive rather than 20.",
+   food_note:"Eight restaurants including a Five Diamond fine-dining room. Genuinely destination-grade.",
+   pool:"Three-tiered oceanfront infinity pool with a swim-up bar.",
+   catch:"Two real constraints. Their published blackout runs March 20 – April 4, 2027, so your stay has to end by the 19th. And it only fits your budget at four or five nights."},
+
+  {rank:5, group:"nayarit", lat:20.7690, lng:-105.5250, level:2,
+   name:"Iberostar Selection Playa Mita", loc:"Punta de Mita, Nayarit · all-inclusive",
+   badges:[["b-ai","True all-inclusive"],["b-teen","Teen club"],["b-l2","Level 2"]],
+   summary:"The value play, and the cheapest way to stay a full eight nights on the Nayarit coast. All-inclusive, a water park, and a dedicated teen space called Eagle Camp with consoles and games. Same beach, same trailheads, same Level 2 state as the three above it — over six nights it comes in about $1,100 a person under Susurros and $500 under Garza Blanca.",
+   flightPP:620, lodgingA:620, lodgingB:850, food:0, transfers:400, extras:350,
+   roomA:"Junior suite, all-inclusive for three", roomB:"Two rooms, all-inclusive",
+   hike:"Identical access to options 1–3: Monkey Mountain and the San Pancho traverse, 25 minutes away.",
+   food_note:"Standard large-resort all-inclusive dining. This is where it falls short of your \"good food\" priority.",
+   pool:"Two large pools, a swim-up bar, and an Aqua Fun water park.",
+   catch:"Rated #11 of 15 hotels in Punta de Mita. It's a big, competent, slightly generic resort — it satisfies your daughter's brief better than yours."},
+
+  /* ---------------- Jalisco / Sierra Madre ---------------- */
+  {rank:6, group:"jalisco", lat:20.5450, lng:-105.2810, level:3,
+   name:"Garza Blanca Preserve Resort &amp; Spa", loc:"Puerto Vallarta, Jalisco · optional all-inclusive",
+   badges:[["b-ai","All-inclusive optional"],["b-room","1–3 bedroom suites"],["b-teen","Hiking on-site"],["b-l3","Level 3"]],
+   summary:"The only property on this list where the hiking is literally on the grounds. Eighty-five acres of Sierra Madre jungle running down to a private beach, with free guided hikes for guests every day — you can do a half-day trail up the river and be back at the pool by lunch without arranging a thing. Three pools, one- to three-bedroom suites, and it's fifteen minutes from the PVR terminal, which makes it the shortest travel day of any one-stop option here.",
+   flightPP:620, lodgingA:950, lodgingB:1250, food:0, transfers:80, extras:200,
+   roomA:"One-bedroom suite, all-inclusive for three", roomB:"Two-bedroom family suite, all-inclusive",
+   hike:"Free daily guided hikes into the preserve, plus river trails and birdwatching walks. The San Sebastián del Oeste day trip — a cobblestoned mountain pueblo mágico with the La Bufa lookout — is about two hours inland.",
+   food_note:"Several restaurants, well-reviewed, and the all-inclusive plan covers in-suite dining from 7am to 11pm — a real convenience for a teenager who wants to eat on her own schedule.",
+   pool:"Three outdoor pools terraced into the hillside above the beach.",
+   catch:"Jalisco is Level 3, though the PV resort corridor is the long-standing carve-out. Note that the all-inclusive plan charges anyone 13 and over at the full adult rate."},
+
+  {rank:7, group:"jalisco", lat:20.6167, lng:-104.7500, level:3, split:true,
+   name:"Sierra Lago + a Nayarit beach week", loc:"Mascota, Jalisco → Riviera Nayarit · split trip",
+   badges:[["b-ai","All-inclusive (mountain half)"],["b-teen","Mountains + coast"],["b-l3","Level 3 / Level 2"]],
+   summary:"Your \"mountains and coast\" idea, done without a second flight. Sierra Lago is an all-inclusive lodge on a lake at 6,500 feet in the pine forests of the Sierra Madre, about 2½ hours inland from Puerto Vallarta — walking tours, canoeing, horses, bonfires, stargazing, and cool nights. Three nights there, then back down to four nights on the Nayarit coast at any of options 1–5. One airport, two completely different trips.",
+   flightPP:620, lodgingA:640, lodgingB:880, food:120, transfers:900, extras:250,
+   roomA:"Cabin at Sierra Lago, then a shared suite on the coast", roomB:"Two rooms throughout",
+   hike:"The mountain half is the hiking half — forest trails straight from the lodge, plus the pueblos mágicos of Mascota and San Sebastián del Oeste nearby. The coastal half adds the Sierra de Vallejo trails.",
+   food_note:"All-inclusive at Sierra Lago, and mountain Jalisco cooking is a genuine change of register from coastal food.",
+   pool:"This is the honest weak point — Sierra Lago is a lake lodge, not a pool resort. The great pool is the coastal half of the trip.",
+   catch:"Two transfers of 2½ hours each add most of a day in total, and the blended cost model here is rougher than the single-property options."},
+
+  /* ---------------- Oaxaca coast ---------------- */
+  {rank:8, group:"oaxaca", lat:15.7658, lng:-96.0900, level:2,
+   name:"Dreams Huatulco Resort &amp; Spa", loc:"Tangolunda, Oaxaca · all-inclusive",
+   badges:[["b-ai","True all-inclusive"],["b-teen","Teen program"],["b-l2","Level 2"]],
+   summary:"The best answer to \"somewhere that isn't the typical tourist location.\" Huatulco is nine bays on the Oaxacan Pacific inside a national park, in a Level 2 state, and almost no one from Kansas City goes there. Dreams is a full all-inclusive with six pools — kids' pools, adults-only sections, activity pools — and it leaves the most budget headroom of any all-inclusive on this list.",
+   flightPP:760, lodgingA:560, lodgingB:780, food:0, transfers:140, extras:400,
+   roomA:"Preferred Club suite, all-inclusive for three", roomB:"Two rooms, all-inclusive",
+   hike:"The strongest hiking-per-effort on the list. Huatulco National Park has a 45-minute interpretive jungle trail out to Cacaluta Bay, a two-hour traverse ending at El Órgano beach, and the Copalita river trails with an archaeological site on the cliffs above the ocean. All half-day, all easy to arrange.",
+   food_note:"Solid Unlimited-Luxury all-inclusive dining, and Oaxacan cooking in nearby La Crucecita is some of the best food in Mexico for very little money.",
+   pool:"Six pools, which is more separate water than any other property here.",
+   catch:"The longest travel day — one stop via DFW, roughly 9–11 hours door to door, and the DFW–HUX flight is seasonal."},
+
+  {rank:9, group:"oaxaca", lat:15.7833, lng:-96.0333, level:2,
+   name:"Las Palmas Oceanfront Villas &amp; Casitas", loc:"Huatulco, Oaxaca · villa rental",
+   badges:[["b-room","Private infinity pool"],["b-room","Own bedroom-suite each"],["b-l2","Level 2"]],
+   summary:"The most literal solution to \"she'd like her own room.\" These are villas and casitas on a hillside above Violín beach, each with its own infinity pool. The four-bedroom villa gives all three of you a separate bedroom-suite with its own bathroom, a full kitchen, a rooftop deck, daily maid service, and an optional cook — for less than two hotel rooms at most of the resorts above.",
+   flightPP:760, lodgingA:480, lodgingB:1050, food:260, transfers:140, extras:400,
+   roomA:"One casita (bedroom-suite plus living-room bed)", roomB:"Full four-bedroom villa with private pool",
+   hike:"Same Huatulco National Park network as option 8 — Cacaluta Bay, El Órgano, the Copalita trails.",
+   food_note:"Not a resort, so you're cooking, hiring the villa cook, or eating in La Crucecita — where dinner runs $12–20 a person.",
+   pool:"A private infinity pool for your party alone, which is a different proposition from a great resort pool. Better for relaxing; nothing to do but relax.",
+   catch:"There is no resort around it — no restaurants, no bar, no other guests. That's the appeal for you two and possibly the problem for a 17-year-old."},
+
+  /* ---------------- Highlands ---------------- */
+  {rank:10, group:"highlands", lat:18.9847, lng:-99.0996, level:3,
+   name:"Amomoxtli", loc:"Tepoztlán, Morelos · boutique · 13+",
+   badges:[["b-teen","13+ — she qualifies"],["b-l3","Level 3"]],
+   summary:"Your own find, and it holds up. A heated pool with two whirlpools looking straight at the Tepozteco cliffs, poolside restaurant service, and a kitchen doing strictly local, regional cooking that reviewers consistently single out. The Tepozteco pyramid trail starts in the village below — 2.6 km, 341 m of climb, stone steps the whole way, about 1 hour 40 minutes round trip to a 900-year-old Aztec pyramid with the whole valley underneath you. That is a superb half-day hike and it's on your doorstep.",
+   flightPP:580, lodgingA:560, lodgingB:1100, food:240, transfers:340, extras:250,
+   roomA:"One room with a third bed — needs confirming", roomB:"Two rooms (their rooms sleep two)",
+   hike:"El Tepozteco from the village, plus a wider network of Sierra de Tepoztlán trails. On clear days the summit shows Popocatépetl and Iztaccíhuatl. Note the archaeological site itself is only open Wednesday to Sunday, 9–4.",
+   food_note:"Among the best on this list. Home-cooked breakfasts, regional cuisine, locally sourced — this is the property that most matches \"very relaxing resort with good food.\"",
+   pool:"One heated pool with a view of the mountain, two whirlpools, loungers, and pool-bar service. Beautiful; small.",
+   catch:"Three things. Rooms sleep two and there are no suites, so \"her own room\" here means a second room at full price — which pushes a six-night stay past your ceiling on its own. There is no all-inclusive and no beach. And she would very likely be the only teenager on the property."},
+
+  {rank:11, group:"highlands", lat:19.2100, lng:-100.1200, level:2,
+   name:"Rodavento", loc:"Valle de Bravo, Estado de México · boutique",
+   badges:[["b-teen","Activities included"],["b-l2","Level 2"]],
+   summary:"A wood-and-steel lodge in a 55-acre forest with its own lake, two pools — one for families, one adults-only — and one complimentary adventure activity per person per stay: zipline, climbing wall, archery, kayak or paddleboard. Of the highland options this is the one with the most for a 17-year-old to actually do, in the cheapest configuration on the whole list, in a Level 2 state.",
+   flightPP:580, lodgingA:740, lodgingB:740, food:260, transfers:500, extras:250,
+   roomA:"Two rooms — nothing here sleeps three, so the cost is the same either way", roomB:"Two rooms",
+   hike:"Velo de Novia, a 2.3-mile out-and-back through a mossy wooded canyon to a waterfall, about 1 hour 20 minutes and moderately challenging. Cerro Gordo is the bigger climb with panoramic views over the lake. The Piedra Herrada monarch sanctuary is nearby but its season ends right around your dates — see the note in the footer.",
+   food_note:"Good, but breakfast isn't included and there's no all-inclusive option. Valle de Bravo town has a real restaurant scene 15 minutes away.",
+   pool:"Two outdoor pools by the lake. Pleasant rather than spectacular — this is a forest lodge, not a pool resort.",
+   catch:"You'd fly into Mexico City and drive 2½ hours west. Cool pine-forest weather in March, not swimming weather every day."},
+
+  {rank:12, group:"highlands", lat:19.1856, lng:-100.1358, level:2,
+   name:"El Santuario Resort &amp; Spa", loc:"Valle de Bravo, Estado de México · resort &amp; spa",
+   badges:[["b-room","Suites with plunge pools"],["b-l2","Level 2"]],
+   summary:"The more resort-like of the two Valle de Bravo options: two outdoor pools plus additional spa pools and a traditional temazcal sweat lodge, on a stunning lakeside setting, with suites that have their own private plunge pools. If the highlands appeal but Rodavento reads too rustic, this is the alternative.",
+   flightPP:580, lodgingA:620, lodgingB:850, food:280, transfers:500, extras:250,
+   roomA:"Suite with private plunge pool", roomB:"Two suites",
+   hike:"Same as option 11 — Velo de Novia waterfall, Cerro Gordo, the San Juan Atezcapan forest route around Laguna Negra.",
+   food_note:"On-site restaurant; Valle de Bravo town is the better bet for dinners.",
+   pool:"Two outdoor pools, spa pools, and private plunge pools in the suites.",
+   catch:"The most mixed reviews of anything on this list — recurring complaints about inconsistent service, small and dated suites, and rates that feel high for what's delivered. Worth a careful read of recent reviews before booking."},
+
+  /* ---------------- Baja ---------------- */
+  {rank:13, group:"baja", lat:23.4467, lng:-110.2264, level:2,
+   name:"Todos Santos &amp; the East Cape", loc:"Baja California Sur · boutique hotels",
+   badges:[["b-teen","Nonstop from MCI"],["b-l2","Level 2"]],
+   summary:"Included because of one genuinely tempting fact: the Saturday Southwest nonstop from MCI to Los Cabos turns your window into a seven-night trip with no connection in either direction — out Saturday March 13, back Saturday March 20. Todos Santos is an hour up the Pacific side and is nothing like Cabo: a desert-arts town with the Sierra de la Laguna biosphere reserve behind it and canyon waterfall hikes in the hills.",
+   flightPP:580, lodgingA:620, lodgingB:620, food:280, transfers:550, extras:400,
+   roomA:"Two rooms at a family-friendly boutique hotel — same cost either way", roomB:"Two rooms at a family-friendly boutique hotel",
+   hike:"The best desert hiking on the list. Guided Sierra de la Laguna trips run from Todos Santos — a flat riverbed stroll to seasonal waterfalls, or a harder climb up into the reserve, with certified wilderness-responder guides. Trailhead is about 45 minutes northeast.",
+   food_note:"Todos Santos punches far above its size on food, and you'd be eating in town rather than at a resort.",
+   pool:"The dealbreaker. The two properties with spectacular pools — Paradero and Hotel San Cristóbal — are both adults-only. The family-friendly options (Guaycura, Villa Santa Cruz, Hacienda Cerritos) have small pools, and one of them is a rooftop plunge.",
+   catch:"You'd want a rental car here, which is fine — Baja driving is easy. But this option wins on flights and hiking and loses on the thing you named first, which is the pool."}
+];
+
+const GROUPS = {
+  nayarit:{title:"Riviera Nayarit", tag:"Nayarit · Level 2 · fly PVR, 45–60 min transfer",
+    sum:"The strongest region for this trip and it isn't close. Nayarit is a <b>Level 2</b> state while Puerto Vallarta next door is Level 3; the coast north of the airport — Punta de Mita, Sayulita, San Pancho — has the density of good resorts you want without being Cabo or Cancún; and the Sierra de Vallejo behind it delivers exactly the half-day jungle hiking you described. One stop from MCI, many daily options."},
+  jalisco:{title:"Puerto Vallarta &amp; the Sierra Madre", tag:"Jalisco · Level 3 · fly PVR",
+    sum:"Same airport, different trade. Jalisco is <b>Level 3</b>, with the PV resort corridor treated as a long-standing carve-out. What you get in exchange is the only resort with hiking on its own property, and the option to spend half the week in the pine mountains inland without a second flight."},
+  oaxaca:{title:"The Oaxacan Pacific — Huatulco", tag:"Oaxaca · Level 2 · fly HUX via DFW",
+    sum:"Nine bays inside a national park, a <b>Level 2</b> state, real trails, and virtually no American spring-break crowd. This is the region that best satisfies \"not a typical tourist location\" while still having proper resorts. The cost is the travel day — one stop via Dallas, and the DFW–Huatulco flight is seasonal."},
+  highlands:{title:"The highlands south and west of Mexico City", tag:"Morelos &amp; Estado de México · fly MEX",
+    sum:"Cool pine forest and volcanic cliffs at 5,000–6,500 feet, two to three hours from the MEX terminal. Genuinely different scenery and the best hiking-from-the-doorstep on the list. The trade is real: <b>no beach, smaller pools, cooler weather</b>, and these are boutique hotels with rooms that sleep two rather than resorts with suites."},
+  baja:{title:"Baja California Sur — not Cabo", tag:"Level 2 · nonstop from MCI on Saturdays",
+    sum:"Here for one reason: it's the only place in Mexico you can reach from Kansas City without changing planes, and Todos Santos is an hour and a world away from the Cabo strip. The problem is that the best pools in town are behind an 18+ door."}
+};
+
+/* ---------------- State ---------------- */
+let nights = 6;
+let room = "a";
+const NIGHT_CHOICES = [4,5,6,7,8];
+
+const money = n => "$" + Math.round(n).toLocaleString("en-US");
+
+function costOf(o, n, r){
+  const lodging = r === "b" ? o.lodgingB : o.lodgingA;
+  const total = o.flightPP*PEOPLE + n*(lodging + o.food) + o.transfers + o.extras;
+  return {total, pp: total/PEOPLE, lodging, nightly: lodging + o.food};
+}
+
+function verdictClass(pp){
+  if (pp <= BUDGET_PP * 0.94) return ["v-under","under budget"];
+  if (pp <= BUDGET_PP * 1.02) return ["v-edge","at the line"];
+  return ["v-over","over budget"];
+}
+
+/* ---------------- Render ---------------- */
+const cardsEl = document.getElementById("cards");
+
+function buildCards(){
+  let html = "", lastGroup = null;
+  OPTIONS.forEach(o => {
+    if (o.group !== lastGroup){
+      const g = GROUPS[o.group];
+      html += `<section class="group"><p class="gtag">${g.tag}</p><h3>${g.title}</h3><p>${g.sum}</p></section>`;
+      lastGroup = o.group;
+    }
+    const badges = o.badges.map(b => `<span class="badge ${b[0]}">${b[1]}</span>`).join("");
+    html += `
+    <article class="card${o.pick ? " pick" : ""}" id="opt-${o.rank}">
+      <div class="rank">${o.rank}</div>
+      <div class="cbody">
+        <h4>${o.name}</h4>
+        <p class="sub">${o.loc}</p>
+        <div class="badges">${badges}</div>
+        <p class="summary">${o.summary}</p>
+        <div class="facts">
+          <div class="fact"><b>Pool</b><span>${o.pool}</span></div>
+          <div class="fact"><b>Food</b><span>${o.food_note}</span></div>
+          <div class="fact"><b>Hiking</b><span>${o.hike}</span></div>
+        </div>
+        <div class="costbar" data-cost="${o.rank}"></div>
+        <p class="catch"><b>The catch</b><span>${o.catch}</span></p>
+      </div>
+    </article>`;
+  });
+  cardsEl.innerHTML = html;
+}
+
+function paintCosts(){
+  OPTIONS.forEach(o => {
+    const el = cardsEl.querySelector(`[data-cost="${o.rank}"]`);
+    if (!el) return;
+    const c = costOf(o, nights, room);
+    const [vc, vt] = verdictClass(c.pp);
+    const roomLabel = room === "b" ? o.roomB : o.roomA;
+    const foodLine = o.food
+      ? `<i>${money(o.food)}</i>/day food`
+      : `<i>food included</i>`;
+    el.innerHTML = `
+      <span class="cost-main">${money(c.pp)}<small>/person, all in</small></span>
+      <span class="cost-tot">${money(c.total)} total · ${nights} nights</span>
+      <span class="verd ${vc}">${vt}</span>
+      <p class="cost-break">${roomLabel} · <i>${money(c.lodging)}</i>/night · ${foodLine} ·
+        flights <i>${money(o.flightPP)}</i> pp · transfers &amp; guides <i>${money(o.transfers + o.extras)}</i></p>`;
+  });
+}
+
+/* ---------------- Controls ---------------- */
+const segNights = document.getElementById("seg-nights");
+segNights.innerHTML = NIGHT_CHOICES.map(n =>
+  `<button type="button" data-nights="${n}" aria-pressed="${n === nights}">${n}</button>`).join("");
+
+segNights.addEventListener("click", e => {
+  const b = e.target.closest("button[data-nights]");
+  if (!b) return;
+  nights = Number(b.dataset.nights);
+  segNights.querySelectorAll("button").forEach(x =>
+    x.setAttribute("aria-pressed", String(Number(x.dataset.nights) === nights)));
+  paintCosts(); refreshPopups();
+});
+
+const segRoom = document.getElementById("seg-room");
+segRoom.addEventListener("click", e => {
+  const b = e.target.closest("button[data-room]");
+  if (!b) return;
+  room = b.dataset.room;
+  segRoom.querySelectorAll("button").forEach(x =>
+    x.setAttribute("aria-pressed", String(x.dataset.room === room)));
+  paintCosts(); refreshPopups();
+});
+
+buildCards();
+paintCosts();
+
+/* ---------------- Map ---------------- */
+const AIRPORTS = [
+  {code:"PVR", name:"Puerto Vallarta", lat:20.6801, lng:-105.2544},
+  {code:"MEX", name:"Mexico City", lat:19.4363, lng:-99.0721},
+  {code:"HUX", name:"Huatulco", lat:15.7753, lng:-96.2626},
+  {code:"SJD", name:"Los Cabos", lat:23.1518, lng:-109.7211}
+];
+
+const RULED_OUT = [
+  {name:"Ixtapa / Zihuatanejo", why:"Guerrero — Level 4", lat:17.6400, lng:-101.5500},
+  {name:"Manzanillo", why:"Colima — Level 4", lat:19.1000, lng:-104.3400},
+  {name:"San Miguel de Allende", why:"Level 3, weak hiking", lat:20.9153, lng:-100.7436},
+  {name:"Cancún", why:"Excluded by preference", lat:21.1619, lng:-86.8515},
+  {name:"Los Cabos strip", why:"Excluded by preference", lat:22.8905, lng:-109.9167}
+];
+
+const LEVEL_COLOR = {2:"#3E7A5E", 3:"#A9791F", 4:"#B03030"};
+const markerRefs = [];
+
+const map = L.map("map", {scrollWheelZoom:true, zoomControl:true}).setView([19.6, -101.6], 5);
+L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  maxZoom:16
+}).addTo(map);
+
+function pinIcon(label, color, square){
+  return L.divIcon({
+    className:"",
+    html:`<div class="pin${square ? " sq" : ""}" style="background:${color}"><span>${label}</span></div>`,
+    iconSize: square ? [22,22] : [29,29],
+    iconAnchor: square ? [11,11] : [15,28],
+    popupAnchor: square ? [0,-12] : [0,-27]
+  });
+}
+
+OPTIONS.forEach(o => {
+  const m = L.marker([o.lat, o.lng], {icon: pinIcon(o.rank, LEVEL_COLOR[o.level])}).addTo(map);
+  m.bindPopup("");
+  markerRefs.push({marker:m, opt:o});
+});
+
+AIRPORTS.forEach(a => {
+  L.marker([a.lat, a.lng], {icon: pinIcon("&#9992;", "#2E6F8E", true)}).addTo(map)
+    .bindPopup(`<span class="pp-name">${a.code}</span><span class="pp-meta">${a.name} · arrival airport</span>`);
+});
+
+RULED_OUT.forEach(r => {
+  L.circleMarker([r.lat, r.lng], {
+    radius:6, color:"#fff", weight:2, fillColor:"#B03030", fillOpacity:.85
+  }).addTo(map).bindPopup(`<span class="pp-name">${r.name}</span><span class="pp-meta">Ruled out — ${r.why}</span>`);
+});
+
+function refreshPopups(){
+  markerRefs.forEach(({marker, opt}) => {
+    const c = costOf(opt, nights, room);
+    marker.setPopupContent(
+      `<span class="pp-name">${opt.rank}. ${opt.name}</span>` +
+      `<span class="pp-meta">${opt.loc}</span>` +
+      `<span class="pp-cost">${money(c.pp)} per person &middot; ${nights} nights</span>`
+    );
+  });
+}
+refreshPopups();
+</script>
+<!-- hub-overlay:start -->
+<script src="../../hub-overlay.js" data-hub-root="../../" defer></script>
+<!-- hub-overlay:end -->
+</body>
+</html>
