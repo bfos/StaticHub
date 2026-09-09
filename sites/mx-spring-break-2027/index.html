@@ -42,6 +42,19 @@
   .verdict li:last-child{margin-bottom:0}
   .verdict b{color:var(--ink)}
 
+  /* ---------- Age note ---------- */
+  .agenote{margin:16px 0 6px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--agave);
+    border-radius:14px;padding:20px 22px;box-shadow:var(--shadow)}
+  .agenote h2{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--agave-deep);margin:0 0 12px;font-weight:600}
+  .agenote p{font-size:15px;margin:0 0 11px;color:#3d3128}
+  .agenote p:last-child{margin-bottom:0}
+  .agenote b{color:var(--ink)}
+  .agegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:14px 0 12px}
+  .agebox{border:1px solid var(--line-soft);border-radius:10px;padding:11px 13px;background:var(--sand)}
+  .agebox .k{font-family:var(--mono);font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:600;display:block;margin-bottom:4px}
+  .agebox.ok .k{color:var(--agave-deep)} .agebox.no .k{color:#9A2B2B} .agebox.hm .k{color:var(--gold)}
+  .agebox span.v{font-size:13px;color:#4a3d34}
+
   /* ---------- Section headings ---------- */
   h2.sect{font-family:var(--display);font-weight:640;font-size:clamp(21px,3vw,29px);letter-spacing:-.01em;margin:52px 0 6px}
   .sect-sub{font-size:14.5px;color:var(--muted);margin:0 0 20px;max-width:70ch}
@@ -97,7 +110,17 @@
     display:flex;align-items:center;justify-content:center;letter-spacing:-.02em}
   .card.pick .rank{background:var(--terra)}
   .cbody h4{font-family:var(--display);font-weight:600;font-size:19.5px;margin:1px 0 3px;letter-spacing:-.01em;line-height:1.15}
-  .sub{font-size:12.5px;color:var(--muted);margin:0 0 11px;font-family:var(--mono);letter-spacing:.02em}
+  .cbody h4 a{color:inherit;text-decoration:none;border-bottom:1.5px solid rgba(194,84,45,.32);transition:color .12s,border-color .12s}
+  .cbody h4 a:hover,.cbody h4 a:focus-visible{color:var(--terra-deep);border-bottom-color:var(--terra)}
+  .cbody h4 a::after{content:"\2197";font-size:.58em;vertical-align:.42em;margin-left:3px;color:var(--muted)}
+  .sub{font-size:12.5px;color:var(--muted);margin:0 0 11px;font-family:var(--mono);letter-spacing:.02em;
+    display:flex;flex-wrap:wrap;align-items:center;gap:4px 9px}
+  .maplink{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--sky);text-decoration:none;white-space:nowrap;
+    border:1px solid rgba(46,111,142,.28);background:rgba(46,111,142,.07);border-radius:999px;padding:2px 9px;transition:background .12s,border-color .12s}
+  .maplink:hover,.maplink:focus-visible{background:rgba(46,111,142,.16);border-color:rgba(46,111,142,.5)}
+  .pp-links{display:flex;gap:8px;margin-top:7px}
+  .pp-links a{font-family:var(--mono);font-size:11px;text-decoration:none;color:var(--sky);
+    border:1px solid rgba(46,111,142,.3);border-radius:999px;padding:2px 8px}
   .badges{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 12px}
   .badge{font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:999px;display:inline-flex;align-items:center;gap:5px;line-height:1.25;border:1px solid transparent}
   .b-ai{background:rgba(62,122,94,.13);color:var(--agave-deep);border-color:rgba(62,122,94,.30)}
@@ -182,7 +205,7 @@
   <header class="masthead">
     <p class="eyebrow">Mexico · March 13–21, 2027 · three travelers from MCI</p>
     <h1>A great pool, real trailheads, and <em>nobody</em> asking you for a credit card.</h1>
-    <p class="lede">Thirteen options built around your four constraints — <b>a genuinely relaxing resort with good food</b>, <b>a pool worth spending all day at</b>, <b>half-day hiking within reach</b>, and <b>not Cancún or Cabo</b> — each priced all-in for three people, flights included, against your $3,000-per-person ceiling. Every property here has been checked for one thing that quietly disqualifies a lot of the obvious candidates: whether a 17-year-old is allowed to stay at all.</p>
+    <p class="lede">Fifteen options built around your four constraints — <b>a genuinely relaxing resort with good food</b>, <b>a pool worth spending all day at</b>, <b>half-day hiking within reach</b>, and <b>not Cancún or Cabo</b> — each priced all-in for three people, flights included, against your $3,000-per-person ceiling. Every property here has been checked for the one thing that quietly disqualifies a lot of the obvious candidates: whether your daughter is old enough to stay at all.</p>
   </header>
 
   <section class="verdict">
@@ -194,11 +217,23 @@
     </ol>
   </section>
 
+  <section class="agenote">
+    <h2>About her age — this matters more than it should</h2>
+    <p>She turns 17 <b>on March 17</b>, which means she checks in at <b>16</b>. Hotels apply their minimum age at check-in, not mid-stay, so 16 is the number that governs every booking below. That's a narrower door than 17 in one direction and a wider one in another:</p>
+    <div class="agegrid">
+      <div class="agebox ok"><span class="k">13+ properties</span><span class="v">Fine. This is what keeps <b>Amomoxtli</b> in play.</span></div>
+      <div class="agebox ok"><span class="k">16+ adults-only</span><span class="v">Fine — she qualifies on day one. Worth asking about explicitly.</span></div>
+      <div class="agebox no"><span class="k">18+ adults-only</span><span class="v">Out. This removes <b>Paradero</b>, <b>Hotel San Cristóbal</b> and <b>Kimpton Mas Olas</b>.</span></div>
+      <div class="agebox hm"><span class="k">"Adults-only" unspecified</span><span class="v">Assume 18+ until they confirm in writing. Some listings use the label for 13+ or 16+ properties.</span></div>
+    </div>
+    <p>None of the fifteen options below turn on this — every one of them accepts a 16-year-old. But it changes what you should ask for on the phone, and it means one more thing worth knowing: <b>at every property here she is priced as an adult</b>. Nearly all of them charge full adult rates from age 13, so the "third person" line never gets a discount. That is precisely why a suite usually beats a second room.</p>
+  </section>
+
   <h2 class="sect" id="map-h">Where these actually are</h2>
   <p class="sect-sub">Pins are colored by the current U.S. State Department advisory level for the state they sit in, which turned out to be a real discriminator — several otherwise-perfect resorts are in Level 4 states. Squares are the airports you'd fly into.</p>
 
   <div class="mapcard">
-    <div id="map" role="img" aria-label="Map of Mexico showing thirteen resort options clustered in Riviera Nayarit and Puerto Vallarta, the Oaxacan coast at Huatulco, the highlands south and west of Mexico City, and Todos Santos in Baja California Sur."></div>
+    <div id="map" role="img" aria-label="Map of Mexico showing fifteen resort options clustered in Riviera Nayarit and Puerto Vallarta, the Oaxacan coast at Huatulco, the highlands south and west of Mexico City, and La Paz and Todos Santos in Baja California Sur."></div>
     <div class="map-cap">
       <span class="keydot"><i class="l2"></i> Level 2 state</span>
       <span class="keydot"><i class="l3"></i> Level 3 state</span>
@@ -207,9 +242,9 @@
       <span style="margin-left:auto;font-size:12px">Click a pin for the option · scroll or pinch to zoom</span>
     </div>
   </div>
-  <p class="map-note">The clustering is not an accident. Almost everything that satisfies "great pool <em>and</em> good hiking <em>and</em> not a tourist strip" ends up in one of four places: the Nayarit coast north of Puerto Vallarta, the Sierra Madre behind it, the nine bays of Huatulco, or the pine highlands within a few hours of Mexico City.</p>
+  <p class="map-note">The clustering is not an accident. Almost everything that satisfies "great pool <em>and</em> good hiking <em>and</em> not a tourist strip" ends up in one of five places: the Nayarit coast north of Puerto Vallarta, the Sierra Madre behind it, the nine bays of Huatulco, the pine highlands within a few hours of Mexico City, or the Pacific side of Baja California Sur.</p>
 
-  <h2 class="sect" id="list">The thirteen options</h2>
+  <h2 class="sect" id="list">The fifteen options</h2>
   <p class="sect-sub">Ranked on fit to your brief, not on luxury. Move the two controls below and every cost on the page recalculates — the nights control is the lever you said you'd pull first if something good came in over budget.</p>
 
   <div class="controls">
@@ -241,7 +276,7 @@
       </thead>
       <tbody>
         <tr><td><b>PVR</b> Puerto Vallarta</td><td>Riviera Nayarit, PV, Sierra Madre</td><td>One stop — DFW, PHX, IAH, DEN, LAX or ORD. Many daily options.</td><td class="num">$550–750</td><td>~7–9 hrs</td></tr>
-        <tr><td><b>SJD</b> Los Cabos</td><td>Todos Santos, East Cape</td><td><b>Nonstop</b> — Southwest, Saturdays only. Out 10:40a, back 11:35a.</td><td class="num">$480–700</td><td>~3.5 hrs</td></tr>
+        <tr><td><b>SJD</b> Los Cabos</td><td>La Paz, Todos Santos</td><td><b>Nonstop</b> — Southwest, Saturdays only. Out 10:40a, back 11:35a.</td><td class="num">$480–700</td><td>~3.5 hrs</td></tr>
         <tr><td><b>MEX</b> Mexico City</td><td>Tepoztlán, Valle de Bravo</td><td>One stop — DFW, IAH, ORD, ATL or LAX.</td><td class="num">$500–750</td><td>~7–9 hrs</td></tr>
         <tr><td><b>HUX</b> Huatulco</td><td>Oaxaca's Pacific coast</td><td>One stop via DFW — American flies DFW–HUX about 10× weekly in season.</td><td class="num">$650–900</td><td>~9–11 hrs</td></tr>
       </tbody>
@@ -250,7 +285,7 @@
   <p class="tnote">Those are modeled spring-break fares booked around six months out, not quotes. March 2027 schedules are published and bookable, but fares will move — set a Google Flights price alert on all four routes now and you'll know within a few weeks whether these bands hold. The Cabo nonstop is worth flagging separately: <b>Saturday March 13 out, Saturday March 20 back</b> is a clean seven-night trip with no connection in either direction, which is the single easiest travel day available to you anywhere in Mexico.</p>
 
   <h2 class="sect">What we ruled out, and why</h2>
-  <p class="sect-sub">Some of these are genuinely painful exclusions — one of them would otherwise have been the best property on the list for a 17-year-old.</p>
+  <p class="sect-sub">Some of these are genuinely painful exclusions — one of them would otherwise have been the best property on the list for her.</p>
 
   <div class="outgrid">
     <div class="out l4">
@@ -265,8 +300,8 @@
     </div>
     <div class="out fit">
       <p class="otag">Fails the age check</p>
-      <h4>Paradero Todos Santos</h4>
-      <p>On paper this is exactly your trip: an all-inclusive-style rate that bundles guided hiking and biking, a Michelin-recognized kitchen, and a spectacular pool in the Baja desert. It is <b>18+ to check in</b>, so it's out for another year. Hotel San Cristóbal Baja, the other obvious Todos Santos pick, is adults-only too.</p>
+      <h4>Baja's three best pools</h4>
+      <p><b>Paradero Todos Santos</b> is, on paper, exactly your trip: a rate that bundles guided hiking and biking, a Michelin-recognized kitchen, and a spectacular desert pool. It is <b>18+ to check in</b>. So is <b>Hotel San Cristóbal Baja</b>, and so is <b>Kimpton Mas Olas</b> — the reopened Rancho Pescadero, now 94 rooms with private plunge pools, and adults-only. Between them they take the three best pools in the region off the table, which is why the Baja options here rank where they do.</p>
     </div>
     <div class="out fit">
       <p class="otag">Weak on hiking</p>
@@ -288,10 +323,10 @@
   <h2 class="sect">What we'd do next</h2>
   <ol class="steps">
     <li><b>Set fare alerts on all four airports this week.</b> Six months out is roughly the right booking window for spring break; the bands in the flights table will either firm up or move, and you'll want to know which before you commit to a region.</li>
-    <li><b>Email Marival Armony and Conrad Punta de Mita directly</b> for a March 14–20, 2027 quote for two adults and one 17-year-old, asking specifically for the one-bedroom suite rate <em>and</em> the two-connecting-rooms rate. Nearly every property on this list charges a 17-year-old as an adult, so the suite is usually the cheaper way to give her a door that closes.</li>
+    <li><b>Email Marival Armony and Conrad Punta de Mita directly</b> for a March 14–20, 2027 quote for two adults and one 16-year-old, asking specifically for the one-bedroom suite rate <em>and</em> the two-connecting-rooms rate. Every property here charges her as an adult, so the suite is almost always the cheaper way to give her a door that closes. Say her age plainly in the first email — it's the fastest way to surface a policy problem before you're attached to a property.</li>
     <li><b>Confirm Amomoxtli's age policy in writing</b> if it stays on the list. Sources describe it as 13+, but some booking channels list it as "adults only," which is how they flag 13+ properties — worth a direct email rather than a surprise at check-in.</li>
     <li><b>Check the Grand Velas blackout.</b> Their published blackout runs March 20 – April 4, 2027, so a stay there has to end by the 19th. That is compatible with your window, but only if you book the front half of it.</li>
-    <li><b>Passports.</b> All three of you need one valid well past the travel dates. A 17-year-old traveling with both parents needs no notarized consent letter — that requirement only applies when a minor travels with one parent or neither.</li>
+    <li><b>Passports.</b> All three of you need one valid well past the travel dates, and hers must still be valid in her <em>current</em> name and photo — a minor's passport is issued for five years, so check the expiry now rather than in February. A minor traveling with both parents needs no notarized consent letter; that requirement only applies when a minor travels with one parent or neither.</li>
   </ol>
 
   <footer>
@@ -316,6 +351,7 @@ const PEOPLE = 3, BUDGET_PP = 3000;
 const OPTIONS = [
   /* ---------------- Riviera Nayarit ---------------- */
   {rank:1, group:"nayarit", pick:true, lat:20.7620, lng:-105.4700, level:2,
+   url:"https://marivalarmony.com/",
    name:"Marival Armony Luxury Resort &amp; Spa", loc:"Punta de Mita, Nayarit · MGallery · all-inclusive",
    badges:[["b-pick","Best overall fit"],["b-ai","True all-inclusive"],["b-room","1 &amp; 2-bedroom suites"],["b-teen","Teen program"],["b-l2","Level 2"]],
    summary:"The closest thing to a purpose-built answer to your daughter's request. A genuine all-inclusive on Destiladeras Beach with 80-odd one- and two-bedroom suites, five pools, four restaurants, and programming that explicitly includes teenagers rather than treating them as oversized children. She gets a bedroom with a door and can order whatever she wants, whenever, without a transaction ever happening.",
@@ -327,9 +363,10 @@ const OPTIONS = [
    catch:"It's a polished four-diamond all-inclusive, not a design-boutique property. Destiladeras has real surf, so the pool is where the day happens."},
 
   {rank:2, group:"nayarit", lat:20.8022, lng:-105.4553, level:2,
+   url:"https://www.conradpuntademita.com/",
    name:"Conrad Punta de Mita", loc:"Higuera Blanca, Nayarit · charge-to-room",
    badges:[["b-room","Oceanfront suites"],["b-teen","Works well for older kids"],["b-l2","Level 2"]],
-   summary:"The best food-plus-pool combination in the region that still takes a 17-year-old seriously. Seven restaurants, three pools with a separate adult pool, and a stretch of coast quiet enough that the resort feels like the whole destination. Not all-inclusive — but everything charges to the room, which by your daughter's own description is the part that actually matters to her.",
+   summary:"The best food-plus-pool combination in the region that still takes a teenager seriously. Seven restaurants, three pools with a separate adult pool, and a stretch of coast quiet enough that the resort feels like the whole destination. Not all-inclusive — but everything charges to the room, which by your daughter's own description is the part that actually matters to her.",
    flightPP:620, lodgingA:780, lodgingB:1150, food:300, transfers:400, extras:350,
    roomA:"Oceanfront suite for three", roomB:"Two connecting king rooms",
    hike:"Same Sierra de Vallejo trail network as option 1 — Monkey Mountain and the San Pancho traverse, 20–30 minutes away. Guided jungle hikes bookable through WildMex or EcoHike in Sayulita.",
@@ -338,6 +375,7 @@ const OPTIONS = [
    catch:"Food is the big variable cost here — budget roughly $300 a day for three if you eat entirely on property. Driving into Sayulita or La Cruz for dinner cuts that by more than half."},
 
   {rank:3, group:"nayarit", lat:20.7817, lng:-105.5133, level:2,
+   url:"https://aubergeresorts.com/susurros/",
    name:"Susurros del Corazón, Auberge Collection", loc:"Punta de Mita, Nayarit · charge-to-room",
    badges:[["b-room","Suites available"],["b-teen","Teen activities"],["b-l2","Level 2"]],
    summary:"The most beautiful property in the Nayarit set and the best food, with three cascading pools running down to a private white-sand beach. Auberge runs actual teen programming — beach volleyball, handball, tie-dye — and one recent review is titled, verbatim, that it impressed a teenager. If you want the trip to feel like a special occasion rather than a good vacation, this is where that happens.",
@@ -349,6 +387,7 @@ const OPTIONS = [
    catch:"At this nightly rate the budget only stretches to five nights, and the second-room configuration pushes it past your ceiling outright."},
 
   {rank:4, group:"nayarit", lat:20.7052, lng:-105.2960, level:2,
+   url:"https://vallarta.grandvelas.com/",
    name:"Grand Velas Riviera Nayarit", loc:"Nuevo Nayarit · all-suite, all-inclusive",
    badges:[["b-ai","True all-inclusive"],["b-room","Every room is a suite"],["b-teen","Teens club"],["b-l2","Level 2"]],
    summary:"The best food of any all-inclusive in Mexico, full stop — AAA Five Diamond, and the reason people who dislike all-inclusives make an exception for Velas. Every room is a suite with a balcony and ocean view, there's a three-tiered infinity pool with a swim-up bar, and there are separate kids' and teens' clubs. If \"very relaxing resort with good food\" is the sentence that matters most, this is the literal answer.",
@@ -360,6 +399,7 @@ const OPTIONS = [
    catch:"Two real constraints. Their published blackout runs March 20 – April 4, 2027, so your stay has to end by the 19th. And it only fits your budget at four or five nights."},
 
   {rank:5, group:"nayarit", lat:20.7690, lng:-105.5250, level:2,
+   url:"https://www.iberostar.com/en/hotels/riviera-nayarit/iberostar-selection-playa-mita/",
    name:"Iberostar Selection Playa Mita", loc:"Punta de Mita, Nayarit · all-inclusive",
    badges:[["b-ai","True all-inclusive"],["b-teen","Teen club"],["b-l2","Level 2"]],
    summary:"The value play, and the cheapest way to stay a full eight nights on the Nayarit coast. All-inclusive, a water park, and a dedicated teen space called Eagle Camp with consoles and games. Same beach, same trailheads, same Level 2 state as the three above it — over six nights it comes in about $1,100 a person under Susurros and $500 under Garza Blanca.",
@@ -372,6 +412,7 @@ const OPTIONS = [
 
   /* ---------------- Jalisco / Sierra Madre ---------------- */
   {rank:6, group:"jalisco", lat:20.5450, lng:-105.2810, level:3,
+   url:"https://www.garzablancaresort.com/puerto-vallarta",
    name:"Garza Blanca Preserve Resort &amp; Spa", loc:"Puerto Vallarta, Jalisco · optional all-inclusive",
    badges:[["b-ai","All-inclusive optional"],["b-room","1–3 bedroom suites"],["b-teen","Hiking on-site"],["b-l3","Level 3"]],
    summary:"The only property on this list where the hiking is literally on the grounds. Eighty-five acres of Sierra Madre jungle running down to a private beach, with free guided hikes for guests every day — you can do a half-day trail up the river and be back at the pool by lunch without arranging a thing. Three pools, one- to three-bedroom suites, and it's fifteen minutes from the PVR terminal, which makes it the shortest travel day of any one-stop option here.",
@@ -383,6 +424,7 @@ const OPTIONS = [
    catch:"Jalisco is Level 3, though the PV resort corridor is the long-standing carve-out. Note that the all-inclusive plan charges anyone 13 and over at the full adult rate."},
 
   {rank:7, group:"jalisco", lat:20.6167, lng:-104.7500, level:3, split:true,
+   url:"https://en.sierralagoresort.com/",
    name:"Sierra Lago + a Nayarit beach week", loc:"Mascota, Jalisco → Riviera Nayarit · split trip",
    badges:[["b-ai","All-inclusive (mountain half)"],["b-teen","Mountains + coast"],["b-l3","Level 3 / Level 2"]],
    summary:"Your \"mountains and coast\" idea, done without a second flight. Sierra Lago is an all-inclusive lodge on a lake at 6,500 feet in the pine forests of the Sierra Madre, about 2½ hours inland from Puerto Vallarta — walking tours, canoeing, horses, bonfires, stargazing, and cool nights. Three nights there, then back down to four nights on the Nayarit coast at any of options 1–5. One airport, two completely different trips.",
@@ -394,7 +436,8 @@ const OPTIONS = [
    catch:"Two transfers of 2½ hours each add most of a day in total, and the blended cost model here is rougher than the single-property options."},
 
   /* ---------------- Oaxaca coast ---------------- */
-  {rank:8, group:"oaxaca", lat:15.7658, lng:-96.0900, level:2,
+  {rank:8, group:"oaxaca", lat:15.7672, lng:-96.0985, level:2,
+   url:"https://www.hyattinclusivecollection.com/en/resorts-hotels/dreams/mexico/huatulco-resort-spa/",
    name:"Dreams Huatulco Resort &amp; Spa", loc:"Tangolunda, Oaxaca · all-inclusive",
    badges:[["b-ai","True all-inclusive"],["b-teen","Teen program"],["b-l2","Level 2"]],
    summary:"The best answer to \"somewhere that isn't the typical tourist location.\" Huatulco is nine bays on the Oaxacan Pacific inside a national park, in a Level 2 state, and almost no one from Kansas City goes there. Dreams is a full all-inclusive with six pools — kids' pools, adults-only sections, activity pools — and it leaves the most budget headroom of any all-inclusive on this list.",
@@ -405,7 +448,8 @@ const OPTIONS = [
    pool:"Six pools, which is more separate water than any other property here.",
    catch:"The longest travel day — one stop via DFW, roughly 9–11 hours door to door, and the DFW–HUX flight is seasonal."},
 
-  {rank:9, group:"oaxaca", lat:15.7833, lng:-96.0333, level:2,
+  {rank:9, group:"oaxaca", lat:15.7745, lng:-96.0640, level:2,
+   url:"https://www.laspalmashuatulco.com/",
    name:"Las Palmas Oceanfront Villas &amp; Casitas", loc:"Huatulco, Oaxaca · villa rental",
    badges:[["b-room","Private infinity pool"],["b-room","Own bedroom-suite each"],["b-l2","Level 2"]],
    summary:"The most literal solution to \"she'd like her own room.\" These are villas and casitas on a hillside above Violín beach, each with its own infinity pool. The four-bedroom villa gives all three of you a separate bedroom-suite with its own bathroom, a full kitchen, a rooftop deck, daily maid service, and an optional cook — for less than two hotel rooms at most of the resorts above.",
@@ -414,10 +458,11 @@ const OPTIONS = [
    hike:"Same Huatulco National Park network as option 8 — Cacaluta Bay, El Órgano, the Copalita trails.",
    food_note:"Not a resort, so you're cooking, hiring the villa cook, or eating in La Crucecita — where dinner runs $12–20 a person.",
    pool:"A private infinity pool for your party alone, which is a different proposition from a great resort pool. Better for relaxing; nothing to do but relax.",
-   catch:"There is no resort around it — no restaurants, no bar, no other guests. That's the appeal for you two and possibly the problem for a 17-year-old."},
+   catch:"There is no resort around it — no restaurants, no bar, no other guests. That's the appeal for you two and possibly the problem for a 16-year-old."},
 
   /* ---------------- Highlands ---------------- */
   {rank:10, group:"highlands", lat:18.9847, lng:-99.0996, level:3,
+   url:"https://amomoxtli.com/en/",
    name:"Amomoxtli", loc:"Tepoztlán, Morelos · boutique · 13+",
    badges:[["b-teen","13+ — she qualifies"],["b-l3","Level 3"]],
    summary:"Your own find, and it holds up. A heated pool with two whirlpools looking straight at the Tepozteco cliffs, poolside restaurant service, and a kitchen doing strictly local, regional cooking that reviewers consistently single out. The Tepozteco pyramid trail starts in the village below — 2.6 km, 341 m of climb, stone steps the whole way, about 1 hour 40 minutes round trip to a 900-year-old Aztec pyramid with the whole valley underneath you. That is a superb half-day hike and it's on your doorstep.",
@@ -429,9 +474,10 @@ const OPTIONS = [
    catch:"Three things. Rooms sleep two and there are no suites, so \"her own room\" here means a second room at full price — which pushes a six-night stay past your ceiling on its own. There is no all-inclusive and no beach. And she would very likely be the only teenager on the property."},
 
   {rank:11, group:"highlands", lat:19.2100, lng:-100.1200, level:2,
+   url:"https://www.hotelrodavento.com/",
    name:"Rodavento", loc:"Valle de Bravo, Estado de México · boutique",
    badges:[["b-teen","Activities included"],["b-l2","Level 2"]],
-   summary:"A wood-and-steel lodge in a 55-acre forest with its own lake, two pools — one for families, one adults-only — and one complimentary adventure activity per person per stay: zipline, climbing wall, archery, kayak or paddleboard. Of the highland options this is the one with the most for a 17-year-old to actually do, in the cheapest configuration on the whole list, in a Level 2 state.",
+   summary:"A wood-and-steel lodge in a 55-acre forest with its own lake, two pools — one for families, one adults-only — and one complimentary adventure activity per person per stay: zipline, climbing wall, archery, kayak or paddleboard. Of the highland options this is the one with the most for a 16-year-old to actually do, in the cheapest configuration on the whole list, in a Level 2 state.",
    flightPP:580, lodgingA:740, lodgingB:740, food:260, transfers:500, extras:250,
    roomA:"Two rooms — nothing here sleeps three, so the cost is the same either way", roomB:"Two rooms",
    hike:"Velo de Novia, a 2.3-mile out-and-back through a mossy wooded canyon to a waterfall, about 1 hour 20 minutes and moderately challenging. Cerro Gordo is the bigger climb with panoramic views over the lake. The Piedra Herrada monarch sanctuary is nearby but its season ends right around your dates — see the note in the footer.",
@@ -440,6 +486,7 @@ const OPTIONS = [
    catch:"You'd fly into Mexico City and drive 2½ hours west. Cool pine-forest weather in March, not swimming weather every day."},
 
   {rank:12, group:"highlands", lat:19.1856, lng:-100.1358, level:2,
+   url:"https://www.elsantuario.com/",
    name:"El Santuario Resort &amp; Spa", loc:"Valle de Bravo, Estado de México · resort &amp; spa",
    badges:[["b-room","Suites with plunge pools"],["b-l2","Level 2"]],
    summary:"The more resort-like of the two Valle de Bravo options: two outdoor pools plus additional spa pools and a traditional temazcal sweat lodge, on a stunning lakeside setting, with suites that have their own private plunge pools. If the highlands appeal but Rodavento reads too rustic, this is the alternative.",
@@ -451,16 +498,41 @@ const OPTIONS = [
    catch:"The most mixed reviews of anything on this list — recurring complaints about inconsistent service, small and dated suites, and rates that feel high for what's delivered. Worth a careful read of recent reviews before booking."},
 
   /* ---------------- Baja ---------------- */
-  {rank:13, group:"baja", lat:23.4467, lng:-110.2264, level:2,
-   name:"Todos Santos &amp; the East Cape", loc:"Baja California Sur · boutique hotels",
-   badges:[["b-teen","Nonstop from MCI"],["b-l2","Level 2"]],
-   summary:"Included because of one genuinely tempting fact: the Saturday Southwest nonstop from MCI to Los Cabos turns your window into a seven-night trip with no connection in either direction — out Saturday March 13, back Saturday March 20. Todos Santos is an hour up the Pacific side and is nothing like Cabo: a desert-arts town with the Sierra de la Laguna biosphere reserve behind it and canyon waterfall hikes in the hills.",
-   flightPP:580, lodgingA:620, lodgingB:620, food:280, transfers:550, extras:400,
-   roomA:"Two rooms at a family-friendly boutique hotel — same cost either way", roomB:"Two rooms at a family-friendly boutique hotel",
-   hike:"The best desert hiking on the list. Guided Sierra de la Laguna trips run from Todos Santos — a flat riverbed stroll to seasonal waterfalls, or a harder climb up into the reserve, with certified wilderness-responder guides. Trailhead is about 45 minutes northeast.",
-   food_note:"Todos Santos punches far above its size on food, and you'd be eating in town rather than at a resort.",
-   pool:"The dealbreaker. The two properties with spectacular pools — Paradero and Hotel San Cristóbal — are both adults-only. The family-friendly options (Guaycura, Villa Santa Cruz, Hacienda Cerritos) have small pools, and one of them is a rooftop plunge.",
-   catch:"You'd want a rental car here, which is fine — Baja driving is easy. But this option wins on flights and hiking and loses on the thing you named first, which is the pool."}
+  {rank:13, group:"baja", lat:24.2296, lng:-110.3131, level:2,
+   url:"https://www.ihg.com/hotelindigo/hotels/us/en/la-paz/lapgo/hoteldetail",
+   name:"Hotel Indigo La Paz Puerta Cortés", loc:"La Paz · formerly CostaBaja Resort &amp; Spa",
+   badges:[["b-teen","Nonstop to SJD"],["b-room","Suites with living rooms"],["b-l2","Level 2"]],
+   summary:"The best Baja answer, and the cheapest per-night stay on the whole list. A 115-room beachfront resort on its own bay ten minutes outside La Paz, with three pools — a main pool with a swim-up bar, a lap pool over the marina, and an infinity pool at the Blue Cortés beach club — plus a kids' club, two restaurants and a golf course. Super Suites have a separate living room and kitchenette. And in March the whale sharks are still in the bay: the season runs October to April, and snorkeling with them is the kind of day a 16-year-old remembers for good.",
+   flightPP:580, lodgingA:340, lodgingB:480, food:220, transfers:550, extras:500,
+   roomA:"Super Suite Sea View for three", roomB:"Two Sea View Deluxe rooms",
+   hike:"Sierra de la Laguna is reachable from the La Paz side, about 1½ hours south — the weakest hiking access in the Baja group. Closer in, there are coastal desert walks at Balandra and trails on Espíritu Santo island, both excellent half-days but more scramble-and-snorkel than proper hiking.",
+   food_note:"Two restaurants on site — Steinbeck's grilling over the marina, Mosaic all day with a swim-up bar — and downtown La Paz has a genuinely good, entirely unhurried restaurant scene ten minutes away.",
+   pool:"Three pools plus the beach club, on flat shallow water made for paddleboarding. Not a showpiece pool, but the most actual water of anything in Baja that will take her.",
+   catch:"Rebranded from CostaBaja to Hotel Indigo under IHG in 2024, so older reviews describe a different operation. You'd fly the nonstop into Los Cabos and drive about two hours north — easy driving, but it's a real transfer."},
+
+  {rank:14, group:"baja", lat:23.4270, lng:-110.2320, level:2,
+   url:"https://villasantacruzbaja.com/",
+   name:"Villa Santa Cruz", loc:"Todos Santos · 23-room beachfront boutique",
+   badges:[["b-teen","Nonstop to SJD"],["b-room","Connecting rooms"],["b-l2","Level 2"]],
+   summary:"The prettiest place to stay in Todos Santos that will actually take her. Twenty-three rooms on twenty acres of secluded Pacific beachfront, with a saltwater pool and jacuzzi, a second pool deck, a rooftop terrace, a yoga pavilion and a pickleball court. Breakfast, welcome margaritas and morning coffee delivered to the room are all included, and the on-site restaurant, The Green Room, is a destination in its own right. It rates 9.8 on Expedia — the highest-rated property anywhere on this list.",
+   flightPP:580, lodgingA:650, lodgingB:1150, food:200, transfers:550, extras:450,
+   roomA:"One room with an extra bed — needs confirming", roomB:"Two connecting rooms",
+   hike:"The best hiking base in Baja. Guided Sierra de la Laguna trips leave from Todos Santos with certified wilderness-responder guides — a flat riverbed walk to seasonal waterfalls, or a harder climb into the reserve. Trailhead about 45 minutes northeast.",
+   food_note:"Breakfast included, The Green Room on site, and Todos Santos punches far above its size — Hierbabuena and Free Souls are both worth the drive.",
+   pool:"Two pools including a saltwater pool and jacuzzi on a beach deck. Lovely and quiet rather than large — this is a 23-room hotel, not a resort.",
+   catch:"Rooms run $567–770 a night before you add a second one, so the two-room configuration gets expensive fast. And the Pacific here has serious surf — it is not a swimming beach, which puts all the pressure on that one pool."},
+
+  {rank:15, group:"baja", lat:23.4477, lng:-110.2277, level:2,
+   url:"https://www.guaycura.com/en",
+   name:"Guaycura Boutique Hotel, Beach Club &amp; Spa", loc:"Todos Santos · historic town-center hotel",
+   badges:[["b-teen","Nonstop to SJD"],["b-teen","Family-friendly"],["b-l2","Level 2"]],
+   summary:"The value option in Todos Santos and the one that puts you in the middle of the town rather than outside it — a 19th-century red-brick building on the main square, with a rooftop plunge pool and sky deck for sunsets. Crucially, your stay includes access to El Faro, the region's only beach club, ten minutes away, which has the large beachfront pool the hotel itself lacks. Explicitly family-friendly, with a children's pool at the beach club.",
+   flightPP:580, lodgingA:400, lodgingB:700, food:220, transfers:550, extras:450,
+   roomA:"One room with an extra bed — needs confirming", roomB:"Two rooms",
+   hike:"Same Sierra de la Laguna access as option 14, and you're walking distance from the guides and outfitters in town.",
+   food_note:"Rooftop restaurant for dinners and weekend breakfasts, and every restaurant in Todos Santos is a short walk away — the best food-per-dollar position in the Baja group.",
+   pool:"Honest assessment: the hotel's own pool is a small rooftop plunge. The real pool is at El Faro beach club, included with the stay but a ten-minute drive each way.",
+   catch:"You are trading a resort for a town. If the picture in your head is walking out of your room straight to a lounger, this isn't it — but it's the cheapest way to get the nonstop flight and the best hiking in one trip."}
 ];
 
 const GROUPS = {
@@ -473,7 +545,7 @@ const GROUPS = {
   highlands:{title:"The highlands south and west of Mexico City", tag:"Morelos &amp; Estado de México · fly MEX",
     sum:"Cool pine forest and volcanic cliffs at 5,000–6,500 feet, two to three hours from the MEX terminal. Genuinely different scenery and the best hiking-from-the-doorstep on the list. The trade is real: <b>no beach, smaller pools, cooler weather</b>, and these are boutique hotels with rooms that sleep two rather than resorts with suites."},
   baja:{title:"Baja California Sur — not Cabo", tag:"Level 2 · nonstop from MCI on Saturdays",
-    sum:"Here for one reason: it's the only place in Mexico you can reach from Kansas City without changing planes, and Todos Santos is an hour and a world away from the Cabo strip. The problem is that the best pools in town are behind an 18+ door."}
+    sum:"Here for one reason: it's the only part of Mexico you can reach from Kansas City <b>without changing planes</b>, and neither La Paz nor Todos Santos is remotely the Cabo strip. The catch is that Baja's two most spectacular pools — at Paradero and at Kimpton Mas Olas, the reopened Rancho Pescadero — are both behind an adults-only door, so these three are the best properties in the region that will actually take a 16-year-old. They rank last on fit, not on quality: the pools and the hiking are a step below Nayarit's. But if the easiest possible travel day is worth a lot to you, start here."}
 };
 
 /* ---------------- State ---------------- */
@@ -482,6 +554,7 @@ let room = "a";
 const NIGHT_CHOICES = [4,5,6,7,8];
 
 const money = n => "$" + Math.round(n).toLocaleString("en-US");
+const mapsUrl = o => "https://www.google.com/maps/search/?api=1&amp;query=" + o.lat + "," + o.lng;
 
 function costOf(o, n, r){
   const lodging = r === "b" ? o.lodgingB : o.lodgingA;
@@ -511,8 +584,8 @@ function buildCards(){
     <article class="card${o.pick ? " pick" : ""}" id="opt-${o.rank}">
       <div class="rank">${o.rank}</div>
       <div class="cbody">
-        <h4>${o.name}</h4>
-        <p class="sub">${o.loc}</p>
+        <h4><a href="${o.url}" target="_blank" rel="noopener noreferrer">${o.name}</a></h4>
+        <p class="sub"><span>${o.loc}</span><a class="maplink" href="${mapsUrl(o)}" target="_blank" rel="noopener noreferrer">Google&nbsp;Maps</a></p>
         <div class="badges">${badges}</div>
         <p class="summary">${o.summary}</p>
         <div class="facts">
@@ -632,7 +705,11 @@ function refreshPopups(){
     marker.setPopupContent(
       `<span class="pp-name">${opt.rank}. ${opt.name}</span>` +
       `<span class="pp-meta">${opt.loc}</span>` +
-      `<span class="pp-cost">${money(c.pp)} per person &middot; ${nights} nights</span>`
+      `<span class="pp-cost">${money(c.pp)} per person &middot; ${nights} nights</span>` +
+      `<span class="pp-links">` +
+        `<a href="${opt.url}" target="_blank" rel="noopener noreferrer">Website</a>` +
+        `<a href="${mapsUrl(opt)}" target="_blank" rel="noopener noreferrer">Maps</a>` +
+      `</span>`
     );
   });
 }
