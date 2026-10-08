@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MCI to PVR Rebook Watch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F7F9;
+  --card:#FFFFFF;
+  --line:#E4E7EC;
+  --line-soft:#F0F2F5;
+  --fg:#101828;
+  --fg-2:#54607A;
+  --fg-3:#7C879C;
+  --brand:#2F5AA8;
+
+  /* A price drop is good news, so the actionable state is green. */
+  --act:#0F7A47;
+  --act-bg:#E9F6EF;
+  --act-line:#BFE3D0;
+
+  /* Hold is quiet: no accent at all. */
+  --hold:#54607A;
+
+  --gold:#8A6A1F;
+  --gold-bg:#FCF7EA;
+
+  /* Reserved for tracker failures only. Nothing else may use it. */
+  --data-error:#B42318;
+  --data-error-bg:#FEF3F2;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:"Inter",system-ui,-apple-system,sans-serif;
+  font-size:15px;line-height:1.5;
+  font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:#D8E3F5;color:var(--fg)}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-radius:4px}
+*{scrollbar-width:thin;scrollbar-color:#C3CAD8 transparent}
+*::-webkit-scrollbar{height:10px;width:10px}
+*::-webkit-scrollbar-thumb{background:#C3CAD8;border-radius:6px;border:3px solid var(--bg)}
+*::-webkit-scrollbar-track{background:transparent}
+
+.wrap{max-width:1120px;margin:0 auto;padding:20px 15px 44px}
+@media(min-width:800px){.wrap{padding:34px 24px 64px}}
+
+header h1{margin:0;font-size:1.22rem;font-weight:600;letter-spacing:-.015em;text-wrap:balance}
+.sub{margin:5px 0 0;font-size:.83rem;color:var(--fg-2)}
+
+/* ---------- the joint verdict: the page's whole reason for existing ---------- */
+.verdict{
+  margin:20px 0 0;padding:18px 17px 17px;
+  background:var(--card);border:1px solid var(--line);border-radius:13px;
+  box-shadow:0 1px 2px rgba(16,24,40,.05),0 10px 24px -14px rgba(16,24,40,.16);
+}
+.verdict.is-act{border-color:var(--act-line);background:var(--act-bg)}
+
+.verdict-h{
+  margin:0;font-size:.74rem;font-weight:600;color:var(--fg-3);
+  text-transform:uppercase;letter-spacing:.08em;
+}
+.verdict-top{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-top:11px}
+.call{
+  flex:none;display:inline-flex;align-items:center;gap:7px;
+  padding:7px 13px;border-radius:9px;font-size:.85rem;font-weight:600;
+  background:#EEF1F6;color:var(--hold);
+}
+.verdict.is-act .call{background:var(--act);color:#fff}
+.call svg{flex:none}
+
+.figure{margin-left:auto;text-align:right;min-width:5.5ch}
+.figure b{
+  display:block;font-size:clamp(2.1rem,10vw,2.9rem);font-weight:600;
+  letter-spacing:-.035em;line-height:1;color:var(--fg);
+}
+.verdict.is-act .figure b{color:var(--act)}
+.figure span{display:block;font-size:.75rem;color:var(--fg-2);margin-top:5px}
+
+.verdict-note{margin:13px 0 0;font-size:.86rem;color:var(--fg-2);line-height:1.45;max-width:62ch}
+.verdict-note b{color:var(--fg);font-weight:600}
+
+.pairs{margin:15px 0 0;width:100%;border-collapse:collapse;font-size:.83rem}
+.pairs caption{
+  text-align:left;font-size:.72rem;font-weight:600;color:var(--fg-3);
+  text-transform:uppercase;letter-spacing:.07em;padding-bottom:6px;
+}
+.pairs th{
+  text-align:left;font-size:.69rem;font-weight:500;color:var(--fg-3);
+  padding:0 10px 6px 0;border-bottom:1px solid var(--line);
+  vertical-align:bottom;line-height:1.25;
+}
+.pairs td{padding:8px 10px 8px 0;border-bottom:1px solid var(--line-soft)}
+.pairs tr:last-child td{border-bottom:none}
+.pairs .num{text-align:right;padding-right:0;white-space:nowrap}
+.pairs th:first-child,.pairs td:first-child{width:40%}
+.pairs .win td{font-weight:500}
+
+/* ---------- per-itinerary panels ---------- */
+.section-h{margin:30px 0 0;font-size:.95rem;font-weight:600;letter-spacing:-.01em}
+.section-note{margin:4px 0 0;font-size:.81rem;color:var(--fg-2);max-width:62ch}
+
+.panels{display:grid;gap:15px;margin-top:14px}
+@media(min-width:880px){.panels{grid-template-columns:1fr 1fr;gap:18px}}
+
+.panel{
+  background:var(--card);border:1px solid var(--line);border-radius:12px;
+  box-shadow:0 1px 2px rgba(16,24,40,.04);overflow:hidden;
+}
+.panel-head{padding:16px 16px 0}
+.panel-head h3{margin:0;font-size:.95rem;font-weight:600}
+.panel-head p{margin:3px 0 0;font-size:.79rem;color:var(--fg-2)}
+
+.panel-verdict{display:flex;align-items:baseline;gap:11px;padding:12px 16px 14px;flex-wrap:wrap}
+.panel-verdict .amt{font-size:1.5rem;font-weight:600;letter-spacing:-.025em}
+.panel-verdict .amt.act{color:var(--act)}
+.panel-verdict .lbl{font-size:.78rem;color:var(--fg-2)}
+/* Advice, not alarm: neutral ink under the verdict it qualifies. */
+.panel-note{margin:-6px 16px 12px;font-size:.78rem;line-height:1.45;color:var(--fg-2)}
+
+/* The range toggle sits with the chart, not with the threshold slider: it
+   changes what the chart shows, not what it is measured against. */
+.rng-set{display:flex;gap:4px;padding:2px 16px 0}
+.rng{
+  font:inherit;font-size:.7rem;font-weight:600;letter-spacing:.02em;
+  background:none;border:1px solid var(--line);border-radius:5px;
+  color:var(--fg-3);cursor:pointer;padding:2px 9px;
+}
+.rng.on{border-color:var(--brand);color:var(--brand);background:color-mix(in srgb,var(--brand) 8%,transparent)}
+.rng:focus-visible{outline:2px solid var(--brand);outline-offset:1px}
+
+.chart-empty{margin:0;padding:16px;font-size:.78rem;color:var(--fg-3)}
+.chart{padding:0 10px 6px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart text{font-family:"Inter";font-variant-numeric:tabular-nums}
+
+.ctl{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:9px 16px 14px;border-top:1px solid var(--line-soft);
+}
+.ctl label{font-size:.75rem;color:var(--fg-2);font-weight:500}
+.ctl input[type=range]{flex:1 1 120px;min-width:100px;accent-color:var(--brand);height:22px}
+.ctl output{font-size:.84rem;font-weight:600;min-width:6.5ch}
+.ctl .reset{
+  font:inherit;font-size:.75rem;background:none;border:none;color:var(--brand);
+  cursor:pointer;padding:0;text-decoration:underline;
+}
+.ctl .reset[hidden]{display:none}
+
+/* ---------- candidate table: rows are selectable ---------- */
+table.cands{width:100%;border-collapse:collapse;font-size:.84rem}
+table.cands caption{
+  text-align:left;padding:12px 16px 7px;font-size:.72rem;font-weight:600;
+  color:var(--fg-3);text-transform:uppercase;letter-spacing:.07em;
+}
+table.cands th{
+  text-align:left;font-size:.71rem;font-weight:500;color:var(--fg-3);
+  padding:0 9px 6px 0;border-bottom:1px solid var(--line);white-space:nowrap;
+}
+table.cands th:first-child,table.cands td:first-child{padding-left:16px}
+table.cands th:last-child,table.cands td:last-child{padding-right:16px;text-align:right}
+table.cands td{padding:9px 9px 9px 0;border-bottom:1px solid var(--line-soft);vertical-align:top}
+table.cands tbody tr{cursor:pointer}
+table.cands tbody tr:last-child td{border-bottom:none}
+table.cands tbody tr.booked td{background:var(--gold-bg)}
+table.cands tbody tr.under td{background:var(--act-bg)}
+table.cands tbody tr.selected td{
+  background:#EDF1F8;box-shadow:inset 2px 0 0 var(--brand);
+}
+table.cands tbody tr:hover td{background:#F4F6FA}
+table.cands tbody tr.selected:hover td{background:#E7EDF7}
+
+.air{font-weight:500}
+.times{font-size:.76rem;color:var(--fg-2);white-space:nowrap}
+.tot{font-weight:600;font-size:.94rem}
+.dl{font-size:.77rem;color:var(--fg-2)}
+.dl.under{color:var(--act);font-weight:600}
+.pill{
+  display:inline-block;font-size:.65rem;font-weight:600;letter-spacing:.03em;
+  padding:2px 6px;border-radius:5px;margin-left:6px;vertical-align:1px;
+}
+.pill.bk{background:#F3E9D0;color:var(--gold)}
+.pill.st{background:var(--line-soft);color:var(--fg-3)}
+/* Where a price came from: quieter than a pill, it annotates the number. */
+.src{
+  display:inline-block;font-size:.6rem;font-weight:600;letter-spacing:.04em;
+  color:var(--fg-3);border:1px solid var(--line);border-radius:4px;
+  padding:0 3px;margin-left:4px;vertical-align:2px;cursor:help;
+}
+/* In the joint table it takes its own line, right-aligned under the delta. */
+.pairs .src{display:table;margin:3px 0 0 auto}
+
+/* ---------- methodology, collapsed ---------- */
+details.notes{
+  margin-top:22px;background:var(--card);border:1px solid var(--line);border-radius:12px;
+}
+details.notes summary{
+  cursor:pointer;padding:13px 16px;font-size:.87rem;font-weight:500;list-style:none;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+details.notes summary::-webkit-details-marker{display:none}
+details.notes summary::after{
+  content:"";width:8px;height:8px;flex:none;
+  border-right:1.5px solid var(--fg-3);border-bottom:1.5px solid var(--fg-3);
+  transform:rotate(45deg);transition:transform .18s cubic-bezier(.2,.8,.3,1);
+}
+details.notes[open] summary::after{transform:rotate(225deg)}
+@media(prefers-reduced-motion:reduce){details.notes summary::after{transition:none}}
+.notes-body{padding:0 16px 16px;display:grid;gap:0 30px;max-width:80ch}
+@media(min-width:720px){.notes-body{grid-template-columns:1fr 1fr}}
+.notes-body dl{margin:0}
+.notes-body dt{font-size:.76rem;font-weight:600;color:var(--fg);margin-bottom:2px}
+.notes-body dd{margin:0 0 12px;font-size:.81rem;color:var(--fg-2);line-height:1.45}
+
+.searches{margin:16px 2px 0;font-size:.75rem;color:var(--fg-3);line-height:1.6}
+.searches .srch{display:block}
+.searches a{color:var(--brand);text-decoration:underline;text-underline-offset:2px}
+.cost{margin:16px 2px 0;font-size:.75rem;color:var(--fg-3)}
+.cost .err{color:var(--data-error)}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>MCI &rarr; PVR rebook watch</h1>
+    <p class="sub" id="sub"></p>
+  </header>
+
+  <section id="split" aria-label="Qualifying flights">
+    <div class="panels" id="panels"></div>
+  </section>
+
+  <details class="notes">
+    <summary>How this works</summary>
+    <div class="notes-body">
+      <dl>
+        <dt>What counts as a rebook</dt>
+        <dd id="rebook-rule"></dd>
+        <dt>Airlines</dt>
+        <dd>Delta, American, United, Alaska, Southwest, Aerom&eacute;xico, WestJet and Air Canada,
+          one airline both ways on one ticket. Budget carriers (Spirit, Frontier, Allegiant,
+          Volaris, Viva Aerobus), mixed-airline trips and Kayak Hacker Fares are ignored.</dd>
+        <dt>Fare class</dt>
+        <dd>Regular economy or better on that airline &mdash; Delta Main Classic or higher,
+          American Main Cabin, United Economy, and so on. Basic economy is excluded.</dd>
+      </dl>
+      <dl>
+        <dt>Qualifying flights</dt>
+        <dd>Leave MCI 15 March, leave PVR 20 March, at most one stop each way. Any time of day,
+          any length. The five cheapest, plus the booked Delta flight whenever it is listed.</dd>
+        <dt>Sources</dt>
+        <dd>Every check reads Google Flights and Kayak, and keeps the lower price. The tag
+          beside a price says where it came from: <b>G</b> Google, <b>K</b> Kayak, <b>GK</b>
+          both agree.</dd>
+        <dt>Stale flights</dt>
+        <dd>Only flights found in the latest check count toward the verdict. One that stops
+          appearing keeps its last price, and after a day it is marked stale. Nothing is ever
+          carried forward.</dd>
+      </dl>
+    </div>
+  </details>
+
+  <p class="searches" id="searches"></p>
+  <p class="cost" id="cost"></p>
+
+</div>
+<script type="application/json" id="tracker-data">{"days":["2026-10-08"],"flights":{"A1":{"it":"A","air":"Delta","od":"7:00 AM","oa":"2:45 PM","odur":"8h 45m","ost":"1 stop, LAX","rd":"1:10 PM","ra":"11:58 PM","rdur":"9h 48m","rst":"1 stop, ATL","fare":"Delta Main Extra"},"A2":{"it":"A","air":"United Airlines","od":"6:10 AM","oa":"2:09 PM","odur":"8h 59m","ost":"1 stop, IAH","rd":"3:11 PM","ra":"11:37 PM","rdur":"7h 26m","rst":"1 stop, DEN","fare":"Economy"},"A3":{"it":"A","air":"United Airlines","od":"6:10 AM","oa":"12:02 PM","odur":"6h 52m","ost":"1 stop, IAH","rd":"3:11 PM","ra":"11:37 PM","rdur":"7h 26m","rst":"1 stop, DEN","fare":"Economy"},"A4":{"it":"A","air":"United Airlines","od":"8:30 AM","oa":"2:09 PM","odur":"6h 39m","ost":"1 stop, IAH","rd":"3:11 PM","ra":"11:37 PM","rdur":"7h 26m","rst":"1 stop, DEN","fare":"Economy"},"A5":{"it":"A","air":"United Airlines","od":"7:00 AM","oa":"3:44 PM","odur":"9h 44m","ost":"1 stop, SFO","rd":"3:11 PM","ra":"11:37 PM","rdur":"7h 26m","rst":"1 stop, DEN","fare":"Economy"},"A6":{"it":"A","air":"United Airlines","od":"6:10 AM","oa":"2:09 PM","odur":"8h 59m","ost":"1 stop, IAH","rd":"12:34 PM","ra":"8:52 PM","rdur":"7h 18m","rst":"1 stop, DEN","fare":"Economy"}},"booked":{"paid":{"A1":3729},"paidTotal":3729,"pax":3,"depart":"2027-03-15","route":"MCI-PVR","itineraries":{"A":{"label":"Round trip","ret":"2027-03-20","retShort":"Mar 20","booked":"A1"}}},"daily":{"A2":[[0,3262,3262,3262,1]],"A3":[[0,3349,3349,3349,1]],"A4":[[0,3481,3481,3481,1]],"A5":[[0,3532,3532,3532,1]],"A6":[[0,3559,3559,3559,1]]},"lastSeen":{"A2":1791500136000,"A3":1791500136000,"A4":1791500136000,"A5":1791500136000,"A6":1791500136000},"lastSrc":{"A2":"GK","A3":"K","A4":"K","A5":"K","A6":"GK"},"newest":1791500136000,"runs":1,"recentDays":3,"recent":[[1791500136000,"A2",3262],[1791500136000,"A3",3349],[1791500136000,"A4",3481],[1791500136000,"A5",3532],[1791500136000,"A6",3559]],"cost":{"last30":0,"allTime":0,"agentDays":0},"searches":{"A":{"kayak":"https://www.kayak.com/flights/MCI-PVR/2027-03-15/2027-03-20/3adults?sort=price_a&fs=stops=~1;hidebasic=hidebasic","google":"https://www.google.com/travel/flights/search?tfs=CBwQAholEgoyMDI3LTAzLTE1KAFqDAgCEggvbS8wNGZfZHIHCAESA1BWUholEgoyMDI3LTAzLTIwKAFqBwgBEgNQVlJyDAgCEggvbS8wNGZfZEABQAFAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA&hl=en&curr=USD"}},"trip":{"id":"pvr","joint":false}}</script>
+<script>
+(function () {
+  var D = JSON.parse(document.getElementById('tracker-data').textContent);
+  var MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var DAY = 86400000;
+  /* How much raw, per-check history the build shipped. Not a constant here:
+     the build decides the window (it is the one that knows how many points a
+     day now costs), and the axis, the button and the captions all read it from
+     the payload so they cannot drift apart from the data. */
+  var RECENT_MS = D.recentDays * DAY;
+  var RECENT_LABEL = D.recentDays + ' days';
+  var CUT = D.days.length - 1;
+  var ITINS = Object.keys(D.booked.itineraries);
+  var EMPTY = !D.days.length;
+  var DEPART_TS = (function () {
+    var p = D.booked.depart.split('-');
+    return new Date(+p[0], +p[1] - 1, +p[2] + 1).getTime();
+  }());
+  // Measured against the last check, not the reader's clock, so the page says
+  // the same thing to everyone who opens the same build.
+  var DEPARTED = !EMPTY && D.newest >= DEPART_TS;
+
+  // Days are positions on a real time axis now, not slots in a list. A gap in
+  // the record has to read as a gap.
+  var DAY_TS = D.days.map(function (s) {
+    var p = s.split('-');
+    return new Date(+p[0], +p[1] - 1, +p[2]).getTime();
+  });
+
+  // Per-itinerary threshold overrides and chart range, and the selected line.
+  var thresholds = {};
+  var ranges = {};
+  var selectedFid = null;
+
+  function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+
+  // DR's refundability is a per-person add-on the sites do not list; PVR's
+  // ticket price already is the refundable fare, so there is nothing to add.
+  /* Where the booked ticket is itself the refundable fare (no add-on), a
+     cheaper fare is real money but usually not refundable, and neither site's
+     list says. The verdict stands; this says what to check before cancelling.
+     DR's refundability is an add-on bought again on a rebook, so it never
+     needs this. */
+  function refundNote(best, meta) {
+    if (D.booked.refundablePerPerson) return '';
+    var mine = D.flights[meta.booked];
+    var text = mine && best.air !== mine.air
+      ? best.air + ' fares are usually non-refundable; your ' + mine.air + ' ticket is.'
+        + ' Check the fare rules, or the refundable price, before cancelling.'
+      : 'Check it is sold refundable, as your ticket is, before cancelling.';
+    return '<p class="panel-note">' + text + '</p>';
+  }
+
+  function addOn() {
+    return D.booked.refundablePerPerson
+      ? ', plus ' + money(D.booked.refundablePerPerson) + '/person for refundable'
+      : '';
+  }
+  function signed(n) { return (n >= 0 ? '+' : '−') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US'); }
+  function fmt(iso) { var p = iso.split('-'); return (+p[2]) + ' ' + MON[+p[1] - 1] + ' ' + p[0]; }
+  function dayLabel(ts) { var d = new Date(ts); return d.getDate() + ' ' + MON[d.getMonth()]; }
+
+  function clockLabel(ts) {
+    var d = new Date(ts);
+    var h = d.getHours();
+    var m = d.getMinutes();
+    return ((h % 12) || 12) + ':' + (m < 10 ? '0' : '') + m + ' ' + (h < 12 ? 'AM' : 'PM');
+  }
+
+  /* Stale is a fact about time, not about position: a flight missing from one
+     of the day's runs has not gone anywhere. Same 24h rule as lib/derive.mjs,
+     applied to the instants the build ships. */
+  function isStale(fid) { return D.newest - D.lastSeen[fid] >= DAY; }
+
+  /* Current is a separate question: did the newest run see it? Only a current
+     price may say rebook or turn green — on 2026-10-07 an 11pm fare, not yet a
+     day old, kept the page saying rebook all morning. Same rule as
+     lib/derive.mjs. */
+  function isCurrent(fid) { return D.lastSeen[fid] === D.newest; }
+
+  // daily tuples: [dayIndex, lo, hi, close, checks]
+  function dailyFor(itin) {
+    var out = {};
+    Object.keys(D.daily).forEach(function (fid) {
+      var f = D.flights[fid];
+      if (f && f.it === itin) out[fid] = D.daily[fid];
+    });
+    return out;
+  }
+
+  // recent tuples: [timestamp, flightId, total] — already in time order.
+  function recentFor(itin) {
+    var out = {};
+    for (var i = 0; i < D.recent.length; i++) {
+      var r = D.recent[i];
+      var f = D.flights[r[1]];
+      if (!f || f.it !== itin) continue;
+      (out[r[1]] = out[r[1]] || []).push({ ts: r[0], total: r[2] });
+    }
+    return out;
+  }
+
+  function latestFor(itin) {
+    var s = dailyFor(itin);
+    var rows = Object.keys(s).map(function (fid) {
+      var a = s[fid];
+      var last = a[a.length - 1];
+      var f = D.flights[fid];
+      return {
+        flightId: fid, it: f.it, air: f.air, od: f.od, oa: f.oa, rd: f.rd, ra: f.ra,
+        odur: f.odur, rdur: f.rdur, ost: f.ost, rst: f.rst, fare: f.fare,
+        total: last[3], lastTs: D.lastSeen[fid], stale: isStale(fid), current: isCurrent(fid),
+        src: D.lastSrc[fid]
+      };
+    });
+    rows.sort(function (a, b) { return a.total - b.total; });
+    return rows;
+  }
+
+  function outboundKey(r) { return r.air + '|' + r.od + '|' + r.oa; }
+
+  // The two sites disagree on some flights most of the time, so every price
+  // says which one it came from. Neutral ink: this is provenance, not news.
+  var SRC_NAME = { G: 'Google Flights', K: 'Kayak', GK: 'Google Flights and Kayak agree' };
+  function srcTag(src) {
+    return src ? ' <span class="src" title="' + SRC_NAME[src] + '">' + src + '</span>' : '';
+  }
+
+  // The real decision: both groups on one outbound flight.
+  function combined() {
+    var side = {};
+    ITINS.forEach(function (itin) { side[itin] = {}; });
+    ITINS.forEach(function (itin) {
+      latestFor(itin).forEach(function (r) {
+        if (!r.current) return;
+        var k = outboundKey(r);
+        if (!side[itin][k] || r.total < side[itin][k].total) side[itin][k] = r;
+      });
+    });
+    var pairs = [];
+    Object.keys(side.A).forEach(function (k) {
+      if (side.B[k]) pairs.push({ key: k, a: side.A[k], b: side.B[k], total: side.A[k].total + side.B[k].total });
+    });
+    pairs.sort(function (x, y) { return x.total - y.total; });
+    var best = pairs[0] || null;
+    var margin = best ? best.total - D.booked.paidTotal : null;
+    return { pairs: pairs, best: best, margin: margin, call: margin !== null && margin < 0 ? 'rebook' : 'hold' };
+  }
+
+  var ICON_HOLD = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">'
+    + '<path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var ICON_ACT = '<svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">'
+    + '<path d="M8 12.5V4M4.5 8L8 4.2 11.5 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function renderJoint() {
+    // Only a trip of several groups sharing an outbound has a joint verdict.
+    var el = document.getElementById('joint');
+    if (!el || !D.trip.joint) return;
+    if (DEPARTED) {
+      el.className = 'verdict';
+      el.innerHTML = '<h2 class="verdict-h" id="joint-h">Both groups on one flight</h2>'
+        + '<p class="verdict-note">The trip departed; tracking has stopped.</p>';
+      return;
+    }
+    var c = combined();
+    var act = c.call === 'rebook';
+
+    if (!c.best) {
+      el.className = 'verdict';
+      el.innerHTML = '<h2 class="verdict-h" id="joint-h">Both groups on one flight</h2>'
+        + '<p class="verdict-note">No outbound flight currently qualifies for both groups, so there is'
+        + ' nothing to compare against the ' + money(D.booked.paidTotal) + ' booked fare.</p>';
+      return;
+    }
+
+    // Each group carries its own delta against its own paid price, so the row
+    // reads the same way across all three money columns.
+    var paidA = D.booked.paid[D.booked.itineraries.A.booked];
+    var paidB = D.booked.paid[D.booked.itineraries.B.booked];
+
+    function cell(total, paid, bold, src) {
+      var delta = total - paid;
+      // The tag sits under the delta here, not beside the price: four money
+      // columns have no width to spare at phone size.
+      return '<td class="num">' + (bold ? '<b>' + money(total) + '</b>' : money(total))
+        + '<br><span class="dl' + (delta < 0 ? ' under' : '') + '">' + signed(delta) + '</span>'
+        + srcTag(src) + '</td>';
+    }
+
+    var rows = c.pairs.map(function (p) {
+      return '<tr class="' + (p === c.best ? 'win' : '') + '">'
+        + '<td>' + p.a.air + '<br><span class="times">' + p.a.od + '–' + p.a.oa + ' outbound</span></td>'
+        + cell(p.a.total, paidA, false, p.a.src)
+        + cell(p.b.total, paidB, false, p.b.src)
+        + cell(p.total, D.booked.paidTotal, true)
+        + '</tr>';
+    }).join('');
+
+    el.className = 'verdict' + (act ? ' is-act' : '');
+    el.innerHTML = '<h2 class="verdict-h" id="joint-h">Both groups on one flight</h2>'
+      + '<div class="verdict-top">'
+      + '<span class="call">' + (act ? ICON_ACT : ICON_HOLD) + (act ? 'Rebook' : 'Hold') + '</span>'
+      + '<span class="figure"><b>' + signed(c.margin) + '</b><span>'
+      + (act ? 'below' : 'above') + ' the ' + money(D.booked.paidTotal) + ' booked fare'
+      + '</span></span></div>'
+      + '<p class="verdict-note">' + (act
+        ? 'Flying out together on <b>' + c.best.a.air + ' ' + c.best.a.od + '</b> now costs '
+          + money(c.best.total) + ' for all four. Cancelling and rebooking saves <b>' + money(-c.margin) + '</b>.'
+        : 'The cheapest way to keep everyone on one outbound flight is <b>' + c.best.a.air + ' ' + c.best.a.od
+          + '</b> at ' + money(c.best.total) + ' for all four, ' + money(c.margin) + ' more than the booked fare. Nothing to do.')
+      + '</p>'
+      + '<table class="pairs"><caption>Outbound flights available to both groups &mdash; each column vs the booked fare</caption>'
+      + '<thead><tr><th>Outbound</th><th class="num">Girls</th><th class="num">Jen/<br>Brian</th>'
+      + '<th class="num">Together</th></tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  function renderPanels() {
+    var host = document.getElementById('panels');
+    host.innerHTML = '';
+    ITINS.forEach(function (itin) { host.appendChild(panel(itin)); });
+  }
+
+  function panel(itin) {
+    var meta = D.booked.itineraries[itin];
+    var paid = D.booked.paid[meta.booked];
+    var rows = latestFor(itin);
+    var live = rows.filter(function (r) { return r.current; });
+    var best = live[0] || null;
+
+    var el = document.createElement('div');
+    el.className = 'panel';
+    el.innerHTML = '<div class="panel-head"><h3>' + meta.label + '</h3>'
+      + '<p>Return ' + meta.retShort + ', 2027 &middot; booked fare ' + money(paid)
+      + addOn() + '</p></div>'
+      + '<div class="dyn-top"></div>'
+      + '<div class="ctl">'
+      + '<label for="t-' + itin + '">Compare against</label>'
+      + '<input type="range" id="t-' + itin + '" min="' + (paid - 400) + '" max="' + (paid + 400) + '" step="10" value="' + paid + '">'
+      + '<output>' + money(paid) + '</output>'
+      + '<button type="button" class="reset" hidden>Reset to booked fare</button>'
+      + '</div>'
+      + '<div class="dyn-bot"></div>';
+
+    var top = el.querySelector('.dyn-top');
+    var bot = el.querySelector('.dyn-bot');
+    var ctl = el.querySelector('.ctl');
+    var input = ctl.querySelector('input');
+    var reset = ctl.querySelector('.reset');
+
+    // Repaint only the regions around the slider, never the slider itself:
+    // replacing the input mid-drag would break pointer capture.
+    function paint() {
+      var thr = thresholds[itin] == null ? paid : thresholds[itin];
+      var range = ranges[itin] || 'all';
+      var d = best ? best.total - thr : null;
+      var act = !DEPARTED && d !== null && d < 0;
+
+      function rangeBtn(key, label) {
+        return '<button type="button" class="rng' + (range === key ? ' on' : '') + '"'
+          + ' data-range="' + key + '" aria-pressed="' + (range === key) + '">' + label + '</button>';
+      }
+
+      top.innerHTML = '<div class="panel-verdict">'
+        + '<span class="amt' + (act ? ' act' : '') + '">' + (d === null ? '—' : signed(d)) + '</span>'
+        + '<span class="lbl">' + (DEPARTED ? 'trip departed' : best
+          ? (act ? 'below ' : 'above ') + money(thr) + ' · cheapest is ' + best.air + ' at ' + money(best.total)
+          : 'no qualifying flight') + '</span></div>'
+        + (act ? refundNote(best, meta) : '')
+        + '<div class="rng-set" role="group" aria-label="Chart range">'
+        + rangeBtn('all', 'All') + rangeBtn('recent', RECENT_LABEL) + '</div>'
+        + '<div class="chart">' + chart(itin, thr, paid, range) + '</div>';
+
+      ctl.querySelector('output').textContent = money(thr);
+      reset.hidden = (thr === paid);
+      bot.innerHTML = table(rows, meta, thr);
+    }
+
+    input.addEventListener('input', function (e) {
+      thresholds[itin] = +e.target.value;
+      paint();
+    });
+
+    // Delegated, because paint() rebuilds these buttons every repaint.
+    top.addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-range]');
+      if (!btn) return;
+      ranges[itin] = btn.dataset.range;
+      paint();
+    });
+    reset.addEventListener('click', function () {
+      thresholds[itin] = null;
+      input.value = paid;
+      paint();
+    });
+
+    // Row selection: click or keyboard. Selecting highlights the chart line.
+    function selectFrom(target) {
+      var tr = target.closest('tr[data-fid]');
+      if (!tr) return;
+      selectedFid = (selectedFid === tr.dataset.fid) ? null : tr.dataset.fid;
+      renderPanels();
+    }
+    bot.addEventListener('click', function (e) { selectFrom(e.target); });
+    bot.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      selectFrom(e.target);
+    });
+
+    paint();
+    return el;
+  }
+
+  function table(rows, meta, thr) {
+    var body = rows.map(function (r) {
+      var d = r.total - thr;
+      var under = d < 0 && r.current;
+      var cls = [];
+      if (r.flightId === meta.booked) cls.push('booked');
+      if (under) cls.push('under');
+      if (r.flightId === selectedFid) cls.push('selected');
+      return '<tr tabindex="0" data-fid="' + r.flightId + '" class="' + cls.join(' ') + '"'
+        + ' aria-pressed="' + (r.flightId === selectedFid) + '">'
+        + '<td><span class="air">' + r.air + '</span>'
+        + (r.flightId === meta.booked ? '<span class="pill bk">Booked</span>' : '')
+        + (r.stale ? '<span class="pill st">Stale</span>' : '')
+        + '<br><span class="times">Out ' + r.od + '–' + r.oa + '</span>'
+        + '<br><span class="times">Back ' + r.rd + '–' + r.ra + '</span></td>'
+        + '<td><span class="tot">' + money(r.total) + '</span>' + srcTag(r.src) + '<br>'
+        + '<span class="dl' + (under ? ' under' : '') + '">' + signed(d) + '</span></td></tr>';
+    }).join('');
+    return '<table class="cands"><caption>Qualifying flights — tap a row to trace it</caption>'
+      + '<thead><tr><th>Flight</th><th>Total / vs threshold</th></tr></thead><tbody>' + body + '</tbody></table>';
+  }
+
+  /* One flight's marks for the long view: a line through each day's closing
+     price, and a hairline showing the range it traded in that day. The range
+     is the part that earns its place now that the check runs hourly — a fare
+     that appeared at 2pm and was gone by 4pm is a whisker below the line, not
+     a point that never existed.
+
+     Deliberately not a candlestick. A candle body is filled by direction, and
+     on this page colour already means one thing: green is a rebook you can
+     act on. A green candle for "the price went up" would say act about bad
+     news. The open is not an event here either — only whichever run fired
+     first that day. */
+  function dailyMarks(pts, x, y, colour, opacity, dash, width) {
+    var o = '';
+    var wicks = '';
+    for (var i = 0; i < pts.length; i++) {
+      var p = pts[i];
+      if (p[1] === p[2]) continue;
+      wicks += 'M' + x(DAY_TS[p[0]]) + ' ' + y(p[1]) + 'V' + y(p[2]);
+    }
+    if (wicks) {
+      o += '<path d="' + wicks + '" stroke="' + colour + '" stroke-width="1" fill="none" opacity="'
+        + (opacity * 0.45) + '" stroke-linecap="round"/>';
+    }
+    var d = pts.map(function (p, i) {
+      return (i ? 'L' : 'M') + x(DAY_TS[p[0]]) + ' ' + y(p[3]);
+    }).join(' ');
+    o += '<path d="' + d + '" fill="none" stroke="' + colour + '" stroke-width="' + width
+      + '" stroke-dasharray="' + dash + '" opacity="' + opacity
+      + '" stroke-linejoin="round" stroke-linecap="round"/>';
+    return o;
+  }
+
+  // Three codes, each meaning exactly one thing:
+  // weight = booked vs candidate, dash = stale, colour = below the threshold.
+  function chart(itin, thr, paid, range) {
+    var W = 360, H = 148, L = 6, R = 46, T = 10, B = 18;
+    // The raw, every-check view, as opposed to the daily roll-up.
+    var raw = range === 'recent';
+    var s = raw ? recentFor(itin) : dailyFor(itin);
+    var fids = Object.keys(s).sort();
+    if (!fids.length) {
+      return '<p class="chart-empty">'
+        + (raw ? 'No checks in the last ' + RECENT_LABEL + '.' : 'No checks yet.') + '</p>';
+    }
+
+    /* The x axis is real time, not a row of evenly spaced slots. That is the
+       whole point: a night of hourly checks and a week with no runs at all
+       have to occupy the width they actually took. */
+    var t0 = raw ? D.newest - RECENT_MS : DAY_TS[0];
+    var t1 = D.newest;
+    var span = Math.max(1, t1 - t0);
+
+    var vals = [];
+    fids.forEach(function (f) {
+      s[f].forEach(function (p) {
+        if (raw) vals.push(p.total);
+        else { vals.push(p[1]); vals.push(p[2]); }
+      });
+    });
+    var lo = Math.min.apply(null, vals.concat([thr - 60]));
+    var hi = Math.max.apply(null, vals.concat([thr + 40]));
+    var pad = (hi - lo) * 0.1;
+    lo -= pad; hi += pad;
+
+    var x = function (ts) { return L + ((ts - t0) / span) * (W - L - R); };
+    var y = function (v) { return T + (1 - (v - lo) / (hi - lo)) * (H - T - B); };
+    var yThr = y(thr);
+    var booked = D.booked.itineraries[itin].booked;
+
+    var o = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="'
+      + (raw ? 'Total price for each check over the last ' + RECENT_LABEL : 'Daily price range and close over time')
+      + ', against the threshold">';
+
+    // Midnight rules, so a time-of-day pattern has something to read against.
+    if (raw) {
+      var mid = new Date(t0);
+      mid.setHours(24, 0, 0, 0);
+      for (var m = mid.getTime(); m < t1; m += DAY) {
+        o += '<line x1="' + x(m) + '" y1="' + T + '" x2="' + x(m) + '" y2="' + (H - B)
+          + '" stroke="var(--fg-3)" stroke-width=".5" opacity=".18"/>';
+      }
+    }
+
+    o += '<rect x="' + L + '" y="' + yThr + '" width="' + (W - L - R) + '" height="' + Math.max(0, H - B - yThr)
+      + '" fill="var(--act)" opacity=".07"/>';
+    o += '<line x1="' + L + '" y1="' + yThr + '" x2="' + (W - R) + '" y2="' + yThr
+      + '" stroke="var(--gold)" stroke-width="1.3" stroke-dasharray="5 3"/>';
+    o += '<text x="' + (W - R + 5) + '" y="' + (yThr + 3) + '" font-size="9" font-weight="600" fill="var(--gold)">'
+      + money(thr) + '</text>';
+    o += '<text x="' + (W - R + 5) + '" y="' + (yThr + 13) + '" font-size="7" fill="var(--fg-3)">'
+      + (thr === paid ? 'booked' : 'what-if') + '</text>';
+
+    fids.forEach(function (fid) {
+      var pts = s[fid];
+      var last = pts[pts.length - 1];
+      var lastTotal = raw ? last.total : last[3];
+      var lastTs = raw ? last.ts : DAY_TS[last[0]];
+      var isBooked = fid === booked;
+      var stale = isStale(fid);
+      var under = lastTotal < thr && isCurrent(fid);
+      var isSel = fid === selectedFid;
+      var dimmed = selectedFid && !isSel;
+
+      var colour = under ? 'var(--act)' : (isBooked ? 'var(--gold)' : 'var(--brand)');
+      var width = isSel ? 2.6 : (isBooked ? 1.9 : 1.1);
+      var opacity = dimmed ? 0.18 : (stale ? 0.35 : (isBooked || isSel ? 1 : 0.62));
+      var dash = stale ? '3 2.2' : '';
+
+      if (raw) {
+        var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + x(p.ts) + ' ' + y(p.total); }).join(' ');
+        o += '<path d="' + d + '" fill="none" stroke="' + colour + '" stroke-width="' + width
+          + '" stroke-dasharray="' + dash + '" opacity="' + opacity
+          + '" stroke-linejoin="round" stroke-linecap="round"/>';
+        // Every check is a real reading, so in this view each one is a mark.
+        pts.forEach(function (p) {
+          o += '<circle cx="' + x(p.ts) + '" cy="' + y(p.total) + '" r="1.5" fill="' + colour
+            + '" opacity="' + opacity + '"/>';
+        });
+      } else {
+        o += dailyMarks(pts, x, y, colour, opacity, dash, width);
+      }
+
+      o += '<circle cx="' + x(lastTs) + '" cy="' + y(lastTotal) + '" r="' + (isSel ? 3.1 : (isBooked ? 2.6 : 1.9))
+        + '" fill="' + colour + '" opacity="' + opacity + '"/>';
+      if (isSel) {
+        o += '<text x="' + (x(lastTs) - 5) + '" y="' + (y(lastTotal) - 6) + '" font-size="8" font-weight="600"'
+          + ' text-anchor="end" fill="' + colour + '">' + fid + '</text>';
+      }
+    });
+
+    o += '<text x="' + L + '" y="' + (H - 5) + '" font-size="7" fill="var(--fg-3)">' + dayLabel(t0) + '</text>';
+    o += '<text x="' + (W - R) + '" y="' + (H - 5) + '" font-size="7" text-anchor="end" fill="var(--fg-3)">'
+      + dayLabel(t1) + '</text>';
+    return o + '</svg>';
+  }
+
+  function renderMeta() {
+    // The check runs hourly now, so "last checked" needs a clock on it — a
+    // date alone would read as this morning's number all evening.
+    var party = D.booked.pax + ' adults' + (ITINS.length > 1 ? ' per group' : '')
+      + ' · depart ' + fmt(D.booked.depart) + ' · ';
+    document.getElementById('sub').textContent = EMPTY
+      ? party + 'No checks yet'
+      : party + D.runs + ' checks over ' + D.days.length + ' days · last checked '
+        + fmt(D.days[CUT]) + ', ' + clockLabel(D.newest);
+    // An agent invocation is the only part of this system that costs money per
+    // run, so a steady state of clean deterministic runs reads $0.00.
+    var c = D.cost || { last30: 0, allTime: 0, agentDays: 0 };
+    document.getElementById('cost').textContent = c.agentDays === 0
+      ? 'Pipeline cost: $0.00 — no run has needed an agent. Covers this pipeline only.'
+      : 'Pipeline cost: $' + c.last30.toFixed(2) + ' in the last 30 days, $'
+        + c.allTime.toFixed(2) + ' all time, across ' + c.agentDays
+        + (c.agentDays === 1 ? ' day' : ' days') + ' that needed an agent.';
+  }
+
+  /* What the verdict is measured against, from booked.json so a rebook is a
+     data change only. The sites list the regular fare; the refundable option
+     is a flat add-on per person that a rebook pays again, so the comparison is
+     fare against fare and the add-on is stated beside it, never folded in. */
+  function renderRule() {
+    var b = D.booked;
+    var it = b.itineraries;
+    var prev = b.previous && b.previous[b.previous.length - 1];
+    var rebooked = prev ? ' Rebooked ' + fmt(b.bookedOn) + ', down from ' + money(prev.paidTotal) + '.' : '';
+    // One group: the ticket price is the refundable fare, and any carrier's
+    // cheaper fare is a real saving because cancelling returns cash.
+    if (!D.trip.joint) {
+      var only = it[ITINS[0]];
+      document.getElementById('rebook-rule').innerHTML = 'The booking is refundable to the original'
+        + ' card, and the prices here are the full ticket price Google Flights and Kayak list for '
+        + b.pax + ' adults. Any qualifying fare below the booked fare &mdash; '
+        + money(b.paid[only.booked]) + ' &mdash; is worth acting on, on any airline.'
+        + ' There is no minimum margin.' + rebooked;
+      return;
+    }
+    document.getElementById('rebook-rule').innerHTML = 'Both bookings are refundable. The prices here are'
+      + ' the regular fares Google Flights and Kayak list; the refundable option is '
+      + money(b.refundablePerPerson) + ' per person round trip on top, and a rebook pays it again, so'
+      + ' it is left out of every comparison. Any qualifying fare below the booked fare &mdash; '
+      + money(b.paid[it.A.booked]) + ' ' + it.A.label + ', ' + money(b.paid[it.B.booked]) + ' ' + it.B.label
+      + ', ' + money(b.paidTotal) + ' together &mdash; is worth acting on. There is no minimum margin.'
+      + rebooked;
+  }
+
+  // The searches behind every number, so anyone can check a price at source.
+  function renderSearches() {
+    function link(url, name) {
+      return '<a href="' + url.replace(/&/g, '&amp;') + '" target="_blank" rel="noopener">' + name + '</a>';
+    }
+    document.getElementById('searches').innerHTML = 'Searches checked each hour: '
+      + ITINS.map(function (itin) {
+        var s = D.searches[itin];
+        return '<span class="srch">' + D.booked.itineraries[itin].label + ' &mdash; '
+          + link(s.google, 'Google Flights') + ' &middot; ' + link(s.kayak, 'Kayak') + '</span>';
+      }).join('');
+  }
+
+  renderMeta();
+  renderRule();
+  renderSearches();
+  renderJoint();
+  renderPanels();
+}());
+
+</script>
+</body>
+</html>
