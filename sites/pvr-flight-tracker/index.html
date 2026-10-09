@@ -250,17 +250,19 @@ details.notes[open] summary::after{transform:rotate(225deg)}
           one airline both ways on one ticket. Budget carriers (Spirit, Frontier, Allegiant,
           Volaris, Viva Aerobus), mixed-airline trips and Kayak Hacker Fares are ignored.</dd>
         <dt>Fare class</dt>
-        <dd>Regular economy or better on that airline &mdash; Delta Main Classic or higher,
-          American Main Cabin, United Economy, and so on. Basic economy is excluded.</dd>
+        <dd>Refundable fares only, because the booked ticket is refundable. The price compared is
+          the cheapest tier Google Flights marks &ldquo;Full refunds&rdquo; &mdash; United Economy
+          Fully Refundable, for example. Basic economy is excluded.</dd>
       </dl>
       <dl>
         <dt>Qualifying flights</dt>
         <dd>Leave MCI 15 March, leave PVR 20 March, at most one stop each way. Any time of day,
-          any length. The five cheapest, plus the booked Delta flight whenever it is listed.</dd>
+          any length. The five cheapest refundable fares, plus the booked Delta flight whenever
+          it is listed. Flights with no refundable price fill any spare places, shown grey.</dd>
         <dt>Sources</dt>
-        <dd>Every check reads Google Flights and Kayak, and keeps the lower price. The tag
-          beside a price says where it came from: <b>G</b> Google, <b>K</b> Kayak, <b>GK</b>
-          both agree.</dd>
+        <dd>Refundable prices come from Google Flights alone: Kayak lists no refundable fares.
+          Kayak&rsquo;s regular fares appear only on grey flights, tagged <b>K</b>, and never
+          count.</dd>
         <dt>Stale flights</dt>
         <dd>Only flights found in the latest check count toward the verdict. One that stops
           appearing keeps its last price, and after a day it is marked stale. Nothing is ever
@@ -273,7 +275,7 @@ details.notes[open] summary::after{transform:rotate(225deg)}
   <p class="cost" id="cost"></p>
 
 </div>
-<script type="application/json" id="tracker-data">{"days":["2026-10-08","2026-10-09"],"flights":{"A1":{"it":"A","air":"Delta","od":"7:00 AM","oa":"2:45 PM","odur":"8h 45m","ost":"1 stop, LAX","rd":"1:10 PM","ra":"11:58 PM","rdur":"9h 48m","rst":"1 stop, ATL","fare":"Delta Main Extra"},"A2":{"it":"A","air":"United Airlines","od":"6:10 AM","oa":"2:09 PM","odur":"8h 59m","ost":"1 stop, IAH","rd":"3:11 PM","ra":"11:37 PM","rdur":"7h 26m","rst":"1 stop, DEN","fare":"Economy"},"A3":{"it":"A","air":"United Airlines","od":"6:10 AM","oa":"12:02 PM","odur":"6h 52m","ost":"1 stop, IAH","rd":"3:11 PM","ra":"11:37 PM","rdur":"7h 26m","rst":"1 stop, DEN","fare":"Economy"},"A4":{"it":"A","air":"United Airlines","od":"8:30 AM","oa":"2:09 PM","odur":"6h 39m","ost":"1 stop, IAH","rd":"3:11 PM","ra":"11:37 PM","rdur":"7h 26m","rst":"1 stop, DEN","fare":"Economy"},"A5":{"it":"A","air":"United Airlines","od":"7:00 AM","oa":"3:44 PM","odur":"9h 44m","ost":"1 stop, SFO","rd":"3:11 PM","ra":"11:37 PM","rdur":"7h 26m","rst":"1 stop, DEN","fare":"Economy"},"A6":{"it":"A","air":"United Airlines","od":"6:10 AM","oa":"2:09 PM","odur":"8h 59m","ost":"1 stop, IAH","rd":"12:34 PM","ra":"8:52 PM","rdur":"7h 18m","rst":"1 stop, DEN","fare":"Economy"},"A7":{"it":"A","air":"United Airlines","od":"6:10 AM","oa":"2:09 PM","odur":"8h 59m","ost":"1 stop, IAH","rd":"2:17 PM","ra":"11:37 PM","rdur":"8h 20m","rst":"1 stop, DEN","fare":"Economy"},"A8":{"it":"A","air":"Southwest Airlines","od":"6:50 AM","oa":"12:45 PM","odur":"6h 55m","ost":"1 stop, DEN","rd":"5:15 PM","ra":"1:25 AM","rdur":"7h 10m","rst":"1 stop, PHX","fare":"Choice"},"A9":{"it":"A","air":"Southwest Airlines","od":"5:00 AM","oa":"11:00 AM","odur":"7h 00m","ost":"1 stop, AUS","rd":"5:15 PM","ra":"1:25 AM","rdur":"7h 10m","rst":"1 stop, PHX","fare":"Choice"}},"booked":{"paid":{"A1":3729},"paidTotal":3729,"pax":3,"depart":"2027-03-15","route":"MCI-PVR","itineraries":{"A":{"label":"Round trip","ret":"2027-03-20","retShort":"Mar 20","booked":"A1"}}},"daily":{"A2":[[0,3262,3262,3262,1],[1,3559,3559,3559,2]],"A3":[[0,3349,3349,3349,1]],"A4":[[0,3481,3481,3481,1]],"A5":[[0,3532,3532,3532,1]],"A6":[[0,3559,3559,3559,1],[1,3559,3559,3559,2]],"A7":[[1,3559,3559,3559,2]],"A8":[[1,3619,3619,3619,2]],"A9":[[1,3619,3619,3619,2]]},"lastSeen":{"A2":1791576363000,"A3":1791500136000,"A4":1791500136000,"A5":1791500136000,"A6":1791576363000,"A7":1791576363000,"A8":1791576363000,"A9":1791576363000},"lastSrc":{"A2":"K","A3":"K","A4":"K","A5":"K","A6":"K","A7":"K","A8":"K","A9":"K"},"newest":1791576363000,"runs":3,"recentDays":3,"recent":[[1791500136000,"A2",3262],[1791500136000,"A3",3349],[1791500136000,"A4",3481],[1791500136000,"A5",3532],[1791500136000,"A6",3559],[1791572709000,"A6",3559],[1791572709000,"A2",3559],[1791572709000,"A7",3559],[1791572709000,"A8",3619],[1791572709000,"A9",3619],[1791576363000,"A6",3559],[1791576363000,"A2",3559],[1791576363000,"A7",3559],[1791576363000,"A8",3619],[1791576363000,"A9",3619]],"cost":{"last30":0,"allTime":0,"agentDays":0},"searches":{"A":{"kayak":"https://www.kayak.com/flights/MCI-PVR/2027-03-15/2027-03-20/3adults?sort=price_a&fs=stops=~1;hidebasic=hidebasic","google":"https://www.google.com/travel/flights/search?tfs=CBwQAholEgoyMDI3LTAzLTE1KAFqDAgCEggvbS8wNGZfZHIHCAESA1BWUholEgoyMDI3LTAzLTIwKAFqBwgBEgNQVlJyDAgCEggvbS8wNGZfZEABQAFAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA&hl=en&curr=USD"}},"trip":{"id":"pvr","joint":false}}</script>
+<script type="application/json" id="tracker-data">{"days":["2026-10-08","2026-10-09"],"flights":{"A1":{"it":"A","air":"Delta","od":"7:00 AM","oa":"2:45 PM","odur":"8h 45m","ost":"1 stop, LAX","rd":"1:10 PM","ra":"11:58 PM","rdur":"9h 48m","rst":"1 stop, ATL","fare":"Delta Main Extra"},"A2":{"it":"A","air":"United Airlines","od":"6:10 AM","oa":"2:09 PM","odur":"8h 59m","ost":"1 stop, IAH","rd":"3:11 PM","ra":"11:37 PM","rdur":"7h 26m","rst":"1 stop, DEN","fare":"Economy"},"A3":{"it":"A","air":"United Airlines","od":"6:10 AM","oa":"12:02 PM","odur":"6h 52m","ost":"1 stop, IAH","rd":"3:11 PM","ra":"11:37 PM","rdur":"7h 26m","rst":"1 stop, DEN","fare":"Economy"},"A4":{"it":"A","air":"United Airlines","od":"8:30 AM","oa":"2:09 PM","odur":"6h 39m","ost":"1 stop, IAH","rd":"3:11 PM","ra":"11:37 PM","rdur":"7h 26m","rst":"1 stop, DEN","fare":"Economy"},"A5":{"it":"A","air":"United Airlines","od":"7:00 AM","oa":"3:44 PM","odur":"9h 44m","ost":"1 stop, SFO","rd":"3:11 PM","ra":"11:37 PM","rdur":"7h 26m","rst":"1 stop, DEN","fare":"Economy"},"A6":{"it":"A","air":"United Airlines","od":"6:10 AM","oa":"2:09 PM","odur":"8h 59m","ost":"1 stop, IAH","rd":"12:34 PM","ra":"8:52 PM","rdur":"7h 18m","rst":"1 stop, DEN","fare":"Economy"},"A7":{"it":"A","air":"United Airlines","od":"6:10 AM","oa":"2:09 PM","odur":"8h 59m","ost":"1 stop, IAH","rd":"2:17 PM","ra":"11:37 PM","rdur":"8h 20m","rst":"1 stop, DEN","fare":"Economy"},"A8":{"it":"A","air":"Southwest Airlines","od":"6:50 AM","oa":"12:45 PM","odur":"6h 55m","ost":"1 stop, DEN","rd":"5:15 PM","ra":"1:25 AM","rdur":"7h 10m","rst":"1 stop, PHX","fare":"Choice"},"A9":{"it":"A","air":"Southwest Airlines","od":"5:00 AM","oa":"11:00 AM","odur":"7h 00m","ost":"1 stop, AUS","rd":"5:15 PM","ra":"1:25 AM","rdur":"7h 10m","rst":"1 stop, PHX","fare":"Choice"},"A10":{"it":"A","air":"Alaska Airlines","od":"3:34 PM","oa":"1:46 PM","odur":"23h 12m","ost":"1 stop, SEA","rd":"4:46 PM","ra":"2:43 PM","rdur":"20h 57m","rst":"1 stop, SEA","fare":"Main"},"A11":{"it":"A","air":"Alaska Airlines","od":"3:34 PM","oa":"1:46 PM","odur":"23h 12m","ost":"1 stop, SEA","rd":"4:46 PM","ra":"11:20 PM","rdur":"29h 34m","rst":"1 stop, SEA","fare":"Main"},"A12":{"it":"A","air":"Alaska Airlines","od":"3:34 PM","oa":"1:46 PM","odur":"23h 12m","ost":"1 stop, SEA","rd":"3:46 PM","ra":"2:43 PM","rdur":"21h 57m","rst":"1 stop, SEA","fare":"Main"},"A13":{"it":"A","air":"Alaska Airlines","od":"3:34 PM","oa":"1:46 PM","odur":"23h 12m","ost":"1 stop, SEA","rd":"3:46 PM","ra":"11:20 PM","rdur":"30h 34m","rst":"1 stop, SEA","fare":"Main"},"A14":{"it":"A","air":"Aeromexico","od":"5:40 AM","oa":"12:00 PM","odur":"7h 20m","ost":"1 stop, ATL","rd":"2:40 PM","ra":"11:58 PM","rdur":"8h 18m","rst":"1 stop, ATL","fare":"Classic"}},"booked":{"paid":{"A1":3729},"paidTotal":3729,"pax":3,"depart":"2027-03-15","route":"MCI-PVR","itineraries":{"A":{"label":"Round trip","ret":"2027-03-20","retShort":"Mar 20","booked":"A1"}}},"daily":{"A2":[[0,3262,3262,3262,1],[1,3559,3559,3559,2]],"A3":[[0,3349,3349,3349,1]],"A4":[[0,3481,3481,3481,1]],"A5":[[0,3532,3532,3532,1]],"A6":[[0,3559,3559,3559,1],[1,3559,3559,3559,2]],"A7":[[1,3559,3559,3559,2]],"A8":[[1,3619,3619,3619,2]],"A9":[[1,3619,3619,3619,2]],"A10":[[1,4520,4520,4520,1]],"A11":[[1,4520,4520,4520,1]],"A12":[[1,4751,4751,4751,1]],"A13":[[1,4751,4751,4751,1]],"A14":[[1,5188,5188,5188,1]]},"lastSeen":{"A2":1791576363000,"A3":1791500136000,"A4":1791500136000,"A5":1791500136000,"A6":1791576363000,"A7":1791576363000,"A8":1791576363000,"A9":1791576363000,"A10":1791579835000,"A11":1791579835000,"A12":1791579835000,"A13":1791579835000,"A14":1791579835000},"lastSrc":{"A2":"K","A3":"K","A4":"K","A5":"K","A6":"K","A7":"K","A8":"K","A9":"K","A10":"GK","A11":"GK","A12":"GK","A13":"K","A14":"K"},"newest":1791579835000,"runs":4,"unpriced":["A2","A3","A4","A5","A6","A7","A8","A9","A10","A11","A12","A13","A14"],"recentDays":3,"recent":[[1791500136000,"A2",3262],[1791500136000,"A3",3349],[1791500136000,"A4",3481],[1791500136000,"A5",3532],[1791500136000,"A6",3559],[1791572709000,"A6",3559],[1791572709000,"A2",3559],[1791572709000,"A7",3559],[1791572709000,"A8",3619],[1791572709000,"A9",3619],[1791576363000,"A6",3559],[1791576363000,"A2",3559],[1791576363000,"A7",3559],[1791576363000,"A8",3619],[1791576363000,"A9",3619],[1791579835000,"A10",4520],[1791579835000,"A11",4520],[1791579835000,"A12",4751],[1791579835000,"A13",4751],[1791579835000,"A14",5188]],"cost":{"last30":0,"allTime":0,"agentDays":0},"searches":{"A":{"kayak":"https://www.kayak.com/flights/MCI-PVR/2027-03-15/2027-03-20/3adults?sort=price_a&fs=stops=~1;hidebasic=hidebasic","google":"https://www.google.com/travel/flights/search?tfs=CBwQAholEgoyMDI3LTAzLTE1KAFqDAgCEggvbS8wNGZfZHIHCAESA1BWUholEgoyMDI3LTAzLTIwKAFqBwgBEgNQVlJyDAgCEggvbS8wNGZfZEABQAFAAUgBcAGCAQsI____________AZgBAQ&tfu=EgYIABAAGAA&hl=en&curr=USD"}},"trip":{"id":"pvr","joint":false,"refundableOnly":true}}</script>
 <script>
 (function () {
   var D = JSON.parse(document.getElementById('tracker-data').textContent);
@@ -308,6 +310,13 @@ details.notes[open] summary::after{transform:rotate(225deg)}
   var ranges = {};
   var selectedFid = null;
 
+  /* A refundable-only trip (PVR) is given refundable prices by the build. A
+     flight Google never priced refundably arrives with its regular fare and is
+     named here: shown grey, never judged, never green. */
+  var REFUNDABLE = Boolean(D.trip.refundableOnly);
+  var UNPRICED = {};
+  (D.unpriced || []).forEach(function (fid) { UNPRICED[fid] = true; });
+
   function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
 
   // DR's refundability is a per-person add-on the sites do not list; PVR's
@@ -316,9 +325,9 @@ details.notes[open] summary::after{transform:rotate(225deg)}
      cheaper fare is real money but usually not refundable, and neither site's
      list says. The verdict stands; this says what to check before cancelling.
      DR's refundability is an add-on bought again on a rebook, so it never
-     needs this. */
+     needs this, and nor does a trip judged on refundable fares only. */
   function refundNote(best, meta) {
-    if (D.booked.refundablePerPerson) return '';
+    if (D.booked.refundablePerPerson || REFUNDABLE) return '';
     var mine = D.flights[meta.booked];
     var text = mine && best.air !== mine.air
       ? best.air + ' fares are usually non-refundable; your ' + mine.air + ' ticket is.'
@@ -386,6 +395,7 @@ details.notes[open] summary::after{transform:rotate(225deg)}
         flightId: fid, it: f.it, air: f.air, od: f.od, oa: f.oa, rd: f.rd, ra: f.ra,
         odur: f.odur, rdur: f.rdur, ost: f.ost, rst: f.rst, fare: f.fare,
         total: last[3], lastTs: D.lastSeen[fid], stale: isStale(fid), current: isCurrent(fid),
+        unpriced: Boolean(UNPRICED[fid]),
         src: D.lastSrc[fid]
       };
     });
@@ -500,7 +510,7 @@ details.notes[open] summary::after{transform:rotate(225deg)}
     var meta = D.booked.itineraries[itin];
     var paid = D.booked.paid[meta.booked];
     var rows = latestFor(itin);
-    var live = rows.filter(function (r) { return r.current; });
+    var live = rows.filter(function (r) { return r.current && !r.unpriced; });
     var best = live[0] || null;
 
     var el = document.createElement('div');
@@ -539,8 +549,9 @@ details.notes[open] summary::after{transform:rotate(225deg)}
       top.innerHTML = '<div class="panel-verdict">'
         + '<span class="amt' + (act ? ' act' : '') + '">' + (d === null ? '—' : signed(d)) + '</span>'
         + '<span class="lbl">' + (DEPARTED ? 'trip departed' : best
-          ? (act ? 'below ' : 'above ') + money(thr) + ' · cheapest is ' + best.air + ' at ' + money(best.total)
-          : 'no qualifying flight') + '</span></div>'
+          ? (act ? 'below ' : 'above ') + money(thr) + ' · cheapest ' + (REFUNDABLE ? 'refundable ' : '')
+            + 'is ' + best.air + ' at ' + money(best.total)
+          : (REFUNDABLE ? 'no refundable price this check' : 'no qualifying flight')) + '</span></div>'
         + (act ? refundNote(best, meta) : '')
         + '<div class="rng-set" role="group" aria-label="Chart range">'
         + rangeBtn('all', 'All') + rangeBtn('recent', RECENT_LABEL) + '</div>'
@@ -590,8 +601,9 @@ details.notes[open] summary::after{transform:rotate(225deg)}
   function table(rows, meta, thr) {
     var body = rows.map(function (r) {
       var d = r.total - thr;
-      var under = d < 0 && r.current;
+      var under = d < 0 && r.current && !r.unpriced;
       var cls = [];
+      if (r.unpriced) cls.push('unpriced');
       if (r.flightId === meta.booked) cls.push('booked');
       if (under) cls.push('under');
       if (r.flightId === selectedFid) cls.push('selected');
@@ -600,12 +612,16 @@ details.notes[open] summary::after{transform:rotate(225deg)}
         + '<td><span class="air">' + r.air + '</span>'
         + (r.flightId === meta.booked ? '<span class="pill bk">Booked</span>' : '')
         + (r.stale ? '<span class="pill st">Stale</span>' : '')
+        + (r.unpriced ? '<span class="pill st">No refund price</span>' : '')
         // Explains a price the verdict passed over. Stale already says more.
         + (!r.current && !r.stale ? '<span class="pill st">Not found in latest check</span>' : '')
         + '<br><span class="times">Out ' + r.od + '–' + r.oa + '</span>'
         + '<br><span class="times">Back ' + r.rd + '–' + r.ra + '</span></td>'
         + '<td><span class="tot">' + money(r.total) + '</span>' + srcTag(r.src) + '<br>'
-        + '<span class="dl' + (under ? ' under' : '') + '">' + signed(d) + '</span></td></tr>';
+        // A regular fare is not comparable with a refundable one, so no delta.
+        + (r.unpriced
+          ? '<span class="dl">regular fare</span></td></tr>'
+          : '<span class="dl' + (under ? ' under' : '') + '">' + signed(d) + '</span></td></tr>');
     }).join('');
     return '<table class="cands"><caption>Qualifying flights — tap a row to trace it</caption>'
       + '<thead><tr><th>Flight</th><th>Total / vs threshold</th></tr></thead><tbody>' + body + '</tbody></table>';
@@ -730,11 +746,14 @@ details.notes[open] summary::after{transform:rotate(225deg)}
       var lastTs = raw ? last.ts : DAY_TS[last[0]];
       var isBooked = fid === booked;
       var stale = isStale(fid);
-      var under = lastTotal < thr && isCurrent(fid);
+      var unpriced = Boolean(UNPRICED[fid]);
+      var under = lastTotal < thr && isCurrent(fid) && !unpriced;
       var isSel = fid === selectedFid;
       var dimmed = selectedFid && !isSel;
 
-      var colour = under ? 'var(--act)' : (isBooked ? 'var(--gold)' : 'var(--brand)');
+      // Grey even when booked: its line is a regular fare, not the price judged.
+      var colour = unpriced ? 'var(--fg-3)'
+        : under ? 'var(--act)' : (isBooked ? 'var(--gold)' : 'var(--brand)');
       var width = isSel ? 2.6 : (isBooked ? 1.9 : 1.1);
       var opacity = dimmed ? 0.18 : (stale ? 0.35 : (isBooked || isSel ? 1 : 0.62));
       var dash = stale ? '3 2.2' : '';
@@ -799,6 +818,16 @@ details.notes[open] summary::after{transform:rotate(225deg)}
     // cheaper fare is a real saving because cancelling returns cash.
     if (!D.trip.joint) {
       var only = it[ITINS[0]];
+      if (REFUNDABLE) {
+        document.getElementById('rebook-rule').innerHTML = 'The booking is refundable to the original'
+          + ' card, so only refundable fares are compared. Each price here is the refundable fare Google'
+          + ' Flights lists in its booking options for ' + b.pax + ' adults; Kayak lists no refundable'
+          + ' prices. Any qualifying refundable fare below the booked fare &mdash; '
+          + money(b.paid[only.booked]) + ' &mdash; is worth acting on, on any airline. Flights with no'
+          + ' refundable price are shown grey at their regular fare and never count.'
+          + ' There is no minimum margin.' + rebooked;
+        return;
+      }
       document.getElementById('rebook-rule').innerHTML = 'The booking is refundable to the original'
         + ' card, and the prices here are the full ticket price Google Flights and Kayak list for '
         + b.pax + ' adults. Any qualifying fare below the booked fare &mdash; '
